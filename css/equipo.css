@@ -1,0 +1,85 @@
+.equipo {
+    padding: clamp(30px, 4vw, 52px) clamp(20px, 5vw, 72px) clamp(44px, 6vw, 80px);
+}
+
+.equipo__encabezado {
+    text-align: center;
+    max-width: 920px;
+    margin: 0 auto clamp(44px, 6vw, 80px);
+}
+
+.equipo__encabezado h1 {
+    margin: 0;
+    font-size: clamp(38px, 5vw, 68px);
+    color: #007a80;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.equipo__encabezado h1::after {
+    content: "";
+    display: block;
+    width: 160px;
+    width: clamp(100px, 10vw, 160px);
+    height: 10px;
+    border-radius: 999px;
+    background-color: #007a80;
+    margin: 22px auto 28px;
+}
+
+.equipo__encabezado p {
+    margin: 0;
+    color: #4f8f99;
+    font-size: clamp(22px, 2.2vw, 43px);
+    line-height: 1.45;
+    font-weight: 500;
+}
+
+.equipo__grid {
+    max-width: 1650px;
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(22px, 2.2vw, 38px);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.tarjeta-medico {
+    background-color: #ffffff;
+    border-radius: 36px;
+    overflow: hidden;
+    box-shadow: 0 14px 28px rgba(7, 47, 49, 0.12);
+}
+
+.tarjeta-medico img {
+    width: 100%;
+    aspect-ratio: 4 / 3.7;
+    object-fit: cover;
+    display: block;
+}
+
+.tarjeta-medico__contenido {
+    padding: clamp(26px, 2.6vw, 36px) clamp(22px, 2.5vw, 38px) clamp(30px, 3vw, 42px);
+    text-align: center;
+}
+
+.tarjeta-medico__contenido h2 {
+    margin: 0 0 10px;
+    color: #00737a;
+    font-size: clamp(34px, 3vw, 56px);
+    line-height: 1.2;
+}
+
+.tarjeta-medico__contenido h3 {
+    margin: 0 0 24px;
+    color: #06767b;
+    font-size: clamp(26px, 2vw, 40px);
+    font-weight: 600;
+}
+
+.tarjeta-medico__contenido p {
+    margin: 0;
+    color: #73a4ab;
+    font-size: clamp(22px, 1.6vw, 34px);
+    line-height: 1.4;
+    font-style: italic;
+}
