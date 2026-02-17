@@ -1,0 +1,73 @@
+.nosotros {
+    padding: 36px clamp(24px, 6vw, 100px) 72px;
+    background-color: #f5ece2;
+    min-height: calc(100vh - 118px);
+}
+
+.nosotros-encabezado {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 52px;
+}
+
+.nosotros-encabezado h1 {
+    margin: 0;
+    color: #006f76;
+    font-size: clamp(2rem, 3vw, 3.6rem);
+    font-weight: 800;
+}
+
+.linea {
+    width: 160px;
+    height: 10px;
+    border-radius: 99px;
+    background-color: #00878b;
+    display: block;
+    margin: 18px auto 26px;
+}
+
+.nosotros-encabezado p {
+    margin: 0;
+    color: #4d8e95;
+    font-size: clamp(1.1rem, 1.6vw, 2rem);
+    line-height: 1.55;
+}
+
+.valores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+}
+
+.valor-card {
+    background: #f8f8f8;
+    border: 1px solid #e5d8ca;
+    border-radius: 26px;
+    padding: 42px 34px;
+    min-height: 320px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+}
+
+.icono-box {
+    width: 94px;
+    height: 94px;
+    border-radius: 22px;
+    background-color: #e4edef;
+    display: grid;
+    place-items: center;
+    font-size: 2.2rem;
+}
+
+.valor-card h2 {
+    margin: 30px 0 18px;
+    color: #006f76;
+    font-size: clamp(1.8rem, 1.8vw, 2.8rem);
+    line-height: 1.2;
+}
+
+.valor-card p {
+    margin: 0;
+    color: #4f8f96;
+    font-size: clamp(1.05rem, 1.25vw, 1.85rem);
+    line-height: 1.5;
+}
