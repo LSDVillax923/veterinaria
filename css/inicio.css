@@ -27,8 +27,7 @@
 .landing h1 {
     margin: 0;
     max-width: 17ch;
-    font-size: clamp(2.2rem, 5.7vw, 6rem);
-    line-height: 1.06;
+    font-size: 50px;
     letter-spacing: -0.03em;
     color: #007a80;
 }
@@ -37,8 +36,7 @@
     margin: clamp(22px, 2.7vw, 34px) 0 0;
     max-width: 34ch;
     color: #4d9095;
-    font-size: clamp(1.15rem, 1.9vw, 2rem);
-    line-height: 1.42;
+    font-size: 22px;
 }
 
 .acciones {
