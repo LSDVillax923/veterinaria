@@ -53,8 +53,8 @@ body {
     padding: 18px 34px;
     border-radius: 999px;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.15);
-    white-space: nowrap;
-     display: inline-flex;
+    
+    display: inline-flex;
     align-items: center;
     gap: 10px;
 }
