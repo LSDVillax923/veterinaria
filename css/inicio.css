@@ -123,3 +123,7 @@
     font-size: clamp(0.95rem, 1.15vw, 1.2rem);
     margin-top: 4px;
 }
+
+.inicio-page main {
+    margin-left: 0;
+}
