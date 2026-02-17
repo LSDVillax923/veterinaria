@@ -15,8 +15,8 @@ body {
     padding: 14px clamp(110px, 9vw, 180px);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 32px;
+    justify-content: center;
+    gap: clamp(56px, 8vw, 140px);
 }
 
 .logo img {
