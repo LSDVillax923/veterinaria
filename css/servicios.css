@@ -1,0 +1,25 @@
+.fondo-celeste {
+    background-color: #e4ecee;
+}
+
+.fondo-crema {
+    background-color: #ece2d4;
+}
+
+.fondo-rosa {
+    background-color: #f2e5e7;
+}
+
+.servicio-card h2 {
+    margin: 0 0 20px;
+    color: #006f77;
+    font-size: clamp(2rem, 1.8vw, 2.8rem);
+    line-height: 1.22;
+}
+
+.servicio-card p {
+    margin: 0;
+    color: #4f8f96;
+    font-size: clamp(1.1rem, 1.45vw, 1.9rem);
+    line-height: 1.45;
+}
