@@ -5,7 +5,10 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-main {
+.contacto main,
+.contacto-page main {
+    margin-left: 10%;
+
     margin-left: 10%;
 }
 
