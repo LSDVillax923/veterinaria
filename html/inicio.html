@@ -1,259 +1,306 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>inicio</title>
-    <link rel="stylesheet" href="../css/inicio.css">
+    <meta name="description" content="MediCat - Clínica veterinaria con atención 24/7, cirugías especializadas y el mejor equipo para tu mascota.">
+    <title>MediCat - Clínica Veterinaria</title>
+
+    <!-- Font Awesome (iconos) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Hojas de estilo -->
     <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../css/inicio.css">
     <link rel="stylesheet" href="../css/servicios.css">
     <link rel="stylesheet" href="../css/equipo.css">
+    <link rel="stylesheet" href="../css/nosotros.css">
     <link rel="stylesheet" href="../css/contacto.css">
-
-
-
-
+    <link rel="stylesheet" href="../css/footer.css">
 </head>
 <body>
 
-     <nav class="navegacion">
+    <nav class="navegacion" aria-label="Menú principal">
         <a class="logo" href="inicio.html">
-            <img src="../img/Medicat.png" alt="medicat">
+            <img src="../img/Medicat.png" alt="Logo de Medicat">
         </a>
         <ul class="menu">
-            <li><a href="inicio.html">Inicio</a></li>
-            <li><a href="servicios.html">Servicios</a></li>
-            <li><a href="nosotros.html">Nosotros</a></li>
-            <li><a href="equipo.html">Equipo</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
-             <li><a class="btn-cita" href="agendar.html"><span class="icono"> <img src="../img/phoneG.jpeg" alt="phone" width="30px" height="auto"></span> Agendar Cita</a></li>
-            
-            
-
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#nosotros">Nosotros</a></li>
+            <li><a href="#equipo">Equipo</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a class="btn-cita" href="#contacto">
+                <span class="icono">
+                    <img src="../img/phoneG.jpeg" alt="" width="30" height="auto">
+                </span> Agendar Cita
+            </a></li>
         </ul>
-        
     </nav>
 
-     <section class="landing">
-        <div class="landing-contenido">
-            <p class="etiqueta-bienvenida">Bienvenido a Medicat</p>
-            <h1>Cuidamos de tus mejores amigos como si fueran nuestra familia</h1>
-            <p class="descripcion">Medicina veterinaria de vanguardia, trato humano y el equipo más avanzado para garantizar la salud y bienestar de tu mascota en cada etapa de su vida.</p>
+    <main>
+        <!-- SECCIÓN INICIO -->
+        <section id="inicio" class="landing">
+            <article class="landing-contenido">
+                <p class="etiqueta-bienvenida">Bienvenido a Medicat</p>
+                <h1>Cuidamos de tus mejores amigos como si fueran nuestra familia</h1>
+                <p class="descripcion">Medicina veterinaria de vanguardia, trato humano y el equipo más avanzado para garantizar la salud y bienestar de tu mascota en cada etapa de su vida.</p>
+                <div class="acciones">
+                    <a class="btn btn-primario" href="#contacto">Agendar Cita</a>
+                    <a class="btn btn-secundario" href="#servicios">Ver Servicios</a>
+                </div>
+            </article>
+            <figure class="landing-imagen">
+                <img src="../img/perro-inicio.jpeg" alt="Perro frente a la entrada de la veterinaria">
+                <figcaption class="badge-emergencia">
+                    <span class="badge-hora">24/7</span>
+                    <span>
+                        <strong>Emergencias</strong>
+                        <small>Siempre disponibles</small>
+                    </span>
+                </figcaption>
+            </figure>
+        </section>
 
-            <div class="acciones">
-                <a class="btn btn-primario" href="agendar.html">Agendar Cita</a>
-                <a class="btn btn-secundario" href="servicios.html">Ver Servicios</a>
-            </div>
-        </div>
-
-        <figure class="landing-imagen">
-            <img src="../img/perro-inicio.jpeg" alt="Perro frente a la entrada de la veterinaria">
-            <figcaption class="badge-emergencia">
-                <span class="badge-hora">24/7</span>
-                <span>
-                    <strong>Emergencias</strong>
-                    <small>Siempre disponibles</small>
-                </span>
-            </figcaption>
-        </figure>
-    </section>
-
-    <div class="services">
-        
-
-     <main class="servicios">
-        <header class="servicios__encabezado">
-            <h1>Nuestros Servicios</h1>
+        <!-- SECCIÓN SERVICIOS  -->
+        <section id="servicios">
+            <h2>Nuestros Servicios</h2>
             <span class="servicios__linea" aria-hidden="true"></span>
             <p>Ofrecemos una amplia gama de cuidados médicos y estéticos diseñados para cubrir todas las necesidades de salud de tus mascotas.</p>
-        </header>
 
-        <section class="servicios__grid" aria-label="Listado de servicios">
-            <article class="servicio-card">
-                <div class="servicio-card__icono fondo-celeste">🩺</div>
-                <h2>Consultas Generales</h2>
-                <p>Revisiones exhaustivas para mantener a tu mascota saludable y detectar cualquier problema a tiempo.</p>
-            </article>
+            <div class="servicios__grid" aria-label="Listado de servicios">
+                <article class="servicio-card">
+                    <div class="servicio-card__icono fondo-celeste" aria-hidden="true">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h3>Consultas Generales</h3>
+                    <p>Revisiones exhaustivas para mantener a tu mascota saludable y detectar cualquier problema a tiempo.</p>
+                </article>
 
-            <article class="servicio-card">
-                <div class="servicio-card__icono fondo-celeste">💉</div>
-                <h2>Vacunación y Desparasitación</h2>
-                <p>Planes preventivos personalizados para proteger a tus mascotas de las enfermedades más comunes.</p>
-            </article>
+                <article class="servicio-card">
+                    <div class="servicio-card__icono fondo-celeste" aria-hidden="true">
+                        <i class="fas fa-syringe"></i>
+                    </div>
+                    <h3>Vacunación y Desparasitación</h3>
+                    <p>Planes preventivos personalizados para proteger a tus mascotas de las enfermedades más comunes.</p>
+                </article>
 
-            <article class="servicio-card">
-                <div class="servicio-card__icono fondo-crema">💚</div>
-                <h2>Cirugías Especializadas</h2>
-                <p>Contamos con quirófano equipado y tecnología láser para procedimientos quirúrgicos seguros.</p>
-            </article>
+                <article class="servicio-card">
+                    <div class="servicio-card__icono fondo-crema" aria-hidden="true">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Cirugías Especializadas</h3>
+                    <p>Contamos con quirófano equipado y tecnología láser para procedimientos quirúrgicos seguros.</p>
+                </article>
 
-            <article class="servicio-card">
-                <div class="servicio-card__icono fondo-rosa">⚡</div>
-                <h2>Urgencias 24/7</h2>
-                <p>Atención inmediata para situaciones críticas con personal médico disponible las 24 horas.</p>
-            </article>
+                <article class="servicio-card">
+                    <div class="servicio-card__icono fondo-rosa" aria-hidden="true">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Urgencias 24/7</h3>
+                    <p>Atención inmediata para situaciones críticas con personal médico disponible las 24 horas.</p>
+                </article>
 
-            <article class="servicio-card">
-                <div class="servicio-card__icono fondo-crema">📈</div>
-                <h2>Laboratorio Propio</h2>
-                <p>Resultados rápidos de análisis de sangre, orina y pruebas diagnósticas para decisiones precisas.</p>
-            </article>
+                <article class="servicio-card">
+                    <div class="servicio-card__icono fondo-crema" aria-hidden="true">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Laboratorio Propio</h3>
+                    <p>Resultados rápidos de análisis de sangre, orina y pruebas diagnósticas para decisiones precisas.</p>
+                </article>
 
-            <article class="servicio-card">
-                <div class="servicio-card__icono fondo-celeste">✂️</div>
-                <h2>Peluquería Canina y Felina</h2>
-                <p>Servicios de higiene y estética para que tus mascotas luzcan y se sientan siempre bien.</p>
-            </article>
+                <article class="servicio-card">
+                    <div class="servicio-card__icono fondo-celeste" aria-hidden="true">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3>Peluquería Canina y Felina</h3>
+                    <p>Servicios de higiene y estética para que tus mascotas luzcan y se sientan siempre bien.</p>
+                </article>
+            </div>
         </section>
-    </main>
 
-
-    </div>
-
-    <section class="confiar">
-        
-    </section>
-
-    <section class="equipo">
-         <main class="equipo">
-        <header class="equipo__encabezado">
-            <h1>Nuestro Equipo Médico</h1>
-            <p>Profesionales altamente calificados y apasionados por brindar el mejor cuidado a tus compañeros peludos.</p>
-        </header>
-     <section class="equipo__grid" aria-label="Listado del equipo médico">
-            <article class="tarjeta-medico">
-                <img src="../img/vet1.jpeg" alt="Dra. Elena Martínez">
-                <div class="tarjeta-medico__contenido">
-                    <h2>Dra. Elena Martínez</h2>
-                    <h3>Cirujana Veterinaria</h3>
-                    <p>"Especialista en cirugía de tejidos blandos y ortopedia con más de 10 años de experiencia."</p>
-                </div>
-            </article>
-
-            <article class="tarjeta-medico">
-                <img src="../img/vet5.jpeg" alt="Dr. Ricardo Sánchez">
-                <div class="tarjeta-medico__contenido">
-                    <h2>Dr. Ricardo Sánchez</h2>
-                    <h3>Médico Internista</h3>
-                    <p>"Experto en diagnóstico por imagen y medicina preventiva para animales exóticos y domésticos."</p>
-                </div>
-            </article>
-
-            <article class="tarjeta-medico">
-                <img src="../img/vet6.jpeg" alt="Dr. Ricardo Sánchez">
-                <div class="tarjeta-medico__contenido">
-                    <h2>Dr. Ricardo Sánchez</h2>
-                    <h3>Médico Internista</h3>
-                    <p>"Experto en diagnóstico por imagen y medicina preventiva para animales exóticos y domésticos."</p>
-                </div>
-            </article>
-        </section>
-    </main>
-
-    </section>
-
-    <section class="contacto">
-         <main> 
-             <header class="contacto__encabezado">
-            <h1>Contactanos</h1>
+        <!-- SECCIÓN NOSOTROS -->
+        <section id="nosotros">
+            <h2>Sobre Nosotros</h2>
             <span class="servicios__linea" aria-hidden="true"></span>
-        </header>
-        <div class="container">
-    
-    <!-- LADO IZQUIERDO -->
-    <div class="left">
-        <h1>Información de Contacto</h1>
-        <p>
-            Estamos aquí para ayudarte a ti y a tu mascota. 
-            No dudes en contactarnos por cualquier medio.
-        </p>
+            <p>En Medicat llevamos más de 15 años cuidando de la salud de tus mascotas. Nuestra filosofía se basa en el trato cercano, la ética profesional y la continua actualización técnica para ofrecer el mejor servicio.</p>
+            <p>Contamos con instalaciones modernas, equipos de diagnóstico de última generación y un equipo humano vocacional que entiende que cada mascota es única.</p>
+        </section>
 
-        <div class="info">
-            <div class="item">
-                <i class="fa-solid fa-phone"></i>
-                <div>
-                    <h4>Llámanos</h4>
-                    <span>+34 912 345 678</span>
+        <!-- SECCIÓN EQUIPO -->
+        <section id="equipo">
+            <h2>Nuestro Equipo Médico</h2>
+            <p>Profesionales altamente calificados y apasionados por brindar el mejor cuidado a tus compañeros peludos.</p>
+
+            <div class="equipo__grid" aria-label="Listado del equipo médico">
+                <article class="tarjeta-medico">
+                    <img src="../img/vet1.jpeg" alt="Dra. Elena Martínez, cirujana veterinaria">
+                    <div class="tarjeta-medico__contenido">
+                        <h3>Dra. Elena Martínez</h3>
+                        <h4>Cirujana Veterinaria</h4>
+                        <p>"Especialista en cirugía de tejidos blandos y ortopedia con más de 10 años de experiencia."</p>
+                    </div>
+                </article>
+
+                <article class="tarjeta-medico">
+                    <img src="../img/vet5.jpeg" alt="Dr. Ricardo Sánchez, médico internista">
+                    <div class="tarjeta-medico__contenido">
+                        <h3>Dr. Ricardo Sánchez</h3>
+                        <h4>Médico Internista</h4>
+                        <p>"Experto en diagnóstico por imagen y medicina preventiva para animales exóticos y domésticos."</p>
+                    </div>
+                </article>
+
+                <article class="tarjeta-medico">
+                    <img src="../img/vet6.jpeg" alt="Dra. Carla Gómez, especialista en dermatología">
+                    <div class="tarjeta-medico__contenido">
+                        <h3>Dra. Carla Gómez</h3>
+                        <h4>Dermatóloga Veterinaria</h4>
+                        <p>"Apasionada por la salud de la piel y el bienestar integral de perros y gatos."</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- SECCIÓN CONTACTO -->
+        <section id="contacto">
+            <h2>Contáctanos</h2>
+            <span class="servicios__linea" aria-hidden="true"></span>
+
+            <div class="container">
+                <!-- LADO IZQUIERDO: información de contacto -->
+                <div class="left">
+                    <h3>Información de Contacto</h3>
+                    <p>Estamos aquí para ayudarte a ti y a tu mascota. No dudes en contactarnos por cualquier medio.</p>
+
+                    <div class="info">
+                        <div class="item">
+                            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                            <div>
+                                <h4>Llámanos</h4>
+                                <span>+34 912 345 678</span>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <span>contacto@medicat.com</span>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                            <div>
+                                <h4>Ubicación</h4>
+                                <span>Calle Veterinaria 123, Madrid, España</span>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <i class="fa-solid fa-clock" aria-hidden="true"></i>
+                            <div>
+                                <h4>Horario</h4>
+                                <span>Lunes a Viernes: 09:00 - 20:00</span><br>
+                                <strong>Urgencias: 24 Horas</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a class="whatsapp" href="https://wa.me/34912345678" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                        Chatear por WhatsApp
+                    </a>
+                </div>
+
+                <!-- LADO DERECHO: formulario de mensaje -->
+                <div class="right">
+                    <h3>Envíanos un mensaje</h3>
+
+                    <form action="#" method="post">
+                        <div class="row">
+                            <div class="input-group">
+                                <label for="nombre">Nombre Completo</label>
+                                <input type="text" id="nombre" name="nombre" placeholder="Ej. Juan Pérez" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" placeholder="juan@ejemplo.com" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="asunto">Asunto</label>
+                            <input type="text" id="asunto" name="asunto" value="Consulta General">
+                        </div>
+
+                        <div class="input-group">
+                            <label for="mensaje">Mensaje</label>
+                            <textarea id="mensaje" name="mensaje" rows="5" placeholder="¿En qué podemos ayudarte?" required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Enviar Mensaje</button>
+                    </form>
                 </div>
             </div>
+        </section>
 
-            <div class="item">
-                <i class="fa-solid fa-envelope"></i>
-                <div>
-                    <h4>Email</h4>
-                    <span>contacto@medical.com</span>
-                </div>
+        <hr>
+    </main>
+
+    <!-- FOOTER (rediseñado según la imagen) -->
+    <footer class="footer">
+        <div class="footer-contenido">
+            <!-- Columna 1: Logo y descripción -->
+            <div class="footer-col footer-col-logo">
+                <img src="../img/Medicat.png" alt="Logo de Medicat" class="footer-logo">
+                <p>Cuidando la salud y bienestar de tus mascotas con la mejor tecnología y el equipo más humano. Tu confianza, su salud.</p>
             </div>
 
-            <div class="item">
-                <i class="fa-solid fa-location-dot"></i>
-                <div>
-                    <h4>Ubicación</h4>
-                    <span>Calle Veterinaria 123, Madrid, España</span>
-                </div>
+            <!-- Columna 2: Enlaces Rápidos -->
+            <div class="footer-col">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#equipo">Equipo Médico</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
             </div>
 
-            <div class="item">
-                <i class="fa-solid fa-clock"></i>
-                <div>
-                    <h4>Horario</h4>
-                    <span>Lunes a Viernes: 09:00 - 20:00</span><br>
-                    <strong>Urgencias: 24 Horas</strong>
-                </div>
+            <!-- Columna 3: Servicios -->
+            <div class="footer-col">
+                <h4>Servicios</h4>
+                <ul>
+                    <li>Consultas</li>
+                    <li>Vacunación</li>
+                    <li>Cirugías</li>
+                    <li>Laboratorio</li>
+                    <li>Urgencias 24/7</li>
+                    <li>Peluquería</li>
+                </ul>
+            </div>
+
+            <!-- Columna 4: Boletín -->
+            <div class="footer-col footer-col-newsletter">
+                <h4>Boletín</h4>
+                <p>Suscríbete para recibir consejos de salud para tu mascota.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu email" required>
+                    <button type="submit">Suscribirse</button>
+                </form>
             </div>
         </div>
 
-        
+        <div class="footer-bottom">
+            <p>© 2026 Medicat Clínica Veterinaria. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
-        <button class="whatsapp">
-            <i class="fa-brands fa-whatsapp"></i>
-            Chatear por WhatsApp
-        </button>
-    </div>
-
-    <!-- LADO DERECHO -->
-    <div class="right">
-        <h2>Envíanos un mensaje</h2>
-
-        <form>
-            <div class="row">
-                <div class="input-group">
-                    <label>Nombre Completo</label>
-                    <input type="text" placeholder="Ej. Juan Pérez">
-                </div>
-
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" placeholder="juan@ejemplo.com">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label>Asunto</label>
-                <input type="text" value="Consulta General">
-            </div>
-
-            <div class="input-group">
-                <label>Mensaje</label>
-                <textarea rows="5" placeholder="¿En qué podemos ayudarte?"></textarea>
-            </div>
-
-            <button type="submit" class="submit-btn">
-                Enviar Mensaje
-            </button>
-        </form>
-    </div>
-
-</div>
-    </main>
-    </section>
-
-    <hr>
-    <section class="footer">
-        <img src="../img/footer-img.jpeg" alt="img footer" width="30px">
-    </section>
-
-    
+    <!-- (Opcional) Script para FontAwesome si no se usó la versión kit -->
+    <!-- <script src="https://kit.fontawesome.com/...js" crossorigin="anonymous"></script> -->
 </body>
 </html>
-

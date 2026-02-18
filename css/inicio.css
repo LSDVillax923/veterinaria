@@ -1,126 +1,141 @@
 .landing {
     max-width: 1440px;
     margin: 0 auto;
-    padding: clamp(32px, 5vw, 72px) clamp(24px, 6vw, 86px) clamp(48px, 6vw, 84px);
+    padding: clamp(20px, 3vw, 40px) clamp(24px, 6vw, 86px); /* menos padding vertical */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: clamp(36px, 6vw, 80px);
+    gap: clamp(40px, 6vw, 90px);
 }
 
 .landing-contenido {
-    color: #007a80;
+    color: var(--color-primario);
 }
 
 .etiqueta-bienvenida {
     display: inline-block;
-    margin: 0 0 28px;
-    padding: 14px 30px;
+    margin-bottom: 20px;
+    padding: 10px 30px;
     border-radius: 999px;
     border: 2px solid #b6cfcf;
-    color: #007a80;
+    color: var(--color-primario);
     font-weight: 700;
-    font-size: clamp(18px, 1.7vw, 24px);
-    background-color: rgba(255, 255, 255, 0.45);
+    font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+    background-color: rgba(255,255,255,0.45);
 }
 
 .landing h1 {
     margin: 0;
     max-width: 17ch;
-    font-size: 50px;
-    letter-spacing: -0.03em;
-    color: #007a80;
+    font-size: clamp(2rem, 4vw, 3.2rem); 
+    letter-spacing: -0.02em;
+    color: var(--color-primario);
+    line-height: 0.8;
+    position: relative;
 }
 
 .descripcion {
-    margin: clamp(22px, 2.7vw, 34px) 0 0;
-    max-width: 34ch;
-    color: #4d9095;
-    font-size: 22px;
+    margin: clamp(24px, 3vw, 38px) 0 0;
+    max-width: 40ch;
+    color: var(--color-primario-claro);
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .acciones {
-    margin-top: clamp(26px, 3.4vw, 46px);
+    margin-top: clamp(30px, 4vw, 50px);
     display: flex;
     flex-wrap: wrap;
-    gap: 18px;
+    gap: 20px;
 }
 
 .btn {
     border-radius: 999px;
     text-decoration: none;
     font-weight: 700;
-    font-size: clamp(1.05rem, 1.6vw, 1.75rem);
-    padding: 18px 36px;
-    transition: transform 0.2s ease;
+    font-size: clamp(0.9rem, 1.6vw, 1.5rem);
+    padding: 18px 40px;
+    transition: transform 0.2s ease, background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primario {
+    color: var(--blanco);
+    background-color: var(--color-primario);
+    box-shadow: 0 12px 25px rgba(0,84,90,0.22);
+}
+
+.btn-secundario {
+    color: var(--color-primario);
+    border: 2px solid var(--color-primario); /* Borde más fino */
+    background-color: transparent;
+}
+
+/* Flecha para el botón "Ver Servicios" */
+.btn-secundario::after {
+    content: " >";
+    font-weight: bold;
+    margin-left: 5px;
 }
 
 .btn:hover {
     transform: translateY(-2px);
 }
 
-.btn-primario {
-    color: #ffffff;
-    background-color: #007f85;
-    box-shadow: 0 12px 25px rgba(0, 84, 90, 0.22);
-}
-
-.btn-secundario {
-    color: #007a80;
-    border: 3px solid #078c92;
-}
-
+/* Imagen y badge */
 .landing-imagen {
     margin: 0;
     position: relative;
-    justify-self: center;
     width: min(100%, 820px);
+    justify-self: normal;
+    align-self: start;
 }
 
 .landing-imagen img {
     display: block;
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16/10;
     object-fit: cover;
-    border-radius: 34px;
-    border: 12px solid #f3ede7;
-    box-shadow: 0 24px 52px rgba(0, 0, 0, 0.18);
+    border-radius: 36px;
+    border: 12px solid var(--color-fondo-nav);
+    box-shadow: 0 24px 52px rgba(0,0,0,0.18);
 }
 
 .badge-emergencia {
     position: absolute;
-    left: clamp(-20px, -2vw, -8px);
-    bottom: clamp(20px, 2vw, 36px);
-    margin: 0;
+    left: clamp(-10px, -2vw, -8px);
+    bottom: clamp(-40px, -5vw, -30px); 
     background-color: #efe9e2;
     border-radius: 24px;
-    padding: 14px 20px;
+    padding: 16px 24px;          /* Más padding */
     display: inline-flex;
     align-items: center;
-    gap: 14px;
-    box-shadow: 0 14px 28px rgba(37, 56, 58, 0.18);
-    min-width: clamp(230px, 31vw, 340px);
+    gap: 18px;                   /* Mayor separación */
+    box-shadow: 0 14px 28px rgba(37,56,58,0.18);
+    min-width: clamp(250px, 32vw, 360px);
 }
 
 .badge-hora {
-    color: #007a80;
+    color: var(--color-primario);
     font-weight: 800;
-    font-size: clamp(1.4rem, 2vw, 2rem);
+    font-size: clamp(2rem, 3vw, 2.8rem);  /* Más grande */
     background-color: #e5e9e5;
-    padding: 10px 14px;
-    border-radius: 14px;
+    padding: 12px 18px;
+    border-radius: 16px;
+    line-height: 1;
 }
 
 .badge-emergencia strong {
-    color: #007a80;
+    color: var(--color-primario);
     display: block;
-    font-size: clamp(1.1rem, 1.45vw, 1.65rem);
+    font-size: clamp(1.2rem, 1.6vw, 1.6rem);
+    margin-bottom: 4px;
 }
 
 .badge-emergencia small {
     color: #66999d;
     display: block;
-    font-size: clamp(0.95rem, 1.15vw, 1.2rem);
-    margin-top: 4px;
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
 }
-
