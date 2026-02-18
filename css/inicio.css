@@ -1,96 +1,68 @@
 .landing {
     max-width: 1440px;
     margin: 0 auto;
-    padding: clamp(20px, 3vw, 40px) clamp(24px, 6vw, 86px); /* menos padding vertical */
+    padding: clamp(16px, 2vw, 30px) clamp(24px, 6vw, 86px);
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    gap: clamp(40px, 6vw, 90px);
-}
-
-.landing-contenido {
-    color: var(--color-primario);
+    gap: clamp(30px, 5vw, 70px);
 }
 
 .etiqueta-bienvenida {
     display: inline-block;
-    margin-bottom: 20px;
-    padding: 10px 30px;
+    margin-bottom: 14px;
+    padding: 8px 24px;
     border-radius: 999px;
     border: 2px solid #b6cfcf;
     color: var(--color-primario);
     font-weight: 700;
-    font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+    font-size: clamp(1rem, 1.4vw, 1.3rem);
     background-color: rgba(255,255,255,0.45);
 }
 
 .landing h1 {
     margin: 0;
     max-width: 17ch;
-    font-size: clamp(2rem, 4vw, 3.2rem); 
+    font-size: clamp(1.8rem, 3.2vw, 2.8rem);
     letter-spacing: -0.02em;
     color: var(--color-primario);
-    line-height: 0.8;
-    position: relative;
+    line-height: 1.1;
 }
 
 .descripcion {
-    margin: clamp(24px, 3vw, 38px) 0 0;
+    margin: clamp(14px, 2vw, 22px) 0 0;
     max-width: 40ch;
     color: var(--color-primario-claro);
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.5;
 }
 
 .acciones {
-    margin-top: clamp(30px, 4vw, 50px);
+    margin-top: clamp(18px, 2.5vw, 32px);
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 16px;
 }
 
 .btn {
     border-radius: 999px;
     text-decoration: none;
     font-weight: 700;
-    font-size: clamp(0.9rem, 1.6vw, 1.5rem);
-    padding: 18px 40px;
+    font-size: clamp(0.85rem, 1.2vw, 1.1rem);
+    padding: 14px 30px;
     transition: transform 0.2s ease, background-color 0.3s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
 }
 
-.btn-primario {
-    color: var(--blanco);
-    background-color: var(--color-primario);
-    box-shadow: 0 12px 25px rgba(0,84,90,0.22);
-}
-
-.btn-secundario {
-    color: var(--color-primario);
-    border: 2px solid var(--color-primario); /* Borde más fino */
-    background-color: transparent;
-}
-
-/* Flecha para el botón "Ver Servicios" */
-.btn-secundario::after {
-    content: " >";
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-}
-
-/* Imagen y badge */
 .landing-imagen {
     margin: 0;
     position: relative;
     width: min(100%, 820px);
     justify-self: normal;
-    align-self: start;
+    align-self: center;
+    padding-bottom: 60px;
 }
 
 .landing-imagen img {
@@ -98,44 +70,44 @@
     width: 100%;
     aspect-ratio: 16/10;
     object-fit: cover;
-    border-radius: 36px;
-    border: 12px solid var(--color-fondo-nav);
-    box-shadow: 0 24px 52px rgba(0,0,0,0.18);
+    border-radius: 28px;
+    border: 10px solid var(--color-fondo-nav);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
 .badge-emergencia {
     position: absolute;
     left: clamp(-10px, -2vw, -8px);
-    bottom: clamp(-40px, -5vw, -30px); 
+    bottom: clamp(0px, 1vw, 10px);
     background-color: #efe9e2;
-    border-radius: 24px;
-    padding: 16px 24px;          /* Más padding */
+    border-radius: 20px;
+    padding: 12px 20px;
     display: inline-flex;
     align-items: center;
-    gap: 18px;                   /* Mayor separación */
-    box-shadow: 0 14px 28px rgba(37,56,58,0.18);
-    min-width: clamp(250px, 32vw, 360px);
+    gap: 14px;
+    box-shadow: 0 10px 24px rgba(37,56,58,0.18);
+    min-width: clamp(220px, 28vw, 320px);
 }
 
 .badge-hora {
     color: var(--color-primario);
     font-weight: 800;
-    font-size: clamp(2rem, 3vw, 2.8rem);  /* Más grande */
+    font-size: clamp(1.6rem, 2.4vw, 2.2rem);
     background-color: #e5e9e5;
-    padding: 12px 18px;
-    border-radius: 16px;
+    padding: 10px 14px;
+    border-radius: 14px;
     line-height: 1;
 }
 
 .badge-emergencia strong {
     color: var(--color-primario);
     display: block;
-    font-size: clamp(1.2rem, 1.6vw, 1.6rem);
-    margin-bottom: 4px;
+    font-size: clamp(1rem, 1.3vw, 1.3rem);
+    margin-bottom: 3px;
 }
 
 .badge-emergencia small {
     color: #66999d;
     display: block;
-    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    font-size: clamp(0.85rem, 1vw, 1rem);
 }

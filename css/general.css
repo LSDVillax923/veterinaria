@@ -30,6 +30,14 @@ html {
     scroll-behavior: smooth;
 }
 
+section h2 {
+    margin: 0;
+    text-align: center;
+    color: var(--color-primario);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    margin-bottom: 16px;
+}
+
 /* Navegación */
 .navegacion {
     background-color: var(--color-fondo-nav);
@@ -128,4 +136,16 @@ html {
 /* Compensación para anclajes con menú sticky */
 section[id] {
     scroll-margin-top: 120px; /* Altura del nav + un margen */
+}
+
+section {
+    min-height: calc(100vh - 70px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.menu .btn-cita i {
+    color: white;
+    font-size: 1.2rem;
 }
