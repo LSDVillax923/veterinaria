@@ -1025,3 +1025,102 @@ textarea:focus {
         justify-content: center;
     }
 }
+
+
+#resenas {
+    padding: 50px clamp(20px, 5vw, 90px);
+    text-align: center;
+    background-color: var(--color-fondo);
+}
+
+#resenas h2 {
+    color: var(--color-primario);
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+#resenas .servicios__linea {
+    background-color: #c9b99a;
+    margin: 12px auto 40px;
+}
+
+.resenas__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 2vw, 28px);
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.resena-card {
+    background-color: #f0e9df;
+    border-radius: 20px;
+    padding: 28px 28px 24px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.resena-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.estrellas {
+    display: flex;
+    gap: 4px;
+    color: #c9b99a;
+    font-size: 1.1rem;
+}
+
+.resena-comilla {
+    font-size: 2.8rem;
+    color: #d9cfc3;
+    line-height: 1;
+}
+
+.resena-texto {
+    color: var(--color-primario);
+    font-size: clamp(0.9rem, 1.1vw, 1rem);
+    line-height: 1.7;
+    font-style: italic;
+    flex: 1;
+}
+
+.resena-autor {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 8px;
+}
+
+.resena-autor img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.resena-autor strong {
+    display: block;
+    color: var(--color-primario);
+    font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+    margin-bottom: 3px;
+}
+
+.resena-autor span {
+    color: var(--color-primario-claro);
+    font-size: clamp(0.8rem, 0.95vw, 0.9rem);
+}
+
+@media (max-width: 900px) {
+    .resenas__grid {
+        grid-template-columns: 1fr;
+        max-width: 500px;
+    }
+}
