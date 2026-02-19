@@ -42,18 +42,43 @@
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    align-items: center;
 }
 
 .btn {
     border-radius: 999px;
     text-decoration: none;
-    font-weight: 700;
-    font-size: clamp(0.85rem, 1.2vw, 1.1rem);
-    padding: 14px 30px;
+    font-weight: 600;
+    font-size: clamp(0.85rem, 1.2vw, 1rem);
+    padding: 14px 28px;
     transition: transform 0.2s ease, background-color 0.3s;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
+}
+
+.btn-primario {
+    color: var(--blanco);
+    background-color: var(--color-primario);
+    box-shadow: 0 8px 20px rgba(0,84,90,0.22);
+    border: 2px solid var(--color-primario);
+}
+
+.btn-primario:hover {
+    background-color: var(--color-primario-oscuro);
+    border-color: var(--color-primario-oscuro);
+}
+
+.btn-secundario {
+    color: var(--color-primario);
+    border: 2px solid var(--color-primario);
+    background-color: transparent;
+}
+
+.btn-secundario::after {
+    content: ">";
+    font-weight: bold;
 }
 
 .landing-imagen {
