@@ -54,8 +54,8 @@ section h2 {
 }
 
 .logo img {
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     display: block;
 }
 
@@ -83,7 +83,7 @@ section h2 {
 .menu .btn-cita {
     background-color: var(--color-primario);
     color: var(--blanco);
-    padding: 18px 34px;
+    padding: 10px 34px;
     border-radius: 999px;
     box-shadow: 0 3px 7px rgba(0,0,0,0.15);
     display: inline-flex;
@@ -237,7 +237,7 @@ section {
 .landing-imagen {
     margin: 0;
     position: relative;
-    width: min(100%, 820px);
+    width: 700px;
     justify-self: normal;
     align-self: center;
     padding-bottom: 60px;
