@@ -1,44 +1,114 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Listado de Mascotas</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listado de Mascotas</title>
+
+  <link rel="stylesheet" th:href="@{/css/mascotas.css}">
+  <link rel="stylesheet" th:href="@{/css/general.css}">
 </head>
-<body>
+
+<body class="mascotas-page">
+
+<nav class="navegacion" aria-label="Menú principal">
+  <a class="logo" th:href="@{/inicio}">
+    <img th:src="@{/img/Medicat.png}" alt="Logo de Medicat">
+  </a>
+
+  <ul class="menu">
+    <li><a th:href="@{/inicio}">Inicio</a></li>
+    <li><a class="btn-cita" th:href="@{/mascotas}">Listado de Mascotas</a></li>
+  </ul>
+</nav>
+
+<main class="mascotas-main">
+  <section class="mascotas-lista-card">
     <h1>Listado de Mascotas</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Especie</th>
-                <th>Raza</th>
-                <th>Edad</th>
-                <th>Peso</th>
-                <th>Foto</th>
-                <th>Estado</th>
-                <th>Enfermedad</th>
-                <th>Observaciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="mascota : ${mascotas}">
-                <td th:text="${mascota.id}">1</td>
-                <td th:text="${mascota.nombre}">Firulais</td>
-                <td th:text="${mascota.especie}">Perro</td>
-                <td th:text="${mascota.raza}">Labrador</td>
-                <td th:text="${mascota.edad}">5</td>
-                <td th:text="${mascota.peso}">10.5</td>
-                <td th:text="${mascota.foto}">foto1.jpg</td>
-                <td th:text="${mascota.estado}">Sano</td>
-                <td th:text="${mascota.enfermedad}">Sin enfermedad</td>
-                <td th:text="${mascota.observaciones}">Muy juguetón</td>
-            </tr>
-        </tbody>
-    </table>
+    <p>Total registradas: <strong th:text="${totalMascotas}">0</strong></p>
 
-    <br/>
-    <a th:href="@{/inicio}">Volver al inicio</a>
+    <p class="mascotas-error" th:if="${errorMascota}" th:text="${errorMascota}"></p>
+
+    <!-- LISTA -->
+    <ul class="mascotas-lista" th:if="${mascotas != null and !#lists.isEmpty(mascotas)}">
+      <li class="mascota-fila" th:each="mascota : ${mascotas}">
+        <div>
+          <p class="mascota-nombre" th:text="${mascota.nombre}">Firulais</p>
+          <p><strong>ID:</strong> <span th:text="${mascota.id}">1</span></p>
+          <p><strong>Especie:</strong> <span th:text="${mascota.especie}">Perro</span></p>
+          <p><strong>Raza:</strong> <span th:text="${mascota.raza}">Labrador</span></p>
+        </div>
+
+        <div>
+          <p><strong>Edad:</strong> <span th:text="${mascota.edad}">5</span> años</p>
+          <p><strong>Peso:</strong> <span th:text="${mascota.peso}">10.5</span> kg</p>
+          <p><strong>Estado:</strong> <span th:text="${mascota.estado}">Sano</span></p>
+
+          <a class="btn-ver-detalle" th:href="@{/mascotas/{id}(id=${mascota.id})}">
+            Ver detalle
+          </a>
+        </div>
+      </li>
+    </ul>
+
+    <!-- VACÍO -->
+    <p class="mascotas-vacio" th:if="${mascotas == null or #lists.isEmpty(mascotas)}">
+      No hay mascotas registradas.
+    </p>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-contenido">
+    <!-- Columna 1 -->
+    <div class="footer-col footer-col-logo">
+      <img th:src="@{/img/footer-img.jpeg}" alt="Logo de Medicat" class="footer-logo">
+      <p>Cuidando la salud y bienestar de tus mascotas con la mejor tecnología y el equipo más humano. Tu confianza, su salud.</p>
+    </div>
+
+    <!-- Columna 2 -->
+    <div class="footer-col">
+      <h4>Enlaces Rápidos</h4>
+      <ul>
+        <li><a th:href="@{/inicio#inicio}">Inicio</a></li>
+        <li><a th:href="@{/inicio#servicios}">Servicios</a></li>
+        <li><a th:href="@{/inicio#nosotros}">Nosotros</a></li>
+        <li><a th:href="@{/inicio#equipo}">Equipo Médico</a></li>
+        <li><a th:href="@{/inicio#contacto}">Contacto</a></li>
+      </ul>
+    </div>
+
+    <!-- Columna 3 -->
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li>Consultas</li>
+        <li>Vacunación</li>
+        <li>Cirugías</li>
+        <li>Laboratorio</li>
+        <li>Urgencias 24/7</li>
+        <li>Peluquería</li>
+      </ul>
+    </div>
+
+    <!-- Columna 4 -->
+    <div class="footer-col footer-col-newsletter">
+      <h4>Boletín</h4>
+      <p>Suscríbete para recibir consejos de salud para tu mascota.</p>
+
+      <form class="newsletter-form" th:action="@{/newsletter}" method="post">
+        <input type="email" name="email" placeholder="Tu email" required>
+        <button type="submit">Suscribirse</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Medicat Clínica Veterinaria. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
 </body>
 </html>

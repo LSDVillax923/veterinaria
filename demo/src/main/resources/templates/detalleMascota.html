@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Mascota</title>
+
+  <link rel="stylesheet" th:href="@{/css/mascotas.css}">
+  <link rel="stylesheet" th:href="@{/css/general.css}">
+</head>
+
+<body class="mascotas-page">
+
+<nav class="navegacion" aria-label="Menú principal">
+  <a class="logo" th:href="@{/inicio}">
+    <img th:src="@{/img/Medicat.png}" alt="Logo de Medicat">
+  </a>
+
+  <ul class="menu">
+    <li><a th:href="@{/inicio}">Inicio</a></li>
+    <li><a class="btn-cita" th:href="@{/mascotas}">Listado de Mascotas</a></li>
+  </ul>
+</nav>
+
+<main class="mascotas-main">
+
+  <!-- SI EXISTE LA MASCOTA -->
+  <section class="mascotas-lista-card" th:if="${mascota != null}">
+    <h1>Información de la mascota</h1>
+
+    <article class="mascota-detalle-grid">
+      <p><strong>ID:</strong> <span th:text="${mascota.id}">1</span></p>
+      <p><strong>Nombre:</strong> <span th:text="${mascota.nombre}">Firulais</span></p>
+      <p><strong>Especie:</strong> <span th:text="${mascota.especie}">Perro</span></p>
+      <p><strong>Raza:</strong> <span th:text="${mascota.raza}">Labrador</span></p>
+      <p><strong>Edad:</strong> <span th:text="${mascota.edad}">5</span> años</p>
+      <p><strong>Peso:</strong> <span th:text="${mascota.peso}">10.5</span> kg</p>
+      <p><strong>Estado:</strong> <span th:text="${mascota.estado}">Sano</span></p>
+      <p><strong>Enfermedad:</strong> <span th:text="${mascota.enfermedad}">Sin enfermedad</span></p>
+      <p><strong>Observaciones:</strong> <span th:text="${mascota.observaciones}">Muy juguetón</span></p>
+
+      <!-- Si quieres mostrar archivo de foto como texto -->
+      <p><strong>Foto:</strong> <span th:text="${mascota.foto}">foto1.jpg</span></p>
+
+      <!-- Si en realidad quieres MOSTRAR la imagen (recomendado) -->
+      <!--
+      <div class="mascota-foto">
+        <img th:src="@{/img/{file}(file=${mascota.foto})}" alt="Foto de la mascota">
+      </div>
+      -->
+    </article>
+
+    <a class="btn-ver-detalle" th:href="@{/mascotas}">Volver al listado</a>
+  </section>
+
+  <!-- SI NO EXISTE -->
+  <section class="mascotas-lista-card" th:if="${mascota == null}">
+    <h1>Mascota no encontrada</h1>
+    <p class="mascotas-error" th:text="${errorMascota} ?: 'No se encontró la mascota solicitada.'">
+      No se encontró la mascota solicitada.
+    </p>
+    <a class="btn-ver-detalle" th:href="@{/mascotas}">Volver al listado</a>
+  </section>
+
+</main>
+
+</body>
+</html>
