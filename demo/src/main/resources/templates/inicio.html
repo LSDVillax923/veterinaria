@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <!-- Hojas de estilo -->
-    <link rel="stylesheet" href="../css/general.css">
+    <link rel="stylesheet" href="../static/css/general.css">
 
 </head>
 
@@ -42,10 +42,12 @@
         <i class="fa-regular fa-calendar"></i> Agendar Cita
     </a>
     <a class="btn btn-secundario" href="#servicios">Ver Servicios</a>
+    <a th:href="@{/mascotas}">Ver listado de mascotas</a>
+
 </div>
             </article>
             <figure class="landing-imagen">
-                <img src="../img/perro-inicio.jpeg" alt="Perro frente a la entrada de la veterinaria" ">
+                <img src="../img/perro-inicio.jpeg" alt="Perro frente a la entrada">
                 </figcaption>
             </figure>
         </section>
