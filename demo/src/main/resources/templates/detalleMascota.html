@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle de Mascota</title>
 
-  <link rel="stylesheet" th:href="@{/css/mascotas.css}">
   <link rel="stylesheet" th:href="@{/css/general.css}">
+  <link rel="stylesheet" th:href="@{/css/detalles.css}">
 </head>
 
-<body class="mascotas-page">
+<body class="detalle-mascota-page">
 
 <nav class="navegacion" aria-label="Menú principal">
   <a class="logo" th:href="@{/inicio}">
@@ -22,13 +22,18 @@
   </ul>
 </nav>
 
-<main class="mascotas-main">
+<main class="detalle-main">
 
-  <!-- SI EXISTE LA MASCOTA -->
-  <section class="mascotas-lista-card" th:if="${mascota != null}">
+  <!-- SI EXISTE LA MASCOTA --> 
+   <section class="detalle-card" th:if="${mascota != null}">
     <h1>Información de la mascota</h1>
 
-    <article class="mascota-detalle-grid">
+    <div class="mascota-foto">
+      <img th:src="@{/img/{file}(file=${mascota.foto})}" alt="Foto de la mascota"
+           onerror="this.onerror=null;this.src='/img/ladrador.jpg';">
+    </div>
+
+    <article class="detalle-grid">
       <p><strong>ID:</strong> <span th:text="${mascota.id}">1</span></p>
       <p><strong>Nombre:</strong> <span th:text="${mascota.nombre}">Firulais</span></p>
       <p><strong>Especie:</strong> <span th:text="${mascota.especie}">Perro</span></p>
@@ -38,31 +43,59 @@
       <p><strong>Estado:</strong> <span th:text="${mascota.estado}">Sano</span></p>
       <p><strong>Enfermedad:</strong> <span th:text="${mascota.enfermedad}">Sin enfermedad</span></p>
       <p><strong>Observaciones:</strong> <span th:text="${mascota.observaciones}">Muy juguetón</span></p>
-
-      <!-- Si quieres mostrar archivo de foto como texto -->
-      <p><strong>Foto:</strong> <span th:text="${mascota.foto}">foto1.jpg</span></p>
-
-      <!-- Si en realidad quieres MOSTRAR la imagen (recomendado) -->
-      <!--
-      <div class="mascota-foto">
-        <img th:src="@{/img/{file}(file=${mascota.foto})}" alt="Foto de la mascota">
-      </div>
-      -->
-    </article>
-
-    <a class="btn-ver-detalle" th:href="@{/mascotas}">Volver al listado</a>
+        </article>
+        <a class="btn-volver-listado" th:href="@{/mascotas}">Volver al listado</a>
   </section>
 
   <!-- SI NO EXISTE -->
-  <section class="mascotas-lista-card" th:if="${mascota == null}">
+   <section class="detalle-card" th:if="${mascota == null}">
     <h1>Mascota no encontrada</h1>
-    <p class="mascotas-error" th:text="${errorMascota} ?: 'No se encontró la mascota solicitada.'">
+    <p class="detalle-error" th:text="${errorMascota} ?: 'No se encontró la mascota solicitada.'">
       No se encontró la mascota solicitada.
     </p>
-    <a class="btn-ver-detalle" th:href="@{/mascotas}">Volver al listado</a>
+    <a class="btn-volver-listado" th:href="@{/mascotas}">Volver al listado</a>
   </section>
 
 </main>
+
+<footer class="footer">
+  <div class="footer-contenido">
+    <div class="footer-col footer-col-logo">
+      <img th:src="@{/img/footer-img.jpeg}" alt="Logo de Medicat" class="footer-logo">
+      <p>Cuidando la salud y bienestar de tus mascotas con la mejor tecnología y el equipo más humano. Tu confianza, su salud.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Enlaces Rápidos</h4>
+      <ul>
+        <li><a th:href="@{/inicio}">Inicio</a></li>
+        <li><a th:href="@{/mascotas}">Mascotas</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li>Consultas</li>
+        <li>Vacunación</li>
+        <li>Laboratorio</li>
+      </ul>
+    </div>
+
+    <div class="footer-col footer-col-newsletter">
+      <h4>Boletín</h4>
+      <p>Suscríbete para recibir consejos de salud para tu mascota.</p>
+      <form class="newsletter-form" th:action="@{/newsletter}" method="post">
+        <input type="email" name="email" placeholder="Tu email" required>
+        <button type="submit">Suscribirse</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 Medicat Clínica Veterinaria. Todos los derechos reservados.</p>
+  </div>
+</footer>
 
 </body>
 </html>
