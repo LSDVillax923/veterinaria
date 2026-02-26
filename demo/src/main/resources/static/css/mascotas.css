@@ -1,177 +1,193 @@
-.mascotas-page {
-    min-height: 100vh;
+/* ================= RESET ================= */
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#ddd5ca;
 }
 
-.mascotas-main {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: clamp(24px, 4vw, 48px) clamp(20px, 6vw, 86px) 60px;
+/* ================= HEADER ================= */
+.header{
+  background:white;
+  padding:15px 0;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
 }
 
-
-.mascotas-lista-card {
-    background: var(--blanco);
-    border: 1px solid var(--color-borde);
-    border-radius: var(--border-radius-card);
-    box-shadow: var(--sombra-suave);
-    padding: clamp(16px, 2vw, 24px);
+.header-container{
+  width:90%;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.mascotas-lista {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 16px;
+.logo img{
+  height:60px;
 }
 
-.mascota-fila {
-    border: 1px solid var(--color-borde);
-    border-radius: 12px;
-    padding: 14px;
-    background-color: #f8f6f2;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 8px 16px;
+.nav{
+  display:flex;
+  align-items:center;
+  gap:25px;
 }
 
-.mascota-nombre {
-    color: var(--color-primario);
-    margin: 0 0 8px;
-    font-size: 1.2rem;
+.nav-link{
+  text-decoration:none;
+  color:#0f6f6c;
+  font-weight:500;
 }
 
-.mascotas-vacio {
-    margin: 0;
-    color: #345;
-    font-weight: 600;
+.btn-nueva{
+  background:#0f6f6c;
+  color:white;
+  padding:12px 25px;
+  border-radius:30px;
+  text-decoration:none;
+  font-weight:500;
 }
 
-.btn-ver-detalle {
-    display: inline-block;
-    margin-top: 8px;
-    background-color: var(--color-primario);
-    color: var(--blanco);
-    text-decoration: none;
-    padding: 8px 14px;
-    border-radius: 8px;
-    font-weight: 600;
+/* ================= DASHBOARD LAYOUT ================= */
+.dashboard{
+  width:85%;
+  margin:50px auto;
 }
 
-.btn-ver-detalle:hover {
-    opacity: 0.9;
+/* HEADER DASHBOARD */
+.dashboard-header{
+  margin-bottom:30px;
 }
 
-.mascota-detalle-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 10px 20px;
-    margin-bottom: 20px;
+.btn-volver{
+  text-decoration:none;
+  color:#0f6f6c;
+  font-size:14px;
 }
 
-.mascotas-error {
-    color: #b42318;
-    font-weight: 600;
+.dashboard-title{
+  font-size:42px;
+  color:#0f6f6c;
+  margin:10px 0 5px;
 }
 
-/* CONTENEDOR PRINCIPAL */
-.contenedor-mascotas {
-    width: 90%;
-    margin: 40px auto;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.dashboard-subtitle{
+  color:#5c8c90;
 }
 
-/* TITULO */
-.titulo-mascotas {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
+/* ================= FILTROS ================= */
+.filtros-card{
+  background:#f1f1f1;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
-/* BOTON AGREGAR */
-.btn-agregar {
-    background-color: #1a73e8;
-    color: white;
-    padding: 10px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 14px;
-    display: inline-block;
-    margin-bottom: 20px;
-    transition: 0.3s;
+.filtros{
+  display:flex;
+  gap:20px;
+  margin-bottom:15px;
 }
 
-.btn-agregar:hover {
-    background-color: #1558b0;
+.input-grupo{
+  flex:1;
+  display:flex;
+  align-items:center;
+  background:white;
+  border:2px solid #e3d2b8;
+  border-radius:15px;
+  padding:14px 16px;
 }
 
-/* TABLA */
-.tabla-mascotas {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+.icono{
+  margin-right:10px;
+  opacity:0.6;
 }
 
-.tabla-mascotas th {
-    text-align: left;
-    padding: 12px;
-    font-size: 14px;
-    background-color: #f5f7fa;
-    color: #333;
+.input-grupo input,
+.input-grupo select{
+  border:none;
+  outline:none;
+  width:100%;
+  font-size:15px;
+  background:transparent;
 }
 
-.tabla-mascotas td {
-    padding: 12px;
-    font-size: 14px;
-    border-bottom: 1px solid #e0e0e0;
+/* ESTADISTICAS */
+.estadisticas{
+  display:flex;
+  gap:20px;
+  font-size:14px;
+  color:#4f8f96;
 }
 
-.tabla-mascotas tr:hover {
-    background-color: #f9fbff;
+.text-verde{ color:#1aa04a; }
+.text-naranja{ color:#f39c12; }
+.text-rojo{ color:#e53935; }
+
+/* ================= TABLA ================= */
+.tabla-card{
+  margin-top:30px;
+  border-radius:15px;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
-/* IMAGEN CIRCULAR */
-.img-mascota {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
+.tabla{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
 }
 
-/* BADGES DE ESTADO */
-.badge {
-    padding: 6px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
+.tabla th{
+  background:#0f6f6c;
+  color:white;
+  padding:18px;
+  text-align:left;
 }
 
-.saludable {
-    background-color: #e6f4ea;
-    color: #1e7e34;
+.tabla td{
+  padding:18px;
+  border-bottom:1px solid #eee;
 }
 
-.tratamiento {
-    background-color: #fff4e5;
-    color: #cc7a00;
+/* INFO MASCOTA */
+.mascota-info{
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.atencion {
-    background-color: #fdecea;
-    color: #d93025;
+.avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#ddd;
 }
 
-/* ACCIONES (ICONOS) */
-.acciones i {
-    margin-right: 10px;
-    cursor: pointer;
-    color: #555;
-    transition: 0.2s;
+/* BADGES */
+.badge{
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
 }
 
-.acciones i:hover {
-    color: #1a73e8;
+.badge-verde{
+  background:#dff5e7;
+  color:#1aa04a;
+}
+
+.badge-amarillo{
+  background:#fff4dc;
+  color:#f39c12;
+}
+
+.badge-rojo{
+  background:#fdecea;
+  color:#e53935;
+}
+
+/* ACCIONES */
+.acciones a{
+  margin-right:10px;
+  text-decoration:none;
+  font-size:18px;
 }
