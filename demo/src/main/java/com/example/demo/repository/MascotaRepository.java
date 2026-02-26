@@ -32,7 +32,7 @@ public class MascotaRepository {
     }
 
     public void save(Mascota mascota) {
-        
+        data.put(mascota.getId(), mascota);
     }
 
     public void delete(Integer id) {

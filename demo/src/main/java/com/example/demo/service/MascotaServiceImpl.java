@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Mascota;
@@ -10,8 +9,11 @@ import com.example.demo.repository.MascotaRepository;
 
 @Service
 public class MascotaServiceImpl implements MascotaService {
-    @Autowired
-    MascotaRepository repository;
+    private final MascotaRepository repository;
+
+    public MascotaServiceImpl(MascotaRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Mascota searchById(Integer id) {
