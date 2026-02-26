@@ -3,12 +3,44 @@
 }
 
 .mascotas-main {
-    max-width: 1440px;
     margin: 0 auto;
     padding: clamp(24px, 4vw, 48px) clamp(20px, 6vw, 86px) 60px;
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
 }
 
+.mascotas-main h1{
+    text-align: center;
+    color: var(--color-primario-oscuro);
 
+}
+
+.mascotas-main h2{
+    text-align: center;
+    color: var(--color-primario-claro);
+    font-size: 20px;
+}
+
+.mascotas-main p{
+    color: var(--color-primario-claro);
+}
+
+.mascota-foto{
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.2);
+}
+
+.mascota-foto img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center; 
+}
 
 .mascotas-lista-card {
     background: var(--blanco);
