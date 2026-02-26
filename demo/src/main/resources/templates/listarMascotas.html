@@ -102,7 +102,9 @@
 
           <td>
             <div class="mascota-info">
-              <div class="avatar"></div>
+              <div class="avatar">
+                <img th:src="@{/img/{foto}(foto=${mascota.foto})}" alt="Foto de mascota">
+              </div>
               
               <span th:text="${mascota.nombre}">Max</span>
             </div>
