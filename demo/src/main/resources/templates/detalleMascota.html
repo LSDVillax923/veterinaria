@@ -26,29 +26,28 @@
 
   <!-- SI EXISTE LA MASCOTA -->
   <section class="mascotas-lista-card" th:if="${mascota != null}">
-    <h1>Información de la mascota</h1>
+
+    <div class="mascota-foto">
+        <img th:src="@{/img/{file}(file=${mascota.foto})}" alt="Foto de la mascota">
+      </div>
+
+    <h1> <span th:text="${mascota.nombre}">Firulais</span></h1>
+    <h2> <span th:text="${mascota.raza}">Labrador</span></h2>
 
     <article class="mascota-detalle-grid">
       <p><strong>ID:</strong> <span th:text="${mascota.id}">1</span></p>
-      <p><strong>Nombre:</strong> <span th:text="${mascota.nombre}">Firulais</span></p>
       <p><strong>Especie:</strong> <span th:text="${mascota.especie}">Perro</span></p>
-      <p><strong>Raza:</strong> <span th:text="${mascota.raza}">Labrador</span></p>
       <p><strong>Edad:</strong> <span th:text="${mascota.edad}">5</span> años</p>
       <p><strong>Peso:</strong> <span th:text="${mascota.peso}">10.5</span> kg</p>
       <p><strong>Estado:</strong> <span th:text="${mascota.estado}">Sano</span></p>
       <p><strong>Enfermedad:</strong> <span th:text="${mascota.enfermedad}">Sin enfermedad</span></p>
       <p><strong>Observaciones:</strong> <span th:text="${mascota.observaciones}">Muy juguetón</span></p>
 
-      <!-- Si quieres mostrar archivo de foto como texto -->
-      <p><strong>Foto:</strong> <span th:text="${mascota.foto}">foto1.jpg</span></p>
 
-      <!-- Si en realidad quieres MOSTRAR la imagen (recomendado) -->
-      <!--
-      <div class="mascota-foto">
-        <img th:src="@{/img/{file}(file=${mascota.foto})}" alt="Foto de la mascota">
-      </div>
-      -->
+  
+     
     </article>
+
 
     <a class="btn-ver-detalle" th:href="@{/mascotas}">Volver al listado</a>
   </section>
