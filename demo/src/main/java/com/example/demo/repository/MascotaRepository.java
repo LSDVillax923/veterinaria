@@ -2,7 +2,9 @@ package com.example.demo.repository;
 
 import java.util.Collection;
 import java.util.HashMap;
+
 import java.util.Map;
+import java.util.Comparator;
 
 import org.springframework.stereotype.Repository;
 
@@ -24,11 +26,13 @@ public class MascotaRepository {
     }
 
     public Collection<Mascota> findAll() {
-        return data.values();
+         return data.values().stream()
+                .sorted(Comparator.comparing(Mascota::getId))
+                .toList();
     }
 
     public void save(Mascota mascota) {
-        //TO DO: Hacer la validación y guardar
+        
     }
 
     public void delete(Integer id) {
