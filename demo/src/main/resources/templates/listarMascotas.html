@@ -23,40 +23,85 @@
 </nav>
 
 <main class="mascotas-main">
-  <section class="mascotas-lista-card">
-    <h1>Listado de Mascotas</h1>
+<section class="mascotas-dashboard">
 
-    <p>Total registradas: <strong th:text="${totalMascotas}">0</strong></p>
+  <div class="volver">
+    <a th:href="@{/inicio}">← Volver al inicio</a>
+  </div>
 
-    <p class="mascotas-error" th:if="${errorMascota}" th:text="${errorMascota}"></p>
+  <h1 class="titulo-dashboard">Registro de Mascotas</h1>
+  <p class="subtitulo-dashboard">
+    Gestiona toda la información de las mascotas en un solo lugar
+  </p>
 
-    <!-- LISTA -->
-    <ul class="mascotas-lista" th:if="${mascotas != null and !#lists.isEmpty(mascotas)}">
-      <li class="mascota-fila" th:each="mascota : ${mascotas}">
-        <div>
-          <p class="mascota-nombre" th:text="${mascota.nombre}">Firulais</p>
-          <p><strong>ID:</strong> <span th:text="${mascota.id}">1</span></p>
-          <p><strong>Especie:</strong> <span th:text="${mascota.especie}">Perro</span></p>
-          <p><strong>Raza:</strong> <span th:text="${mascota.raza}">Labrador</span></p>
-        </div>
+  <!-- Barra superior -->
+  <div class="barra-filtros">
+    <input type="text" placeholder="Buscar por nombre, dueño o raza...">
+    <select>
+      <option>Todos los estados</option>
+      <option>Saludable</option>
+      <option>En Tratamiento</option>
+      <option>Requiere Atención</option>
+    </select>
+  </div>
 
-        <div>
-          <p><strong>Edad:</strong> <span th:text="${mascota.edad}">5</span> años</p>
-          <p><strong>Peso:</strong> <span th:text="${mascota.peso}">10.5</span> kg</p>
-          <p><strong>Estado:</strong> <span th:text="${mascota.estado}">Sano</span></p>
+  <!-- Contadores -->
+  <div class="contador-mascotas">
+    Total de mascotas: <strong th:text="${totalMascotas}">0</strong>
+  </div>
 
-          <a class="btn-ver-detalle" th:href="@{/mascotas/{id}(id=${mascota.id})}">
-            Ver detalle
-          </a>
-        </div>
-      </li>
-    </ul>
+  <!-- TABLA -->
+  <div class="tabla-container">
+    <table class="tabla-mascotas">
+      <thead>
+        <tr>
+          <th>Mascota</th>
+          <th>Especie/Raza</th>
+          <th>Edad</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
 
-    <!-- VACÍO -->
-    <p class="mascotas-vacio" th:if="${mascotas == null or #lists.isEmpty(mascotas)}">
-      No hay mascotas registradas.
-    </p>
-  </section>
+      <tbody>
+        <tr th:each="mascota : ${mascotas}">
+          <td class="col-mascota">
+            <div class="mascota-info">
+              <div class="foto-mascota"></div>
+              <span th:text="${mascota.nombre}">Firulais</span>
+            </div>
+          </td>
+
+          <td>
+            <span th:text="${mascota.especie}">Perro</span> -
+            <span th:text="${mascota.raza}">Labrador</span>
+          </td>
+
+          <td>
+            <span th:text="${mascota.edad}">5</span> años
+          </td>
+
+          <td>
+            <span class="badge-estado"
+                  th:text="${mascota.estado}"
+                  th:classappend="
+                    ${mascota.estado == 'Saludable'} ? ' badge-verde' :
+                    (${mascota.estado == 'En Tratamiento'} ? ' badge-amarillo' :
+                    ' badge-rojo')">
+              Estado
+            </span>
+          </td>
+
+          <td class="acciones">
+            <a th:href="@{/mascotas/{id}(id=${mascota.id})}" class="icono">👁</a>
+            <a href="#" class="icono">✏</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
 </main>
 
 <!-- FOOTER -->
