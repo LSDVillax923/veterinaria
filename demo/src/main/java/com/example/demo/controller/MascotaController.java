@@ -2,28 +2,26 @@ package com.example.demo.controller;
 
 
 import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.PathVariable;
 import com.example.demo.entities.Mascota;
-import com.example.demo.service.MascotaService;
+import com.example.demo.repository.MascotaRepository;
 
 @RequestMapping("/mascotas")
 @Controller
 public class MascotaController {
-      private final MascotaService mascotaService;
-
-    public MascotaController(MascotaService mascotaService) {
-        this.mascotaService = mascotaService;
-    }
+    @Autowired
+     private MascotaRepository mascotaRepository;
 
     @GetMapping({ "", "/", "/listarMascotas", "/listarMascotas.html", "/lostarmascotas.html" })
     public String listarMascotas(Model model) {
-        Collection<Mascota> mascotas = mascotaService.searchAll();
+        Collection<Mascota> mascotas = mascotaRepository.findAll();
         model.addAttribute("mascotas", mascotas);
         model.addAttribute("totalMascotas", mascotas.size());
         return "listarMascotas"; 
@@ -41,7 +39,7 @@ public class MascotaController {
 
      @GetMapping("/{id}")
     public String verMascota(@PathVariable Integer id, Model model) {
-         Mascota mascota = mascotaService.searchById(id);
+        Mascota mascota = mascotaRepository.findById(id);
 
         if (mascota == null) {
             model.addAttribute("errorMascota", "No se encontró una mascota con ID " + id + ".");
