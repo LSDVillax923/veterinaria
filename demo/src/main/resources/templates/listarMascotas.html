@@ -1,65 +1,43 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro de Mascotas</title>
   <link rel="stylesheet" th:href="@{/css/mascotas.css}">
 </head>
-
 <body>
 
 <!-- ================= HEADER ================= -->
 <header class="header">
-
   <div class="header-container">
-
-    <!-- Logo -->
     <a th:href="@{/inicio}" class="logo">
-      <img th:src="@{/img/Medicat.png}" alt="Medicat">
+      <img th:src="@{/img/Medicat.png}" alt="Medicat logo">
     </a>
-
-    <!-- Navegación -->
     <nav class="nav">
       <a th:href="@{/inicio}" class="nav-link">Inicio</a>
       <a href="#" class="btn-nueva">+ Nueva Mascota</a>
     </nav>
-
   </div>
-
 </header>
-
 
 <!-- ================= MAIN ================= -->
 <main class="dashboard">
 
-  <!-- ===== HEADER DASHBOARD ===== -->
   <section class="dashboard-header">
-
     <a th:href="@{/inicio}" class="btn-volver">← Volver al inicio</a>
-
     <h1 class="dashboard-title">Registro de Mascotas</h1>
-
-    <p class="dashboard-subtitle">
-      Gestiona toda la información de las mascotas en un solo lugar
-    </p>
-
+    <p class="dashboard-subtitle">Gestiona toda la información de las mascotas en un solo lugar</p>
   </section>
 
-
-  <!-- ===== FILTROS ===== -->
   <section class="filtros-card">
-
     <div class="filtros">
-
       <div class="input-grupo">
-        <span class="icono">🔍</span>
+        <span class="icono" aria-hidden="true">🔍</span>
         <input type="text" placeholder="Buscar por nombre, dueño o raza...">
       </div>
-
       <div class="input-grupo">
-        <span class="icono">⚲</span>
+        <span class="icono" aria-hidden="true">⚲</span>
         <select>
           <option>Todos los estados</option>
           <option>Saludable</option>
@@ -67,84 +45,69 @@
           <option>Requiere Atención</option>
         </select>
       </div>
-
     </div>
-
     <div class="estadisticas">
       <span>Total: <strong th:text="${totalMascotas}">8</strong></span>
-      <span>• Saludables: <strong class="text-verde">5</strong></span>
-      <span>• En tratamiento: <strong class="text-naranja">2</strong></span>
-      <span>• Requieren atención: <strong class="text-rojo">1</strong></span>
+      <span>• Saludables: <strong class="text-verde" th:text="${saludables}">5</strong></span>
+      <span>• En tratamiento: <strong class="text-naranja" th:text="${tratamiento}">2</strong></span>
+      <span>• Requieren atención: <strong class="text-rojo" th:text="${atencion}">1</strong></span>
     </div>
-
   </section>
 
-
-  <!-- ===== TABLA ===== -->
   <section class="tabla-card">
-
     <table class="tabla">
-
       <thead>
         <tr>
           <th>Mascota</th>
           <th>Especie / Raza</th>
           <th>Edad</th>
+          <th>Dueño</th>          <!-- Nueva columna -->
           <th>Próxima Cita</th>
           <th>Estado</th>
           <th>Acciones</th>
         </tr>
       </thead>
-
       <tbody>
-
         <tr th:each="mascota : ${mascotas}">
-
           <td>
             <div class="mascota-info">
               <div class="avatar">
-                <img th:src="@{/img/{foto}(foto=${mascota.foto})}" alt="Foto de mascota">
+                <img th:src="@{/img/{foto}(foto=${mascota.foto})}" alt="Foto de [[${mascota.nombre}]]">
               </div>
-              
               <span th:text="${mascota.nombre}">Max</span>
             </div>
           </td>
-
           <td>
             <span th:text="${mascota.especie}">Perro</span> -
             <span th:text="${mascota.raza}">Golden Retriever</span>
           </td>
-
+          <td><span th:text="${mascota.edad}">3</span> años</td>
           <td>
-            <span th:text="${mascota.edad}">3</span> años
+            <!-- Mostrar nombre del dueño usando el mapa de clientes -->
+            <span th:if="${clientesMap.containsKey(mascota.clienteId)}" 
+                  th:text="${clientesMap.get(mascota.clienteId).nombre + ' ' + clientesMap.get(mascota.clienteId).apellido}">
+              Mario Pérez
+            </span>
+            <span th:unless="${clientesMap.containsKey(mascota.clienteId)}">Sin dueño</span>
           </td>
-
           <td>28 Feb 2026</td>
-
           <td>
             <span class="badge"
-              th:text="${mascota.estado}"
-              th:classappend="
-                ${mascota.estado == 'Saludable'} ? ' badge-verde' :
-                (${mascota.estado == 'En Tratamiento'} ? ' badge-amarillo' :
-                ' badge-rojo')">
+                  th:text="${mascota.estado}"
+                  th:classappend="
+                    ${mascota.estado == 'Sano'} ? ' badge-verde' :
+                    (${mascota.estado == 'En Tratamiento'} ? ' badge-amarillo' : ' badge-rojo')">
             </span>
           </td>
-
           <td class="acciones">
-            <a th:href="@{/mascotas/{id}(id=${mascota.id})}">👁</a>
-            <a href="#">✏</a>
+            <a th:href="@{/mascotas/{id}(id=${mascota.id})}" aria-label="Ver detalle">👁</a>
+            <a href="#" aria-label="Editar">✏</a>
           </td>
-
         </tr>
-
       </tbody>
-
     </table>
-
   </section>
 
 </main>
-
 </body>
 </html>

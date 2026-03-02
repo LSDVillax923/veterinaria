@@ -16,7 +16,6 @@
 
 <body>
 <nav class="navegacion" aria-label="Menú principal">
-    <!-- Logo: en Thymeleaf normalmente va a una ruta de tu app -->
     <a class="logo" th:href="@{/}">
         <img th:src="@{/img/Medicat.png}" alt="Logo de Medicat">
     </a>
@@ -30,6 +29,10 @@
         <li>
             <a class="btn-cita" href="#contacto">
                 <i class="fa-solid fa-mobile-screen"></i> Agendar Cita
+            </a>
+
+            <a class="btn-cita" th:href="@{/inicio/login}">
+                Iniciar Sesión
             </a>
         </li>
     </ul>

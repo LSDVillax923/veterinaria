@@ -17,5 +17,5 @@ public class Mascota {
     private String estado;
     private String enfermedad;
     private String observaciones;  
-
+    private Integer clienteId; // Relación con Cliente
 }
