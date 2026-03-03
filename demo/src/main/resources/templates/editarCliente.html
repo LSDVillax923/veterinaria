@@ -4,12 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editar Cliente</title>
-  <link rel="stylesheet" th:href="@{/css/clientes-form.css}">
+  <link rel="stylesheet" th:href="@{/css/clientes.css}">
 </head>
 <body>
-<main>
+
+    <header class="header">
+  <div class="header-container">
+    <a th:href="@{/inicio}" class="logo">
+      <img th:src="@{/img/Medicat.png}" alt="Medicat logo">
+    </a>
+    <nav class="nav">
+      <a th:href="@{/inicio}" class="nav-link">Inicio</a>
+      <a th:href="@{/clientes}" class="nav-link">Clientes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="dashboard">
+  <section class="dashboard-header">
+    <a th:href="@{/clientes}" class="btn-volver">← Volver al listado</a>
+    <h1 class="dashboard-title">Editar Cliente</h1>
+    <p class="dashboard-subtitle">Actualiza la información del propietario</p>
+  </section>
+
   <div class="form-card">
-    <h2>✏ Editar cliente</h2>
+ 
 
     <form th:action="@{/clientes/{id}/editar(id=${cliente.id})}" method="post">
       <div class="form-grid">
