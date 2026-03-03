@@ -1,11 +1,9 @@
-/* ================= RESET ================= */
 body{
   margin:0;
   font-family: Arial, sans-serif;
   background:#ddd5ca;
 }
 
-/* ================= HEADER ================= */
 .header{
   background:white;
   padding:15px 0;
@@ -20,9 +18,7 @@ body{
   align-items:center;
 }
 
-.logo img{
-  height:60px;
-}
+.logo img{ height:60px; }
 
 .nav{
   display:flex;
@@ -36,25 +32,25 @@ body{
   font-weight:500;
 }
 
-.btn-nueva{
+.btn-nueva,
+.btn-guardar{
   background:#0f6f6c;
   color:white;
   padding:12px 25px;
   border-radius:30px;
   text-decoration:none;
   font-weight:500;
+  border:none;
+  cursor:pointer;
+  font-size:15px;
 }
 
-/* ================= DASHBOARD LAYOUT ================= */
 .dashboard{
   width:85%;
   margin:50px auto;
 }
 
-/* HEADER DASHBOARD */
-.dashboard-header{
-  margin-bottom:30px;
-}
+.dashboard-header{ margin-bottom:30px; }
 
 .btn-volver{
   text-decoration:none;
@@ -68,61 +64,71 @@ body{
   margin:10px 0 5px;
 }
 
-.dashboard-subtitle{
-  color:#5c8c90;
-}
+.dashboard-subtitle{ color:#5c8c90; }
 
-/* ================= FILTROS ================= */
-.filtros-card{
+.filtros-card,
+.form-card{
   background:#f1f1f1;
   padding:30px;
   border-radius:20px;
   box-shadow:0 8px 20px rgba(0,0,0,0.1);
 }
 
-.filtros{
-  display:flex;
+.form-card{ max-width:900px; }
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:20px;
-  margin-bottom:15px;
 }
 
-.input-grupo{
-  flex:1;
+.form-group{
   display:flex;
-  align-items:center;
-  background:white;
-  border:2px solid #e3d2b8;
-  border-radius:15px;
-  padding:14px 16px;
+  flex-direction:column;
+  gap:8px;
 }
 
-.icono{
-  margin-right:10px;
-  opacity:0.6;
-}
+.form-group.full-width{ grid-column:1 / -1; }
 
-.input-grupo input,
-.input-grupo select{
-  border:none;
-  outline:none;
-  width:100%;
-  font-size:15px;
-  background:transparent;
-}
-
-/* ESTADISTICAS */
-.estadisticas{
-  display:flex;
-  gap:20px;
+.form-group label{
+  font-weight:bold;
+  color:#0f6f6c;
   font-size:14px;
-  color:#4f8f96;
 }
 
-.text-verde{ color:#1aa04a; }
-.text-naranja{ color:#f39c12; }
-.text-rojo{ color:#e53935; }
+.form-group input{
+  padding:12px 16px;
+  border:2px solid #e3d2b8;
+  border-radius:12px;
+  font-size:15px;
+  outline:none;
+  transition:border 0.2s;
+}
 
-/* ================= TABLA ================= */
+.form-group input:focus{ border-color:#0f6f6c; }
+
+.form-acciones{
+  display:flex;
+  gap:15px;
+  margin-top:30px;
+}
+
+.btn-cancelar{
+  background:transparent;
+  color:#0f6f6c;
+  padding:12px 25px;
+  border:2px solid #0f6f6c;
+  border-radius:30px;
+  font-size:15px;
+  font-weight:500;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+}
+
+.btn-guardar:hover{ background:#0a5250; }
+.btn-cancelar:hover{ background:#f0fafa; }
+
 .tabla-card{
   margin-top:30px;
   border-radius:15px;
@@ -148,67 +154,60 @@ body{
   border-bottom:1px solid #eee;
 }
 
-/* INFO MASCOTA */
-.mascota-info{
+.cliente-info{
   display:flex;
   align-items:center;
   gap:10px;
 }
 
 .avatar{
-  width:40px;
-  height:40px;
+  width:42px;
+  height:42px;
   border-radius:50%;
-  background:#ddd;
+  background:#0f6f6c;
+  color:#fff;
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
-  flex-shrink:0;
-  border:2px solid #0f6f6c;
+  font-size:16px;
+  font-weight:bold;
 }
 
-.avatar-img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  display:block;
-}
-
-/* BADGES */
 .badge{
   padding:6px 14px;
   border-radius:20px;
   font-size:12px;
   font-weight:bold;
-}
-
-.badge-verde{
   background:#dff5e7;
   color:#1aa04a;
 }
 
-.badge-amarillo{
-  background:#fff4dc;
-  color:#f39c12;
+.alert{
+  margin:15px 0;
+  padding:12px 20px;
+  border-radius:10px;
 }
 
-.badge-rojo{
-  background:#fdecea;
+.alert-success{
+  color:green;
+  background:#dff5e7;
+}
+
+.alert-error{
   color:#e53935;
+  background:#fdecea;
 }
 
-/* ACCIONES */
 .acciones{
   display:flex;
+  gap:10px;
   align-items:center;
 }
 
 .btn-accion,
 .btn-eliminar{
+  margin-right:10px;
   display:inline-block;
-  margin-right:8px;
   padding:6px 12px;
   border-radius:8px;
   text-decoration:none;
@@ -217,27 +216,13 @@ body{
   background:#e8f2f2;
   border:1px solid #0f6f6c;
   cursor:pointer;
+ 
 }
 
 .btn-accion:hover,
-.btn-eliminar:hover {
+.btn-eliminar:hover{
   background:#0f6f6c;
   color:#fff;
 }
 
-
-
-
-
-.btn-eliminar {
-  background: none;
-  border: none;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 0;
-  margin-right: 10px;
-}
-
-.btn-eliminar:hover {
-  opacity: 0.7;
-}
+.inline-form{ display:inline; }

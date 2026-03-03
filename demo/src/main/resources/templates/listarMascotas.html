@@ -16,6 +16,7 @@
     </a>
     <nav class="nav">
       <a th:href="@{/inicio}" class="nav-link">Inicio</a>
+      <a th:href="@{/clientes}" class="nav-link">Clientes</a>
       <a th:href="@{/mascotas/nueva}" class="btn-nueva">+ Nueva Mascota</a>
     </nav>
   </div>
@@ -80,7 +81,7 @@
           <td>
             <div class="mascota-info">
               <div class="avatar">
-                <img class="avatar" th:src="@{/img/{foto}(foto=${mascota.foto})}" alt="Foto de [[${mascota.nombre}]]">
+                 <img class="avatar-img" th:src="@{/img/{foto}(foto=${mascota.foto})}" alt="Foto de [[${mascota.nombre}]]">
               </div>
               <span th:text="${mascota.nombre}">Max</span>
             </div>
@@ -108,13 +109,13 @@
             </span>
           </td>
           <td class="acciones">
-            <a th:href="@{/mascotas/{id}(id=${mascota.id})}" aria-label="Ver detalle">👁</a>
-            <a th:href="@{/mascotas/{id}/editar(id=${mascota.id})}" aria-label="Editar">✏</a>
+            <a th:href="@{/mascotas/{id}(id=${mascota.id})}" class="btn-accion" aria-label="Ver detalle">Ver</a>
+            <a th:href="@{/mascotas/{id}/editar(id=${mascota.id})}" class="btn-accion" aria-label="Editar">Editar</a>
 
               <form th:action="@{/mascotas/{id}/eliminar(id=${mascota.id})}" method="post"
         style="display:inline"
         onsubmit="return confirm('¿Estás seguro de que deseas eliminar a ' + '[[${mascota.nombre}]]' + '?')">
-    <button type="submit" class="btn-eliminar" aria-label="Eliminar">🗑</button>
+    <button class="btn-eliminar" type="submit" aria-label="Eliminar">Eliminar</button>
   </form>
 
           </td>
