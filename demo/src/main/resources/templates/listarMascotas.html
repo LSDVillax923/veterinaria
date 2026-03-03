@@ -109,13 +109,13 @@
             </span>
           </td>
           <td class="acciones">
-            <a th:href="@{/mascotas/{id}(id=${mascota.id})}" aria-label="Ver detalle">👁</a>
-            <a th:href="@{/mascotas/{id}/editar(id=${mascota.id})}" aria-label="Editar">✏</a>
+            <a th:href="@{/mascotas/{id}(id=${mascota.id})}" class="btn-accion" aria-label="Ver detalle">Ver</a>
+            <a th:href="@{/mascotas/{id}/editar(id=${mascota.id})}" class="btn-accion" aria-label="Editar">Editar</a>
 
               <form th:action="@{/mascotas/{id}/eliminar(id=${mascota.id})}" method="post"
         style="display:inline"
         onsubmit="return confirm('¿Estás seguro de que deseas eliminar a ' + '[[${mascota.nombre}]]' + '?')">
-    <button type="submit" class="btn-eliminar" aria-label="Eliminar">🗑</button>
+    <button class="btn-eliminar" type="submit" aria-label="Eliminar">Eliminar</button>
   </form>
 
           </td>

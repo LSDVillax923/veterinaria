@@ -71,12 +71,12 @@
         <td><span class="badge">Activo</span></td>
         <td>
            <div class="acciones">
-            <a th:href="@{/clientes/{id}(id=${cliente.id})}" aria-label="Ver detalle">👁</a>
-            <a th:href="@{/clientes/{id}/editar(id=${cliente.id})}" aria-label="Editar">✏</a>
+             <a th:href="@{/clientes/{id}(id=${cliente.id})}" class="btn-accion" aria-label="Ver detalle">Ver</a>
+            <a th:href="@{/clientes/{id}/editar(id=${cliente.id})}" class="btn-accion" aria-label="Editar">Editar</a>
             <form th:action="@{/clientes/{id}/eliminar(id=${cliente.id})}" method="post" class="inline-form"
 
                   onsubmit="return confirm('¿Eliminar este cliente?')">
-              <button class="btn-eliminar" type="submit" aria-label="Eliminar">🗑</button>
+              <button class="btn-eliminar" type="submit" aria-label="Eliminar">Eliminar</button>
             </form>
           </div>
         </td>

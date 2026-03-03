@@ -204,16 +204,25 @@ body{
   align-items:center;
 }
 
-.acciones a,
+.btn-accion,
 .btn-eliminar{
   margin-right:10px;
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:8px;
   text-decoration:none;
-  font-size:16px;
+  font-size:14px;
   color:#0f6f6c;
-  background:none;
-  border:none;
+  background:#e8f2f2;
+  border:1px solid #0f6f6c;
   cursor:pointer;
-  padding:0;
+ 
+}
+
+.btn-accion:hover,
+.btn-eliminar:hover{
+  background:#0f6f6c;
+  color:#fff;
 }
 
 .inline-form{ display:inline; }
