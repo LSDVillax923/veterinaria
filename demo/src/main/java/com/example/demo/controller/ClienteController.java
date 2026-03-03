@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
@@ -51,15 +52,11 @@ public class ClienteController {
     }
 
     @PostMapping("/nuevo")
-    public String guardarNuevoCliente(@RequestParam String nombre,
-            @RequestParam String apellido,
-            @RequestParam String correo,
-            @RequestParam String contrasenia,
-            @RequestParam String celular,
+    public String guardarNuevoCliente(@ModelAttribute Cliente cliente,
             RedirectAttributes redirectAttributes) {
 
         int newId = clienteRepository.findAll().stream().mapToInt(Cliente::getId).max().orElse(0) + 1;
-        Cliente cliente = new Cliente(newId, nombre, apellido, correo, contrasenia, celular);
+       cliente.setId(newId);
         clienteRepository.save(cliente);
         redirectAttributes.addFlashAttribute("mensaje", "Cliente registrado correctamente");
         return "redirect:/clientes";
@@ -104,24 +101,15 @@ public class ClienteController {
 
     @PostMapping("/{id}/editar")
     public String guardarEdicion(@PathVariable Integer id,
-            @RequestParam String nombre,
-            @RequestParam String apellido,
-            @RequestParam String correo,
-            @RequestParam String contrasenia,
-            @RequestParam String celular,
+            @ModelAttribute Cliente cliente,
             RedirectAttributes redirectAttributes) {
 
-        Cliente cliente = clienteRepository.findById(id);
-        if (cliente == null) {
+        if (clienteRepository.findById(id) == null) {
             redirectAttributes.addFlashAttribute("error", "No se encontró el cliente");
             return "redirect:/clientes";
         }
 
-        cliente.setNombre(nombre);
-        cliente.setApellido(apellido);
-        cliente.setCorreo(correo);
-        cliente.setContrasenia(contrasenia);
-        cliente.setCelular(celular);
+        cliente.setId(id);
 
         clienteRepository.save(cliente);
 

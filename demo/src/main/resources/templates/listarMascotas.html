@@ -114,7 +114,7 @@
 
               <form th:action="@{/mascotas/{id}/eliminar(id=${mascota.id})}" method="post"
         style="display:inline"
-        onsubmit="return confirm('¿Estás seguro de que deseas eliminar a ' + '[[${mascota.nombre}]]' + '?')">
+        onsubmit="return confirm('¿Estás seguro de que deseas eliminar a esta mascota ?')">
     <button class="btn-eliminar" type="submit" aria-label="Eliminar">Eliminar</button>
   </form>
 

@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,32 +86,17 @@ public String editarMascota(@PathVariable Integer id, Model model) {
 
 @PostMapping("/{id}/editar")
 public String guardarEdicion(@PathVariable Integer id,
-                              @RequestParam String nombre,
-                              @RequestParam String especie,
-                              @RequestParam String raza,
-                              @RequestParam int edad,
-                              @RequestParam double peso,
-                              @RequestParam String estado,
-                              @RequestParam String enfermedad,
-                              @RequestParam String observaciones,
+                             @ModelAttribute Mascota mascotaActualizada,
                               RedirectAttributes redirectAttributes) {
 
-    Mascota mascota = mascotaRepository.findById(id);
-    if (mascota == null) {
+     Mascota mascotaExistente = mascotaRepository.findById(id);
+    if (mascotaExistente == null) {
         return "redirect:/mascotas";
     }
 
     // Actualizar datos
-    mascota.setNombre(nombre);
-    mascota.setEspecie(especie);
-    mascota.setRaza(raza);
-    mascota.setEdad(edad);
-    mascota.setPeso(peso);
-    mascota.setEstado(estado);
-    mascota.setEnfermedad(enfermedad);
-    mascota.setObservaciones(observaciones);
-
-    mascotaRepository.save(mascota);
+    BeanUtils.copyProperties(mascotaActualizada, mascotaExistente, "id", "foto", "clienteId");
+    mascotaRepository.save(mascotaExistente);
 
     redirectAttributes.addFlashAttribute("mensaje", "Mascota actualizada correctamente");
     return "redirect:/mascotas";
@@ -136,15 +123,7 @@ public String nuevaMascota(Model model) {
 }
 
 @PostMapping("/nueva")
-public String guardarNuevaMascota(@RequestParam String nombre,
-                                   @RequestParam String especie,
-                                   @RequestParam String raza,
-                                   @RequestParam int edad,
-                                   @RequestParam double peso,
-                                   @RequestParam String estado,
-                                   @RequestParam String enfermedad,
-                                   @RequestParam String observaciones,
-                                   @RequestParam Integer clienteId,
+public String guardarNuevaMascota(@ModelAttribute Mascota nuevaMascota,
                                    RedirectAttributes redirectAttributes) {
 
     // Generar nuevo ID automáticamente
@@ -152,12 +131,10 @@ public String guardarNuevaMascota(@RequestParam String nombre,
                 .mapToInt(Mascota::getId)
                 .max().orElse(0) + 1;
 
-    Mascota nueva = new Mascota(
-        newId, nombre, especie, raza, edad, peso,
-        "default.jpg", estado, enfermedad, observaciones, clienteId
-    );
+    nuevaMascota.setId(newId);
+    nuevaMascota.setFoto("default.jpg");
 
-    mascotaRepository.save(nueva);
+    mascotaRepository.save(nuevaMascota);
     redirectAttributes.addFlashAttribute("mensaje", "Mascota registrada correctamente");
     return "redirect:/mascotas";
 }
