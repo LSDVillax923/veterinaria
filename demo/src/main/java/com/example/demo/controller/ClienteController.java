@@ -74,7 +74,7 @@ public class ClienteController {
         return verCliente(id, model);
     }
 
-    @GetMapping("/{id}")
+     @GetMapping({ "/{id}", "/{id}.html" })
     public String verCliente(@PathVariable Integer id, Model model) {
         Cliente cliente = clienteRepository.findById(id);
         if (cliente == null) {

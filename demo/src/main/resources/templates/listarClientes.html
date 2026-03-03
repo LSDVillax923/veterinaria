@@ -5,15 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro de Clientes</title>
   <link rel="stylesheet" th:href="@{/css/clientes-form.css}">
- <style>
-    .table-card {max-width: 1100px; margin: 2rem auto; background: #fff; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 8px 20px rgba(0,0,0,0.08);}    
-    table {width: 100%; border-collapse: collapse;}
-    th, td {padding: 0.75rem; border-bottom: 1px solid #eee; text-align: left;}
-    .actions {display: flex; gap: 0.5rem; align-items: center;}
-    .btn-link {text-decoration: none; padding: 0.35rem 0.6rem; border-radius: 0.4rem; border: 1px solid #ddd; background: #fafafa; color: #333;}
-    .btn-danger {background: #ffeaea; border-color: #ffcaca; color: #8a1f1f; cursor: pointer;}
-    .toolbar {max-width: 1100px; margin: 1.2rem auto 0; display: flex; justify-content: space-between; align-items: center;}
-     </style>
+ 
 </head>
 <body>
 <main>
@@ -22,8 +14,8 @@
     <a class="btn-cancelar" th:href="@{/clientes/nuevo}">+ Nuevo cliente</a>
   </div>
 
-   <p th:if="${mensaje}" th:text="${mensaje}" style="max-width:1100px;margin:1rem auto;color:green;background:#dff5e7;padding:12px 20px;border-radius:10px;"></p>
-  <p th:if="${error}" th:text="${error}" style="max-width:1100px;margin:1rem auto;color:#e53935;background:#fdecea;padding:12px 20px;border-radius:10px;"></p>
+    <p th:if="${mensaje}" th:text="${mensaje}" class="alert alert-success"></p>
+  <p th:if="${error}" th:text="${error}" class="alert alert-error"></p>
    <section class="table-card">
     <p>Total de clientes: <strong th:text="${totalClientes}">0</strong></p>
     
@@ -52,7 +44,7 @@
           <div class="actions">
             <a class="btn-link" th:href="@{/clientes/{id}(id=${cliente.id})}">👁 Ver</a>
             <a class="btn-link" th:href="@{/clientes/{id}/editar(id=${cliente.id})}">✏ Editar</a>
-            <form th:action="@{/clientes/{id}/eliminar(id=${cliente.id})}" method="post" style="display:inline"
+           <form th:action="@{/clientes/{id}/eliminar(id=${cliente.id})}" method="post" class="inline-form"
                   onsubmit="return confirm('¿Eliminar este cliente?')">
               <button class="btn-link btn-danger" type="submit">🗑 Eliminar</button>
             </form>

@@ -83,3 +83,74 @@
 
     .btn-guardar:hover { background: #0a5250; }
     .btn-cancelar:hover { background: #f0fafa; }
+.table-card {
+  max-width: 1100px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.toolbar {
+  max-width: 1100px;
+  margin: 1.2rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn-link {
+  text-decoration: none;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.4rem;
+  border: 1px solid #ddd;
+  background: #fafafa;
+  color: #333;
+}
+
+.btn-danger {
+  background: #ffeaea;
+  border-color: #ffcaca;
+  color: #8a1f1f;
+  cursor: pointer;
+}
+
+.inline-form {
+  display: inline;
+}
+
+.alert {
+  max-width: 1100px;
+  margin: 1rem auto;
+  padding: 12px 20px;
+  border-radius: 10px;
+}
+
+.alert-success {
+  color: green;
+  background: #dff5e7;
+}
+
+.alert-error {
+  color: #e53935;
+  background: #fdecea;
+}
