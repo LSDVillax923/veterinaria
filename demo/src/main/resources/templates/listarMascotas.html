@@ -16,7 +16,7 @@
     </a>
     <nav class="nav">
       <a th:href="@{/inicio}" class="nav-link">Inicio</a>
-      <a href="#" class="btn-nueva">+ Nueva Mascota</a>
+      <a th:href="@{/mascotas/nueva}" class="btn-nueva">+ Nueva Mascota</a>
     </nav>
   </div>
 </header>
@@ -54,6 +54,14 @@
     </div>
   </section>
 
+
+  <p th:if="${mensaje}" th:text="${mensaje}" 
+   style="color:green; background:#dff5e7; padding:12px 20px; border-radius:10px; margin-top:15px;">
+</p>
+<p th:if="${error}" th:text="${error}" 
+   style="color:#e53935; background:#fdecea; padding:12px 20px; border-radius:10px; margin-top:15px;">
+</p>
+
   <section class="tabla-card">
     <table class="tabla">
       <thead>
@@ -61,7 +69,7 @@
           <th>Mascota</th>
           <th>Especie / Raza</th>
           <th>Edad</th>
-          <th>Dueño</th>          <!-- Nueva columna -->
+          <th>Dueño</th>        
           <th>Próxima Cita</th>
           <th>Estado</th>
           <th>Acciones</th>
@@ -101,7 +109,14 @@
           </td>
           <td class="acciones">
             <a th:href="@{/mascotas/{id}(id=${mascota.id})}" aria-label="Ver detalle">👁</a>
-            <a href="#" aria-label="Editar">✏</a>
+            <a th:href="@{/mascotas/{id}/editar(id=${mascota.id})}" aria-label="Editar">✏</a>
+
+              <form th:action="@{/mascotas/{id}/eliminar(id=${mascota.id})}" method="post"
+        style="display:inline"
+        onsubmit="return confirm('¿Estás seguro de que deseas eliminar a ' + '[[${mascota.nombre}]]' + '?')">
+    <button type="submit" class="btn-eliminar" aria-label="Eliminar">🗑</button>
+  </form>
+
           </td>
         </tr>
       </tbody>
