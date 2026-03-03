@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Detalle de Mascota</title>
-
   <link rel="stylesheet" th:href="@{/css/general.css}">
   <link rel="stylesheet" th:href="@{/css/detalles.css}">
 </head>
@@ -18,18 +17,31 @@
 
   <ul class="menu">
     <li><a th:href="@{/inicio}">Inicio</a></li>
-    <li><a class="btn-cita" th:href="@{/mascotas}">Listado de Mascotas</a></li>
+    <li>
+      <!-- Si tiene clienteId vuelve a mismascotas, si no al listado general -->
+      <a class="btn-cita"
+         th:if="${clienteId != null}"
+         th:href="@{/clientes/{id}/mismascotas(id=${clienteId})}">
+        ← Mis Mascotas
+      </a>
+      <a class="btn-cita"
+         th:if="${clienteId == null}"
+         th:href="@{/mascotas}">
+        ← Listado de Mascotas
+      </a>
+    </li>
   </ul>
 </nav>
 
 <main class="detalle-main">
 
-  <!-- SI EXISTE LA MASCOTA --> 
-   <section class="detalle-card" th:if="${mascota != null}">
+  <!-- SI EXISTE LA MASCOTA -->
+  <section class="detalle-card" th:if="${mascota != null}">
     <h1>Información de la mascota</h1>
 
     <div class="mascota-foto">
-      <img th:src="@{/img/{file}(file=${mascota.foto})}" alt="Foto de la mascota"
+      <img th:src="@{/img/{file}(file=${mascota.foto})}"
+           alt="Foto de la mascota"
            onerror="this.onerror=null;this.src='/img/ladrador.jpg';">
     </div>
 
@@ -43,17 +55,37 @@
       <p><strong>Estado:</strong> <span th:text="${mascota.estado}">Sano</span></p>
       <p><strong>Enfermedad:</strong> <span th:text="${mascota.enfermedad}">Sin enfermedad</span></p>
       <p><strong>Observaciones:</strong> <span th:text="${mascota.observaciones}">Muy juguetón</span></p>
-        </article>
-        <a class="btn-volver-listado" th:href="@{/mascotas}">Volver al listado</a>
+    </article>
+
+    <!-- Botón volver -->
+    <a class="btn-volver-listado"
+       th:if="${clienteId != null}"
+       th:href="@{/clientes/{id}/mismascotas(id=${clienteId})}">
+      ← Mis Mascotas
+    </a>
+    <a class="btn-volver-listado"
+       th:if="${clienteId == null}"
+       th:href="@{/mascotas}">
+      ← Volver al listado
+    </a>
   </section>
 
   <!-- SI NO EXISTE -->
-   <section class="detalle-card" th:if="${mascota == null}">
+  <section class="detalle-card" th:if="${mascota == null}">
     <h1>Mascota no encontrada</h1>
-    <p class="detalle-error" th:text="${errorMascota} ?: 'No se encontró la mascota solicitada.'">
-      No se encontró la mascota solicitada.
+    <p class="detalle-error"
+       th:text="${errorMascota} ?: 'No se encontró la mascota solicitada.'">
     </p>
-    <a class="btn-volver-listado" th:href="@{/mascotas}">Volver al listado</a>
+    <a class="btn-volver-listado"
+       th:if="${clienteId != null}"
+       th:href="@{/clientes/{id}/mismascotas(id=${clienteId})}">
+      ← Mis Mascotas
+    </a>
+    <a class="btn-volver-listado"
+       th:if="${clienteId == null}"
+       th:href="@{/mascotas}">
+      ← Volver al listado
+    </a>
   </section>
 
 </main>
@@ -62,7 +94,7 @@
   <div class="footer-contenido">
     <div class="footer-col footer-col-logo">
       <img th:src="@{/img/footer-img.jpeg}" alt="Logo de Medicat" class="footer-logo">
-      <p>Cuidando la salud y bienestar de tus mascotas con la mejor tecnología y el equipo más humano. Tu confianza, su salud.</p>
+      <p>Cuidando la salud y bienestar de tus mascotas con la mejor tecnología y el equipo más humano.</p>
     </div>
 
     <div class="footer-col">

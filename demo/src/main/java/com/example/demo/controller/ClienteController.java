@@ -139,4 +139,21 @@ public class ClienteController {
         redirectAttributes.addFlashAttribute("mensaje", "Cliente eliminado correctamente");
         return "redirect:/clientes";
     }
+
+    @GetMapping("/{id}/mismascotas")
+public String misMascotas(@PathVariable Integer id, Model model) {
+    Cliente cliente = clienteRepository.findById(id);
+    if (cliente == null) {
+        return "redirect:/inicio/login";
+    }
+
+    List<Mascota> mascotas = mascotaRepository.findAll().stream()
+            .filter(m -> m.getClienteId().equals(id))
+            .toList();
+
+    model.addAttribute("cliente", cliente);   // objeto, no parámetros sueltos
+    model.addAttribute("mascotas", mascotas); // lista completa
+    return "mismascotas";
+}
+
 }

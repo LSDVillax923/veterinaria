@@ -60,18 +60,16 @@ public class MascotaController {
     }
 
     @GetMapping("/{id}")
-    public String verMascota(@PathVariable Integer id, Model model) {
-        Mascota mascota = mascotaRepository.findById(id);
-        if (mascota == null) {
-            model.addAttribute("errorMascota", "No se encontró una mascota con ID " + id + ".");
-            return listarMascotas(model);
-        }
-        // Obtener el cliente dueño
-        Cliente dueno = clienteRepository.findById(mascota.getClienteId());
-        model.addAttribute("mascota", mascota);
-        model.addAttribute("dueno", dueno);
+public String verMascota(@PathVariable Integer id, Model model) {
+    Mascota mascota = mascotaRepository.findById(id);
+    if (mascota == null) {
+        model.addAttribute("errorMascota", "No se encontró la mascota con ID " + id);
         return "detalleMascota";
     }
+    model.addAttribute("mascota", mascota);
+    model.addAttribute("clienteId", mascota.getClienteId()); // ← agregar esto
+    return "detalleMascota";
+}
 
     // Editar mascota 
     @GetMapping("/{id}/editar")

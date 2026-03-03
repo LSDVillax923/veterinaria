@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,32 +40,27 @@ public String procesarLogin(@RequestParam String email,
                              @RequestParam String password,
                              RedirectAttributes redirectAttributes) {
 
-    // Buscar cliente por email y contraseña
     Cliente cliente = clienteRepository.findAll().stream()
             .filter(c -> c.getCorreo().equals(email) && c.getContrasenia().equals(password))
             .findFirst()
             .orElse(null);
 
-    // Si no existe el cliente
     if (cliente == null) {
         redirectAttributes.addFlashAttribute("error", "Correo o contraseña incorrectos");
         return "redirect:/inicio/login";
     }
 
-    // Buscar mascota asociada al cliente
-    Mascota mascota = mascotaRepository.findAll().stream()
+    List<Mascota> mascotas = mascotaRepository.findAll().stream()
             .filter(m -> m.getClienteId().equals(cliente.getId()))
-            .findFirst()
-            .orElse(null);
+            .toList();
 
-    // Si el cliente no tiene mascota
-    if (mascota == null) {
+    if (mascotas.isEmpty()) {
         redirectAttributes.addFlashAttribute("error", "No tienes mascotas registradas");
         return "redirect:/inicio/login";
     }
 
-    // Redirigir al detalle de la mascota
-    return "redirect:/mascotas/" + mascota.getId();
+    // Redirigir al perfil del cliente pasando su ID
+    return "redirect:/clientes/" + cliente.getId() + "/mismascotas";
 }
 
     @GetMapping("/registro")
