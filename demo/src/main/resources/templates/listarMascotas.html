@@ -56,12 +56,8 @@
   </section>
 
 
-  <p th:if="${mensaje}" th:text="${mensaje}" 
-   style="color:green; background:#dff5e7; padding:12px 20px; border-radius:10px; margin-top:15px;">
-</p>
-<p th:if="${error}" th:text="${error}" 
-   style="color:#e53935; background:#fdecea; padding:12px 20px; border-radius:10px; margin-top:15px;">
-</p>
+  <p th:if="${mensaje}" th:text="${mensaje}" class="flash-message flash-message-success"></p>
+  <p th:if="${error}" th:text="${error}" class="flash-message flash-message-error"></p>
 
   <section class="tabla-card">
     <table class="tabla">
@@ -115,8 +111,7 @@
             <a th:href="@{/mascotas/{id}(id=${mascota.id})}" class="btn-accion" aria-label="Ver detalle">Ver</a>
             <a th:href="@{/mascotas/{id}/editar(id=${mascota.id})}" class="btn-accion" aria-label="Editar">Editar</a>
 
-              <form th:action="@{/mascotas/{id}/eliminar(id=${mascota.id})}" method="post"
-        style="display:inline"
+              <form th:action="@{/mascotas/{id}/eliminar(id=${mascota.id})}" method="post" class="inline-form"
         onsubmit="return confirm('¿Estás seguro de que deseas eliminar a esta mascota ?')">
     <button class="btn-eliminar" type="submit" aria-label="Eliminar">Eliminar</button>
   </form>

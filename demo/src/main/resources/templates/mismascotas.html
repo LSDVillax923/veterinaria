@@ -32,14 +32,12 @@
   </section>
 
   <!-- Mensajes flash -->
-  <p th:if="${mensaje}" th:text="${mensaje}"
-     style="color:green; background:#dff5e7; padding:12px 20px; border-radius:10px; margin-top:15px;"></p>
-  <p th:if="${error}" th:text="${error}"
-     style="color:#e53935; background:#fdecea; padding:12px 20px; border-radius:10px; margin-top:15px;"></p>
+  <p th:if="${mensaje}" th:text="${mensaje}" class="flash-message flash-message-success"></p>
+  <p th:if="${error}" th:text="${error}" class="flash-message flash-message-error"></p>
 
   <!-- Sin mascotas -->
   <section class="tabla-card" th:if="${#lists.isEmpty(mascotas)}">
-    <p style="padding: 20px; text-align:center;">No tienes mascotas registradas aún.</p>
+    <p class="empty-state-message">No tienes mascotas registradas aún.</p>
   </section>
 
   <!-- Tabla de mascotas -->

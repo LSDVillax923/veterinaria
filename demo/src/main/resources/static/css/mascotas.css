@@ -241,3 +241,28 @@ body{
 .btn-eliminar:hover {
   opacity: 0.7;
 }
+
+.flash-message{
+  padding:12px 20px;
+  border-radius:10px;
+  margin-top:15px;
+}
+
+.flash-message-success{
+  color:#1aa04a;
+  background:#dff5e7;
+}
+
+.flash-message-error{
+  color:#e53935;
+  background:#fdecea;
+}
+
+.inline-form{
+  display:inline;
+}
+
+.empty-state-message{
+  padding:20px;
+  text-align:center;
+}

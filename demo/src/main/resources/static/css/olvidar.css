@@ -52,3 +52,11 @@ margin-top:20px;
 text-decoration:none;
 color:#0f6f67;
 }
+
+.flash-message-success{
+color:green;
+}
+
+.flash-message-error{
+color:red;
+}

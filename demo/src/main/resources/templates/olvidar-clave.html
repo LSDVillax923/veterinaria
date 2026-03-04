@@ -16,9 +16,8 @@
     <p>No te preocupes, te enviaremos instrucciones para recuperarla</p>
 
     <!-- MENSAJE FLASH (éxito o error) -->
-    <p th:if="${mensaje}" th:text="${mensaje}" style="color: green;"></p>
-    <p th:if="${error}" th:text="${error}" style="color: red;"></p>
-
+   <p th:if="${mensaje}" th:text="${mensaje}" class="flash-message flash-message-success"></p>
+    <p th:if="${error}" th:text="${error}" class="flash-message flash-message-error"></p>
     <form th:action="@{/inicio/forgot-password}" method="post">  
 
         <label>Correo Electrónico</label>
