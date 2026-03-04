@@ -77,6 +77,9 @@
         </tr>
       </thead>
       <tbody>
+         <tr th:if="${#lists.isEmpty(mascotas)}">
+          <td colspan="7">No hay mascotas registradas.</td>
+        </tr>
         <tr th:each="mascota : ${mascotas}">
           <td>
             <div class="mascota-info">
