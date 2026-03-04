@@ -125,18 +125,14 @@ public class ClienteController {
             return "redirect:/clientes";
         }
 
-        long mascotasAsociadas = mascotaRepository.findAll().stream()
+        mascotaRepository.findAll().stream()
                 .filter(m -> m.getClienteId().equals(id))
-                .count();
-
-        if (mascotasAsociadas > 0) {
-            redirectAttributes.addFlashAttribute("error",
-                    "No puedes eliminar este cliente porque tiene " + mascotasAsociadas + " mascota(s) asociada(s).");
-            return "redirect:/clientes";
-        }
+                 .map(Mascota::getId)
+                .toList()
+                .forEach(mascotaRepository::delete);
 
         clienteRepository.delete(id);
-        redirectAttributes.addFlashAttribute("mensaje", "Cliente eliminado correctamente");
+        redirectAttributes.addFlashAttribute("mensaje", "Cliente y sus mascotas eliminados correctamente");
         return "redirect:/clientes";
     }
 
