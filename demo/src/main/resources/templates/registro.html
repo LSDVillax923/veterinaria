@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Cuenta</title>
-
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script>
         tailwind.config = {
             theme: {
@@ -22,162 +19,89 @@
     </script>
 </head>
 
-<body class="bg-background min-h-screen flex items-center justify-center">
+<body class="bg-background min-h-screen flex items-center justify-center p-6">
 
-<!-- CONTENEDOR GENERAL -->
-<div class="w-[1100px] max-w-[95%] flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-xl bg-white">
+<div class="w-full max-w-[1100px] flex flex-col md:flex-row rounded-[2rem] overflow-hidden shadow-2xl bg-white">
 
-    <!-- ======================
-            LADO IZQUIERDO
-    ======================= -->
-    <div class="relative hidden lg:block lg:w-1/2">
-
+    <div class="relative w-full md:w-[45%] h-64 md:h-auto">
         <img th:src="@{../img/gato1.jpg}"
-             alt="Gato acostado"
-             class="w-full h-full object-cover">
+             src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2043&auto=format&fit=crop" 
+             alt="Gato"
+             class="absolute inset-0 w-full h-full object-cover object-center">
+        
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
 
-        <!-- Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-teal-900/70 to-transparent"></div>
-
-        <!-- Texto -->
-        <div class="absolute bottom-10 left-10 text-white">
-            <h1 class="text-4xl font-bold mb-2">
-                Únete a nuestra familia
-            </h1>
-            <p class="text-lg text-gray-200">
-                Crea tu cuenta y comienza a cuidar mejor de tus mascotas
-            </p>
+        <div class="absolute bottom-8 left-8 right-8 text-white z-10">
+            <h1 class="text-3xl font-bold mb-2">Únete a nuestra familia</h1>
+            <p class="text-sm opacity-90">Comienza a cuidar mejor de tus mascotas.</p>
         </div>
     </div>
 
-    <!-- ======================
-            LADO DERECHO
-    ======================= -->
-    <div class="w-full lg:w-1/2 bg-gray-50 p-10">
+    <div class="w-full md:w-[55%] bg-white p-8 md:p-10 flex flex-col justify-center">
 
-        <!-- Volver -->
-        <a th:href="@{/inicio}"
-           class="text-primary font-medium inline-flex items-center gap-2 mb-6">
-            ← Volver al inicio
+        <a th:href="@{/inicio}" class="text-primary text-sm font-semibold inline-flex items-center gap-2 mb-6 hover:opacity-75 transition">
+            <span>←</span> Volver al inicio
         </a>
 
-        <!-- Título -->
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-primary">
-                Crear Cuenta
-            </h2>
-            <p class="text-gray-500 mt-2">
-                Completa tus datos para registrarte
-            </p>
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-primary">Crear Cuenta</h2>
+            <p class="text-gray-400 text-sm mt-1">Completa tus datos para registrarte</p>
         </div>
 
-        <!-- FORMULARIO -->
-        <form th:action="@{/inicio/registro}"
-              method="post"
-              class="space-y-5">
+        <form th:action="@{/inicio/registro}" method="post" class="space-y-4">
 
-            <!-- Nombre -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre Completo
-                </label>
-                <div class="flex items-center bg-white border border-gray-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary">
-                    <span class="text-gray-400 mr-3">👤</span>
-                    <input type="text"
-                           name="nombre"
-                           placeholder="Juan Pérez"
-                           class="w-full outline-none bg-transparent"
-                           required>
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1 ml-1">Nombre Completo</label>
+                <div class="flex items-center bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+                    <span class="mr-3 text-xs">👤</span>
+                    <input type="text" name="nombre" placeholder="Juan Pérez" class="w-full outline-none bg-transparent text-sm" required>
                 </div>
             </div>
 
-            <!-- Email -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Correo Electrónico
-                </label>
-                <div class="flex items-center bg-white border border-gray-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary">
-                    <span class="text-gray-400 mr-3">✉️</span>
-                    <input type="email"
-                           name="email"
-                           placeholder="tu@email.com"
-                           class="w-full outline-none bg-transparent"
-                           required>
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1 ml-1">Correo Electrónico</label>
+                <div class="flex items-center bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+                    <span class="mr-3 text-xs">✉️</span>
+                    <input type="email" name="email" placeholder="tu@email.com" class="w-full outline-none bg-transparent text-sm" required>
                 </div>
             </div>
 
-            <!-- Teléfono -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Teléfono
-                </label>
-                <div class="flex items-center bg-white border border-gray-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary">
-                    <span class="text-gray-400 mr-3">📞</span>
-                    <input type="tel"
-                           name="telefono"
-                           placeholder="+52 123 456 7890"
-                           class="w-full outline-none bg-transparent">
+                <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1 ml-1">Teléfono</label>
+                <div class="flex items-center bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+                    <span class="mr-3 text-xs">📞</span>
+                    <input type="tel" name="telefono" placeholder="+52..." class="w-full outline-none bg-transparent text-sm">
                 </div>
             </div>
 
-            <!-- Contraseña -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Contraseña
-                </label>
-                <div class="flex items-center bg-white border border-gray-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary">
-                    <span class="text-gray-400 mr-3">🔒</span>
-                    <input type="password"
-                           name="password"
-                           class="w-full outline-none bg-transparent"
-                           required>
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1 ml-1">Contraseña</label>
+                    <div class="flex items-center bg-gray-50 border border-gray-100 rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+                        <input type="password" name="password" placeholder="••••" class="w-full outline-none bg-transparent text-sm" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1 ml-1">Confirmar</label>
+                    <div class="flex items-center bg-gray-50 border border-gray-100 rounded-xl px-3 py-2.5 focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+                        <input type="password" name="confirmar" placeholder="••••" class="w-full outline-none bg-transparent text-sm" required>
+                    </div>
                 </div>
             </div>
 
-            <!-- Confirmar -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Confirmar Contraseña
-                </label>
-                <div class="flex items-center bg-white border border-gray-200 rounded-xl px-4 py-3 focus-within:ring-2 focus-within:ring-primary">
-                    <span class="text-gray-400 mr-3">🔒</span>
-                    <input type="password"
-                           name="confirmar"
-                           class="w-full outline-none bg-transparent"
-                           required>
-                </div>
+            <div class="flex items-center gap-2 text-[11px] text-gray-500 pt-1">
+                <input type="checkbox" name="terminos" class="w-3.5 h-3.5 accent-primary rounded" required>
+                <span>Acepto los términos y condiciones</span>
             </div>
 
-            <!-- Checkbox -->
-            <div class="flex items-start gap-2 text-sm text-gray-600">
-                <input type="checkbox"
-                       name="terminos"
-                       class="mt-1 accent-primary"
-                       required>
-                <span>
-                    Acepto los términos y condiciones y la política de privacidad
-                </span>
-            </div>
-
-            <!-- Botón -->
-            <button type="submit"
-                    class="w-full bg-primary hover:bg-teal-800 text-white py-4 rounded-full font-semibold shadow-md transition duration-300">
+            <button type="submit" class="w-full bg-primary hover:bg-[#0a5a54] text-white py-3 rounded-full font-bold text-sm shadow-lg shadow-primary/10 transition-all active:scale-95 mt-2">
                 Crear Cuenta
             </button>
-
         </form>
-
-        <!-- Login -->
-        <p class="text-center text-sm text-gray-600 mt-6">
-            ¿Ya tienes cuenta?
-            <a th:href="@{/inicio/login}"
-               class="text-primary font-semibold hover:underline">
-                Inicia sesión aquí
-            </a>
+        <p class="text-center text-xs text-gray-500 mt-6">
+            ¿Ya tienes cuenta? <a th:href="@{/inicio/login}" class="text-primary font-bold hover:underline">Inicia sesión</a>
         </p>
-
     </div>
-
 </div>
 
 </body>
