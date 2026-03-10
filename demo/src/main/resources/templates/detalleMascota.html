@@ -40,7 +40,7 @@
     <h1>Información de la mascota</h1>
 
     <div class="mascota-foto">
-      <img th:src="@{/img/{file}(file=${mascota.foto})}"
+      <img th:src="${mascota.foto != null and #strings.startsWith(mascota.foto, 'data:') ? mascota.foto : '/img/' + mascota.foto}"
            alt="Foto de la mascota"
            onerror="this.onerror=null;this.src='/img/ladrador.jpg';">
     </div>

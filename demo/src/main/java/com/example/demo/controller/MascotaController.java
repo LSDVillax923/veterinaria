@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Base64;
 
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
@@ -84,12 +87,19 @@ public class MascotaController {
     @PostMapping("/{id}/editar")
     public String guardarEdicion(@PathVariable Long id,
                                   @ModelAttribute Mascota mascotaActualizada,
+                                  @RequestParam(value = "fotoFile", required = false) MultipartFile fotoFile,
+
                                   RedirectAttributes redirectAttributes) {
         Mascota mascotaExistente = mascotaService.searchById(id);
         if (mascotaExistente == null) {
             return "redirect:/mascotas";
         }
         BeanUtils.copyProperties(mascotaActualizada, mascotaExistente, "id", "foto", "clienteId");
+
+        String fotoEnBase64 = convertirArchivoADataUri(fotoFile);
+        if (fotoEnBase64 != null) {
+            mascotaExistente.setFoto(fotoEnBase64);
+        }
         mascotaService.save(mascotaExistente);
         redirectAttributes.addFlashAttribute("mensaje", "Mascota actualizada correctamente.");
         return "redirect:/mascotas";
@@ -119,13 +129,32 @@ public class MascotaController {
 
     @PostMapping("/nueva")
     public String guardarNuevaMascota(@ModelAttribute Mascota nuevaMascota,
+        @RequestParam(value = "fotoFile", required = false) MultipartFile fotoFile,
                                        RedirectAttributes redirectAttributes) {
-        nuevaMascota.setFoto("default.jpg");
+         String fotoEnBase64 = convertirArchivoADataUri(fotoFile);
+        nuevaMascota.setFoto(fotoEnBase64 != null ? fotoEnBase64 : "default.jpg");
         if (nuevaMascota.getEstado() == null || nuevaMascota.getEstado().isBlank()) {
             nuevaMascota.setEstado("activa");
         }
         mascotaService.save(nuevaMascota);
         redirectAttributes.addFlashAttribute("mensaje", "Mascota registrada correctamente.");
         return "redirect:/mascotas";
+    }
+      private String convertirArchivoADataUri(MultipartFile fotoFile) {
+        if (fotoFile == null || fotoFile.isEmpty()) {
+            return null;
+        }
+
+        String contentType = fotoFile.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            return null;
+        }
+
+        try {
+            String base64 = Base64.getEncoder().encodeToString(fotoFile.getBytes());
+            return "data:" + contentType + ";base64," + base64;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

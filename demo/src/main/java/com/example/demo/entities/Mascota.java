@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
+import jakarta.persistence.Lob;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -24,6 +25,8 @@ public class Mascota {
     private String raza;
     private int edad;
     private double peso;
+     @Lob
+    @Column(name = "foto", columnDefinition = "CLOB")
     private String foto;
     private String estado;
     private String enfermedad;
