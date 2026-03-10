@@ -1,14 +1,25 @@
 package com.example.demo.entities;
 
-import lombok.AllArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 public class Mascota {
 
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column (name = "mascota", nullable = false )
     private String nombre;
+    
     private String especie;
     private String raza;
     private int edad;
@@ -17,5 +28,19 @@ public class Mascota {
     private String estado;
     private String enfermedad;
     private String observaciones;  
-    private Integer clienteId; // Relación con Cliente
+    private Long clienteId; // Relación con Cliente
+
+    public Mascota(String nombre, String especie, String raza, int edad, double peso,
+                   String foto, String estado, String enfermedad, String observaciones, Long clienteId) {
+        this.nombre = nombre;
+        this.especie = especie;
+        this.raza = raza;
+        this.edad = edad;
+        this.peso = peso;
+        this.foto = foto;
+        this.estado = estado;
+        this.enfermedad = enfermedad;
+        this.observaciones = observaciones;
+        this.clienteId = clienteId;
+    }
 }

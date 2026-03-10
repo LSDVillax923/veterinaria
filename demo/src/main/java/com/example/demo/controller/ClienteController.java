@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.util.Collection;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,28 +16,26 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
-import com.example.demo.repository.ClienteRepository;
-import com.example.demo.repository.MascotaRepository;
+import com.example.demo.service.ClienteService;
+import com.example.demo.service.MascotaService;
 
 @Controller
 @RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private ClienteService clienteService;
 
     @Autowired
-    private MascotaRepository mascotaRepository;
+    private MascotaService mascotaService;
 
-    @GetMapping({ "", "/", "/listar", "/listar.html" })
+    @GetMapping({"", "/", "/listar", "/listar.html"})
     public String listarClientes(Model model) {
-        Collection<Cliente> clientes = clienteRepository.findAll();
+        Collection<Cliente> clientes = clienteService.searchAll();
 
         clientes.forEach(cliente -> {
-            List<Mascota> mascotas = mascotaRepository.findAll().stream()
-                    .filter(m -> m.getClienteId().equals(cliente.getId()))
-                    .toList();
-            cliente.setMascotas(new ArrayList<>(mascotas));
+            List<Mascota> mascotas = mascotaService.searchByClienteId(cliente.getId());
+            cliente.setMascotas(mascotas);
         });
 
         model.addAttribute("clientes", clientes);
@@ -53,17 +50,19 @@ public class ClienteController {
 
     @PostMapping("/nuevo")
     public String guardarNuevoCliente(@ModelAttribute Cliente cliente,
-            RedirectAttributes redirectAttributes) {
-
-        int newId = clienteRepository.findAll().stream().mapToInt(Cliente::getId).max().orElse(0) + 1;
-       cliente.setId(newId);
-        clienteRepository.save(cliente);
-        redirectAttributes.addFlashAttribute("mensaje", "Cliente registrado correctamente");
+                                       RedirectAttributes redirectAttributes) {
+        try {
+            clienteService.save(cliente);
+            redirectAttributes.addFlashAttribute("mensaje", "Cliente registrado correctamente.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/clientes/nuevo";
+        }
         return "redirect:/clientes";
     }
 
     @GetMapping({ "/detalle", "/detalle.html" })
-    public String verClientePorParametro(@RequestParam(required = false) Integer id, Model model) {
+    public String verClientePorParametro(@RequestParam(required = false) Long id, Model model) {
         if (id == null) {
             model.addAttribute("error", "Debes enviar un id, por ejemplo /clientes/detalle.html?id=1");
             return listarClientes(model);
@@ -71,27 +70,25 @@ public class ClienteController {
         return verCliente(id, model);
     }
 
-     @GetMapping({ "/{id}", "/{id}.html" })
-    public String verCliente(@PathVariable Integer id, Model model) {
-        Cliente cliente = clienteRepository.findById(id);
+     @GetMapping({"/{id}", "/{id}.html"})
+    public String verCliente(@PathVariable Long id, Model model) {
+        Cliente cliente = clienteService.searchById(id);
         if (cliente == null) {
             model.addAttribute("error", "No se encontró un cliente con ID " + id + ".");
             return listarClientes(model);
         }
 
-        List<Mascota> mascotasDelCliente = mascotaRepository.findAll().stream()
-                .filter(m -> m.getClienteId().equals(id))
-                .toList();
+        List<Mascota> mascotas = mascotaService.searchByClienteId(id);
 
         model.addAttribute("cliente", cliente);
-        model.addAttribute("mascotas", mascotasDelCliente);
-        model.addAttribute("totalMascotas", mascotasDelCliente.size());
+        model.addAttribute("mascotas", mascotas);
+        model.addAttribute("totalMascotas", mascotas.size());
         return "detalleCliente";
     }
 
     @GetMapping("/{id}/editar")
-    public String editarCliente(@PathVariable Integer id, Model model) {
-        Cliente cliente = clienteRepository.findById(id);
+    public String editarCliente(@PathVariable Long id, Model model) {
+        Cliente cliente = clienteService.searchById(id);
         if (cliente == null) {
             return "redirect:/clientes";
         }
@@ -100,56 +97,60 @@ public class ClienteController {
     }
 
     @PostMapping("/{id}/editar")
-    public String guardarEdicion(@PathVariable Integer id,
+    public String guardarEdicion(@PathVariable Long id,
             @ModelAttribute Cliente cliente,
             RedirectAttributes redirectAttributes) {
 
-        if (clienteRepository.findById(id) == null) {
+        if (clienteService.searchById(id) == null) {
             redirectAttributes.addFlashAttribute("error", "No se encontró el cliente");
             return "redirect:/clientes";
         }
 
         cliente.setId(id);
 
-        clienteRepository.save(cliente);
+        try {
+        clienteService.save(cliente);
 
         redirectAttributes.addFlashAttribute("mensaje", "Cliente actualizado correctamente");
+        
+        }catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/clientes/" + id + "/editar";
+        }
         return "redirect:/clientes";
     }
 
     @PostMapping("/{id}/eliminar")
-    public String eliminarCliente(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        Cliente cliente = clienteRepository.findById(id);
+    public String eliminarCliente(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        Cliente cliente = clienteService.searchById(id);
         if (cliente == null) {
             redirectAttributes.addFlashAttribute("error", "No se encontró el cliente");
             return "redirect:/clientes";
         }
 
-        mascotaRepository.findAll().stream()
-                .filter(m -> m.getClienteId().equals(id))
-                 .map(Mascota::getId)
-                .toList()
-                .forEach(mascotaRepository::delete);
+        // Desactivar mascotas asociadas en lugar de eliminarlas
+        mascotaService.searchByClienteId(id)
+                .forEach(m -> mascotaService.deactivate(m.getId()));
 
-        clienteRepository.delete(id);
-        redirectAttributes.addFlashAttribute("mensaje", "Cliente y sus mascotas eliminados correctamente");
+        clienteService.delete(id);
+        redirectAttributes.addFlashAttribute("mensaje",
+                "Cliente eliminado y sus mascotas marcadas como inactivas.");
         return "redirect:/clientes";
     }
 
+    // Mis mascotas vista del cliente
     @GetMapping("/{id}/mismascotas")
-public String misMascotas(@PathVariable Integer id, Model model) {
-    Cliente cliente = clienteRepository.findById(id);
-    if (cliente == null) {
-        return "redirect:/inicio/login";
+public String misMascotas(@PathVariable Long id, Model model) {
+        Cliente cliente = clienteService.searchById(id);
+        if (cliente == null) {
+            return "redirect:/inicio/login";
+        }
+
+        List<Mascota> mascotas = mascotaService.searchByClienteId(id);
+
+        model.addAttribute("cliente", cliente);
+        model.addAttribute("mascotas", mascotas);
+        return "mismascotas";
     }
-
-    List<Mascota> mascotas = mascotaRepository.findAll().stream()
-            .filter(m -> m.getClienteId().equals(id))
-            .toList();
-
-    model.addAttribute("cliente", cliente);   // objeto, no parámetros sueltos
-    model.addAttribute("mascotas", mascotas); // lista completa
-    return "mismascotas";
-}
 
 }
