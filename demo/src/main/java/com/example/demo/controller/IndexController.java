@@ -12,18 +12,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
-import com.example.demo.repository.ClienteRepository;
-import com.example.demo.repository.MascotaRepository;
+import com.example.demo.service.ClienteService;
+import com.example.demo.service.MascotaService;
 
 @Controller
 @RequestMapping("/inicio")
 public class IndexController {
 
     @Autowired
-    private ClienteRepository clienteRepository;
-    
+    private ClienteService clienteService;
+
     @Autowired
-    private MascotaRepository mascotaRepository;
+    private MascotaService mascotaService;
 
     @GetMapping
     public String inicio() {
@@ -35,33 +35,31 @@ public class IndexController {
         return "login";
     }
 
-@PostMapping("/login")
-public String procesarLogin(@RequestParam String email,
-                             @RequestParam String password,
-                             RedirectAttributes redirectAttributes) {
+    @PostMapping("/login")
+    public String procesarLogin(@RequestParam String email,
+                                 @RequestParam String password,
+                                 RedirectAttributes redirectAttributes) {
+        Cliente cliente;
+        try {
+            cliente = clienteService.login(email, password);
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/inicio/login";
+        }
 
-    Cliente cliente = clienteRepository.findAll().stream()
-            .filter(c -> c.getCorreo().equals(email) && c.getContrasenia().equals(password))
-            .findFirst()
-            .orElse(null);
+        if (cliente == null) {
+            redirectAttributes.addFlashAttribute("error", "Correo o contraseña incorrectos.");
+            return "redirect:/inicio/login";
+        }
 
-    if (cliente == null) {
-        redirectAttributes.addFlashAttribute("error", "Correo o contraseña incorrectos");
-        return "redirect:/inicio/login";
+        List<Mascota> mascotas = mascotaService.searchByClienteId(cliente.getId());
+        if (mascotas.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "No tienes mascotas registradas.");
+            return "redirect:/inicio/login";
+        }
+
+        return "redirect:/clientes/" + cliente.getId() + "/mismascotas";
     }
-
-    List<Mascota> mascotas = mascotaRepository.findAll().stream()
-            .filter(m -> m.getClienteId().equals(cliente.getId()))
-            .toList();
-
-    if (mascotas.isEmpty()) {
-        redirectAttributes.addFlashAttribute("error", "No tienes mascotas registradas");
-        return "redirect:/inicio/login";
-    }
-
-    // Redirigir al perfil del cliente pasando su ID
-    return "redirect:/clientes/" + cliente.getId() + "/mismascotas";
-}
 
     @GetMapping("/registro")
     public String register() {
@@ -70,20 +68,29 @@ public String procesarLogin(@RequestParam String email,
 
     @PostMapping("/registro")
     public String procesarRegistro(@RequestParam String nombre,
+                                    @RequestParam String apellido,   // ← añadido
+                                    @RequestParam String cedula,     // ← añadido
                                     @RequestParam String email,
                                     @RequestParam String telefono,
                                     @RequestParam String password,
                                     @RequestParam String confirmar,
                                     RedirectAttributes redirectAttributes) {
-        // Validación básica
         if (!password.equals(confirmar)) {
-            redirectAttributes.addFlashAttribute("error", "Las contraseñas no coinciden");
+            redirectAttributes.addFlashAttribute("error", "Las contraseñas no coinciden.");
             return "redirect:/inicio/registro";
         }
-        // Crear nuevo cliente con ID automático (simulado)
-        int newId = clienteRepository.findAll().stream().mapToInt(Cliente::getId).max().orElse(0) + 1;
-        Cliente nuevo = new Cliente(newId, nombre, "", email, password, telefono);
-        clienteRepository.save(nuevo);
+        try {
+            Long cedulaLong = Long.parseLong(cedula);
+            Cliente nuevo = new Cliente(nombre, apellido, cedulaLong, email, telefono, password);
+            clienteService.save(nuevo);
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("error", "La cédula debe ser un número válido.");
+            return "redirect:/inicio/registro";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/inicio/registro";
+        }
+
         redirectAttributes.addFlashAttribute("mensaje", "Registro exitoso. Por favor inicia sesión.");
         return "redirect:/inicio/login";
     }
@@ -94,8 +101,8 @@ public String procesarLogin(@RequestParam String email,
     }
 
     @PostMapping("/forgot-password")
-    public String procesarForgotPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
-        // Lógica simulada de envío de correo
+    public String procesarForgotPassword(@RequestParam String email,
+                                          RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("mensaje", "Se han enviado instrucciones a " + email);
         return "redirect:/inicio/login";
     }

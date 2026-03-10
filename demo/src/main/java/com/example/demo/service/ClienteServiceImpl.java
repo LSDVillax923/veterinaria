@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Cliente;
@@ -9,14 +10,12 @@ import com.example.demo.repository.ClienteRepository;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
-    private final ClienteRepository repository;
+    @Autowired  
+    private ClienteRepository repository;
 
-    public ClienteServiceImpl(ClienteRepository repository) {
-        this.repository = repository;
-    }
-
-    public Cliente searchById(Integer id) {
-        return repository.findById(id);
+    @Override
+    public Cliente searchById(Long id) {
+       return repository.findById(id).orElse(null);
     }
 
     public Collection<Cliente> searchAll() {
@@ -25,13 +24,52 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void save(Cliente cliente) {
+          // ── Validar nombre y apellido ──────────────────────────────────────────
+        if (cliente.getNombre() == null || cliente.getNombre().isBlank()) {
+            throw new IllegalArgumentException("El nombre del cliente no puede estar vacío.");
+        }
+        if (cliente.getApellido() == null || cliente.getApellido().isBlank()) {
+            throw new IllegalArgumentException("El apellido del cliente no puede estar vacío.");
+        }
+
+        // ── Validar correo ─────────────────────────────────────────────────────
+        if (cliente.getCorreo() == null || !cliente.getCorreo().contains("@")) {
+            throw new IllegalArgumentException("El correo debe contener '@'.");
+        }
+
+        // ── Unicidad de cédula (solo en creación, id == null) ─────────────────
+        if (cliente.getId() == null && cliente.getCedula() != null) {
+            repository.findByCedula(cliente.getCedula()).ifPresent(existing -> {
+                throw new IllegalArgumentException("Ya existe un cliente con esa cédula.");
+            });
+        }
+
+        // ── Unicidad de correo (solo en creación) ─────────────────────────────
+        if (cliente.getId() == null) {
+            repository.findByCorreo(cliente.getCorreo()).ifPresent(existing -> {
+                throw new IllegalArgumentException("Ya existe un cliente con ese correo.");
+            });
+        }
+
        repository.save(cliente);
         
     }
 
+
     @Override
-    public void delete(Integer id) {
-        repository.delete(id);        
+    public void delete(Long id) {
+        repository.deleteById(id);        
     }
 
+    @Override
+    public Cliente login(String correo, String contrasenia) {
+        // Validar formato de correo en la capa de servicio
+        if (correo == null || !correo.contains("@")) {
+            throw new IllegalArgumentException("El correo debe contener '@'.");
+        }
+
+        return repository.findByCorreo(correo)
+                .filter(c -> c.getContrasenia().equals(contrasenia))
+                .orElse(null);
+    }
 }
