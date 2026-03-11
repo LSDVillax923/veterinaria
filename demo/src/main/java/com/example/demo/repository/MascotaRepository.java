@@ -9,7 +9,7 @@ import com.example.demo.entities.Mascota;
 
 @Repository
 public interface MascotaRepository extends JpaRepository<Mascota, Long> {
-    List<Mascota> findByClienteId(Long clienteId);
+    List<Mascota> findByCliente_Id(Long clienteId);
 
     List<Mascota> findByEstado(String estado);
 }

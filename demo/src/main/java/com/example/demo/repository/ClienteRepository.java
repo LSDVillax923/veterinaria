@@ -12,7 +12,5 @@ import com.example.demo.entities.Cliente;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByCorreo(String correo);
 
-    Optional<Cliente> findByCedula(Long cedula);
-
     List<Cliente> findByNombreContainingIgnoreCase(String nombre);
 }

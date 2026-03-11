@@ -21,8 +21,8 @@ import com.example.demo.entities.Mascota;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.MascotaService;
 
-@RequestMapping("/mascotas")
 @Controller
+@RequestMapping("/mascotas")
 public class MascotaController {
 
     @Autowired
@@ -31,9 +31,12 @@ public class MascotaController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping({"", "/", "/listarMascotas", "/listarMascotas.html", "/listarmascotas.html"})
+    // ── Listar ────────────────────────────────────────────────────────────────
+
+    @GetMapping({"", "/", "/listarMascotas", "/listarMascotas.html"})
     public String listarMascotas(Model model) {
         Collection<Mascota> mascotas = mascotaService.searchAll();
+
         Map<Long, Cliente> clientesMap = clienteService.searchAll().stream()
                 .collect(Collectors.toMap(Cliente::getId, c -> c));
 
@@ -50,13 +53,15 @@ public class MascotaController {
         return "listarMascotas";
     }
 
+    // ── Detalle ───────────────────────────────────────────────────────────────
+
     @GetMapping({"/detalle", "/detalleMascota.html"})
     public String verMascotaPorParametro(@RequestParam(required = false) Long id, Model model) {
         if (id == null) {
             model.addAttribute("errorMascota", "Debes enviar un id, por ejemplo /mascotas/detalle?id=1");
             return listarMascotas(model);
         }
-        return verMascota(id, model); // ← corregido: verMascota (sin 's')
+        return verMascota(id, model);
     }
 
     @GetMapping("/{id}")
@@ -67,9 +72,13 @@ public class MascotaController {
             return "detalleMascota";
         }
         model.addAttribute("mascota", mascota);
-        model.addAttribute("clienteId", mascota.getClienteId());
+        // Accede al cliente a través de la relación JPA
+        model.addAttribute("clienteId",
+                mascota.getCliente() != null ? mascota.getCliente().getId() : null);
         return "detalleMascota";
     }
+
+    // ── Editar ────────────────────────────────────────────────────────────────
 
     @GetMapping("/{id}/editar")
     public String editarMascota(@PathVariable Long id, Model model) {
@@ -87,18 +96,21 @@ public class MascotaController {
                                   RedirectAttributes redirectAttributes) {
         Mascota mascotaExistente = mascotaService.searchById(id);
         if (mascotaExistente == null) {
+            redirectAttributes.addFlashAttribute("error", "No se encontró la mascota.");
             return "redirect:/mascotas";
         }
-        BeanUtils.copyProperties(mascotaActualizada, mascotaExistente, "id", "foto", "clienteId");
+        // Copia campos sin tocar id, foto ni la relación cliente
+        BeanUtils.copyProperties(mascotaActualizada, mascotaExistente, "id", "foto", "cliente");
         mascotaService.save(mascotaExistente);
         redirectAttributes.addFlashAttribute("mensaje", "Mascota actualizada correctamente.");
         return "redirect:/mascotas";
     }
 
+    // ── Desactivar ────────────────────────────────────────────────────────────
+
     @PostMapping("/{id}/eliminar")
     public String desactivarMascota(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        Mascota mascota = mascotaService.searchById(id);
-        if (mascota == null) {
+        if (mascotaService.searchById(id) == null) {
             redirectAttributes.addFlashAttribute("error", "No se encontró la mascota.");
             return "redirect:/mascotas";
         }
@@ -111,6 +123,8 @@ public class MascotaController {
         return "redirect:/mascotas";
     }
 
+    // ── Nueva ─────────────────────────────────────────────────────────────────
+
     @GetMapping("/nueva")
     public String nuevaMascota(Model model) {
         model.addAttribute("clientes", clienteService.searchAll());
@@ -119,7 +133,14 @@ public class MascotaController {
 
     @PostMapping("/nueva")
     public String guardarNuevaMascota(@ModelAttribute Mascota nuevaMascota,
+                                       @RequestParam Long clienteId,   // viene del <select> del form
                                        RedirectAttributes redirectAttributes) {
+        Cliente cliente = clienteService.searchById(clienteId);
+        if (cliente == null) {
+            redirectAttributes.addFlashAttribute("error", "El cliente seleccionado no existe.");
+            return "redirect:/mascotas/nueva";
+        }
+        nuevaMascota.setCliente(cliente);   // asigna la relación JPA
         nuevaMascota.setFoto("default.jpg");
         if (nuevaMascota.getEstado() == null || nuevaMascota.getEstado().isBlank()) {
             nuevaMascota.setEstado("activa");

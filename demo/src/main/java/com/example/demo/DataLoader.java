@@ -61,16 +61,15 @@ public class DataLoader implements CommandLineRunner {
 
         Random rnd = new Random(42);
 
-        // 100 clientes
-        for (int i = 1; i <= 100; i++) {
+        // 50 clientes
+        for (int i = 1; i <= 50; i++) {
             String nombre   = NOMBRES[rnd.nextInt(NOMBRES.length)];
             String apellido = APELLIDOS[rnd.nextInt(APELLIDOS.length)];
-            Long   cedula   = 1_000_000_000L + i;
             String correo   = nombre.toLowerCase() + i + "@email.com";
             String password = "pass" + i;
             String celular  = "31" + String.format("%08d", i);
 
-            clienteRepository.save(new Cliente(nombre, apellido, cedula, correo, password, celular));
+            clienteRepository.save(new Cliente(nombre, apellido, correo, password, celular));
         }
 
         List<Cliente> clientes = clienteRepository.findAll();
@@ -88,11 +87,11 @@ public class DataLoader implements CommandLineRunner {
             String estado        = ESTADOS[rnd.nextInt(ESTADOS.length)];
             String enfermedad    = ENFERMEDADES[rnd.nextInt(ENFERMEDADES.length)];
             String observaciones = "Observación de mascota #" + i;
-            Long   clienteId     = clientes.get(rnd.nextInt(clientes.size())).getId();
+            Cliente cliente = clientes.get(rnd.nextInt(clientes.size()));
 
             mascotaRepository.save(new Mascota(
                     nombreMascota, especie, raza, edad, peso,
-                    "default.jpg", estado, enfermedad, observaciones, clienteId));
+                    "default.jpg", estado, enfermedad, observaciones, cliente));
         }
 
         System.out.println(" DataLoader: 100 clientes y 100 mascotas generados correctamente.");

@@ -69,7 +69,6 @@ public class IndexController {
     @PostMapping("/registro")
     public String procesarRegistro(@RequestParam String nombre,
                                     @RequestParam String apellido,   // ← añadido
-                                    @RequestParam String cedula,     // ← añadido
                                     @RequestParam String email,
                                     @RequestParam String telefono,
                                     @RequestParam String password,
@@ -80,12 +79,8 @@ public class IndexController {
             return "redirect:/inicio/registro";
         }
         try {
-            Long cedulaLong = Long.parseLong(cedula);
-            Cliente nuevo = new Cliente(nombre, apellido, cedulaLong, email, telefono, password);
+            Cliente nuevo = new Cliente(nombre, apellido, email, telefono, password);
             clienteService.save(nuevo);
-        } catch (NumberFormatException e) {
-            redirectAttributes.addFlashAttribute("error", "La cédula debe ser un número válido.");
-            return "redirect:/inicio/registro";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/inicio/registro";

@@ -24,24 +24,17 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void save(Cliente cliente) {
-          // ── Validar nombre y apellido ──────────────────────────────────────────
         if (cliente.getNombre() == null || cliente.getNombre().isBlank()) {
             throw new IllegalArgumentException("El nombre del cliente no puede estar vacío.");
         }
         if (cliente.getApellido() == null || cliente.getApellido().isBlank()) {
             throw new IllegalArgumentException("El apellido del cliente no puede estar vacío.");
         }
-
-        // ── Validar correo ─────────────────────────────────────────────────────
         if (cliente.getCorreo() == null || !cliente.getCorreo().contains("@")) {
             throw new IllegalArgumentException("El correo debe contener '@'.");
         }
-
-        // ── Unicidad de cédula (solo en creación, id == null) ─────────────────
-        if (cliente.getId() == null && cliente.getCedula() != null) {
-            repository.findByCedula(cliente.getCedula()).ifPresent(existing -> {
-                throw new IllegalArgumentException("Ya existe un cliente con esa cédula.");
-            });
+        if (cliente.getCelular() == null || cliente.getCelular().length() < 10) {
+            throw new IllegalArgumentException("El celular debe tener al menos 10 caracteres.");
         }
 
         // ── Unicidad de correo (solo en creación) ─────────────────────────────

@@ -3,125 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Mascotas</title>
-  <link rel="stylesheet" th:href="@{/css/mascotas.css}">
+  <title>Listado de Mascotas</title>
+  <link rel="stylesheet" th:href="@{/css/clientes.css}">
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
-<header class="header">
-  <div class="header-container">
-    <a th:href="@{/inicio}" class="logo">
-      <img th:src="@{/img/Medicat.png}" alt="Medicat logo">
-    </a>
-    <nav class="nav">
-      <a th:href="@{/inicio}" class="nav-link">Inicio</a>
-      <a th:href="@{/clientes}" class="nav-link">Clientes</a>
-      <a th:href="@{/mascotas/nueva}" class="btn-nueva">+ Nueva Mascota</a>
-    </nav>
-  </div>
-</header>
-
-<!-- ================= MAIN ================= -->
-<main class="dashboard">
-
-  <section class="dashboard-header">
-    <a th:href="@{/inicio}" class="btn-volver">← Volver al inicio</a>
-    <h1 class="dashboard-title">Registro de Mascotas</h1>
-    <p class="dashboard-subtitle">Gestiona toda la información de las mascotas en un solo lugar</p>
-  </section>
-
-  <section class="filtros-card">
-    <div class="filtros">
-      <div class="input-grupo">
-        <span class="icono" aria-hidden="true">🔍</span>
-        <input type="text" placeholder="Buscar por nombre, dueño o raza...">
-      </div>
-      <div class="input-grupo">
-        <span class="icono" aria-hidden="true">⚲</span>
-        <select>
-          <option>Todos los estados</option>
-          <option>Saludable</option>
-          <option>En Tratamiento</option>
-          <option>Requiere Atención</option>
-        </select>
-      </div>
+  <header class="header">
+    <div class="header-container">
+      <a th:href="@{/inicio}" class="logo">
+        <img th:src="@{/img/Medicat.png}" alt="Medicat logo">
+      </a>
+      <nav class="nav">
+        <a th:href="@{/inicio}"   class="nav-link">Inicio</a>
+        <a th:href="@{/clientes}" class="nav-link">Clientes</a>
+        <a th:href="@{/mascotas/nueva}" class="btn-nueva">+ Nueva Mascota</a>
+      </nav>
     </div>
-    <div class="estadisticas">
-      <span>Total: <strong th:text="${totalMascotas}">8</strong></span>
-      <span>• Saludables: <strong class="text-verde" th:text="${saludables}">5</strong></span>
-      <span>• En tratamiento: <strong class="text-naranja" th:text="${tratamiento}">2</strong></span>
-      <span>• Requieren atención: <strong class="text-rojo" th:text="${atencion}">1</strong></span>
-    </div>
-  </section>
+  </header>
 
+  <main class="dashboard">
+    <section class="dashboard-header">
+      <a th:href="@{/inicio}" class="btn-volver">← Volver al inicio</a>
+      <h1 class="dashboard-title">Listado de Mascotas</h1>
+      <p class="dashboard-subtitle">Gestiona la información de las mascotas registradas</p>
+    </section>
 
-  <p th:if="${mensaje}" th:text="${mensaje}" class="flash-message flash-message-success"></p>
-  <p th:if="${error}" th:text="${error}" class="flash-message flash-message-error"></p>
+    <p th:if="${mensaje}" th:text="${mensaje}" class="alert alert-success"></p>
+    <p th:if="${error}"   th:text="${error}"   class="alert alert-error"></p>
 
-  <section class="tabla-card">
-    <table class="tabla">
-      <thead>
-        <tr>
-          <th>Mascota</th>
-          <th>Especie / Raza</th>
-          <th>Edad</th>
-          <th>Dueño</th>        
-          <th>Próxima Cita</th>
-          <th>Estado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-         <tr th:if="${#lists.isEmpty(mascotas)}">
-          <td colspan="7">No hay mascotas registradas.</td>
-        </tr>
-        <tr th:each="mascota : ${mascotas}">
-          <td>
-            <div class="mascota-info">
-              <div class="avatar">
-                 <img class="avatar-img" th:src="@{/img/{foto}(foto=${mascota.foto})}" alt="Foto de [[${mascota.nombre}]]">
+    <p>Total de mascotas: <strong th:text="${totalMascotas}">0</strong></p>
+    <p>Activas: <strong th:text="${saludables}">0</strong> |
+       En tratamiento: <strong th:text="${tratamiento}">0</strong> |
+       Inactivas: <strong th:text="${inactivas}">0</strong></p>
+
+    <section class="tabla-card">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Especie</th>
+            <th>Raza</th>
+            <th>Edad</th>
+            <th>Peso</th>
+            <th>Estado</th>
+            <th>Propietario</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:if="${#lists.isEmpty(mascotas)}">
+            <td colspan="8">No hay mascotas registradas.</td>
+          </tr>
+          <tr th:each="mascota : ${mascotas}">
+            <td th:text="${mascota.nombre}">Nombre</td>
+            <td th:text="${mascota.especie}">Especie</td>
+            <td th:text="${mascota.raza}">Raza</td>
+            <td th:text="${mascota.edad}">0</td>
+            <td th:text="${mascota.peso} + ' kg'">0 kg</td>
+            <td><span class="badge" th:text="${mascota.estado}">activa</span></td>
+
+            <!-- Propietario: accede a través de la relación JPA mascota.cliente -->
+            <td>
+              <span th:if="${mascota.cliente != null}"
+                    th:text="${mascota.cliente.nombre + ' ' + mascota.cliente.apellido}">
+                Propietario
+              </span>
+              <span th:unless="${mascota.cliente != null}">—</span>
+            </td>
+
+            <td>
+              <div class="acciones">
+                <a th:href="@{/mascotas/{id}(id=${mascota.id})}"        class="btn-accion">Ver</a>
+                <a th:href="@{/mascotas/{id}/editar(id=${mascota.id})}" class="btn-accion">Editar</a>
+                <form th:action="@{/mascotas/{id}/eliminar(id=${mascota.id})}" method="post"
+                      class="inline-form" onsubmit="return confirm('¿Desactivar esta mascota?')">
+                  <button class="btn-eliminar" type="submit">Desactivar</button>
+                </form>
               </div>
-              <span th:text="${mascota.nombre}">Max</span>
-            </div>
-          </td>
-          <td>
-            <span th:text="${mascota.especie}">Perro</span> -
-            <span th:text="${mascota.raza}">Golden Retriever</span>
-          </td>
-          <td><span th:text="${mascota.edad}">3</span> años</td>
-          <td>
-            <!-- Mostrar nombre del dueño usando el mapa de clientes -->
-            <span th:if="${clientesMap.containsKey(mascota.clienteId)}" 
-                  th:text="${clientesMap.get(mascota.clienteId).nombre + ' ' + clientesMap.get(mascota.clienteId).apellido}">
-              Mario Pérez
-            </span>
-            <span th:unless="${clientesMap.containsKey(mascota.clienteId)}">Sin dueño</span>
-          </td>
-          <td>28 Feb 2026</td>
-          <td>
-            <span class="badge"
-                  th:text="${mascota.estado}"
-                  th:classappend="
-                    ${mascota.estado == 'Sano'} ? ' badge-verde' :
-                    (${mascota.estado == 'En Tratamiento'} ? ' badge-amarillo' : ' badge-rojo')">
-            </span>
-          </td>
-          <td class="acciones">
-            <a th:href="@{/mascotas/{id}(id=${mascota.id})}" class="btn-accion" aria-label="Ver detalle">Ver</a>
-            <a th:href="@{/mascotas/{id}/editar(id=${mascota.id})}" class="btn-accion" aria-label="Editar">Editar</a>
-
-              <form th:action="@{/mascotas/{id}/eliminar(id=${mascota.id})}" method="post" class="inline-form"
-        onsubmit="return confirm('¿Estás seguro de que deseas eliminar a esta mascota ?')">
-    <button class="btn-eliminar" type="submit" aria-label="Eliminar">Eliminar</button>
-  </form>
-
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </section>
-
-</main>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
 </body>
 </html>

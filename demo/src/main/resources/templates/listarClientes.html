@@ -57,8 +57,6 @@
       </tr>
       <tr th:each="cliente : ${clientes}">
         
-            <td th:text="${cliente.cedula != null ? cliente.cedula : '—'}">—</td>
-
          <td>
           <div class="cliente-info">
             <div class="avatar" th:text="${#strings.substring(cliente.nombre,0,1)}">A</div>
