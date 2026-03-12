@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.stream.Collectors;
+
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.MascotaService;
@@ -31,31 +29,23 @@ public class MascotaController {
     @Autowired
     private ClienteService clienteService;
 
-    // ── Listar ────────────────────────────────────────────────────────────────
-
     @GetMapping({"", "/", "/listarMascotas", "/listarMascotas.html"})
     public String listarMascotas(Model model) {
         Collection<Mascota> mascotas = mascotaService.searchAll();
 
-        Map<Long, Cliente> clientesMap = clienteService.searchAll().stream()
-                .collect(Collectors.toMap(Cliente::getId, c -> c));
-
-        long saludables  = mascotas.stream().filter(m -> "activa".equalsIgnoreCase(m.getEstado())).count();
-        long inactivas   = mascotas.stream().filter(m -> "inactiva".equalsIgnoreCase(m.getEstado())).count();
-        long tratamiento = mascotas.stream().filter(m -> "tratamiento".equalsIgnoreCase(m.getEstado())).count();
+         long saludables = mascotaService.countByEstado(mascotas, "activa");
+        long inactivas = mascotaService.countByEstado(mascotas, "inactiva");
+        long tratamiento = mascotaService.countByEstado(mascotas, "tratamiento");
 
         model.addAttribute("mascotas", mascotas);
-        model.addAttribute("clientesMap", clientesMap);
+        model.addAttribute("clientesMap", mascotaService.getClientesMap());
         model.addAttribute("totalMascotas", mascotas.size());
         model.addAttribute("saludables", saludables);
         model.addAttribute("inactivas", inactivas);
         model.addAttribute("tratamiento", tratamiento);
         return "listarMascotas";
     }
-
-    // ── Detalle ───────────────────────────────────────────────────────────────
-
-    @GetMapping({"/detalle", "/detalleMascota.html"})
+    @GetMapping({ "/detalle", "/detalleMascota.html" })
     public String verMascotaPorParametro(@RequestParam(required = false) Long id, Model model) {
         if (id == null) {
             model.addAttribute("errorMascota", "Debes enviar un id, por ejemplo /mascotas/detalle?id=1");
@@ -72,13 +62,9 @@ public class MascotaController {
             return "detalleMascota";
         }
         model.addAttribute("mascota", mascota);
-        // Accede al cliente a través de la relación JPA
-        model.addAttribute("clienteId",
-                mascota.getCliente() != null ? mascota.getCliente().getId() : null);
+        model.addAttribute("clienteId", mascota.getCliente() != null ? mascota.getCliente().getId() : null);
         return "detalleMascota";
     }
-
-    // ── Editar ────────────────────────────────────────────────────────────────
 
     @GetMapping("/{id}/editar")
     public String editarMascota(@PathVariable Long id, Model model) {
@@ -92,28 +78,19 @@ public class MascotaController {
 
     @PostMapping("/{id}/editar")
     public String guardarEdicion(@PathVariable Long id,
-                                  @ModelAttribute Mascota mascotaActualizada,
-                                  RedirectAttributes redirectAttributes) {
-        Mascota mascotaExistente = mascotaService.searchById(id);
-        if (mascotaExistente == null) {
-            redirectAttributes.addFlashAttribute("error", "No se encontró la mascota.");
+        @ModelAttribute Mascota mascotaActualizada,
+            RedirectAttributes redirectAttributes) {
+        try {
+            mascotaService.updateMascota(id, mascotaActualizada);
+            redirectAttributes.addFlashAttribute("mensaje", "Mascota actualizada correctamente.");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/mascotas";
         }
-        // Copia campos sin tocar id, foto ni la relación cliente
-        BeanUtils.copyProperties(mascotaActualizada, mascotaExistente, "id", "foto", "cliente");
-        mascotaService.save(mascotaExistente);
-        redirectAttributes.addFlashAttribute("mensaje", "Mascota actualizada correctamente.");
         return "redirect:/mascotas";
     }
-
-    // ── Desactivar ────────────────────────────────────────────────────────────
-
     @PostMapping("/{id}/eliminar")
     public String desactivarMascota(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        if (mascotaService.searchById(id) == null) {
-            redirectAttributes.addFlashAttribute("error", "No se encontró la mascota.");
-            return "redirect:/mascotas";
-        }
         try {
             mascotaService.deactivate(id);
             redirectAttributes.addFlashAttribute("mensaje", "Mascota marcada como inactiva correctamente.");
@@ -122,9 +99,6 @@ public class MascotaController {
         }
         return "redirect:/mascotas";
     }
-
-    // ── Nueva ─────────────────────────────────────────────────────────────────
-
     @GetMapping("/nueva")
     public String nuevaMascota(Model model) {
         model.addAttribute("clientes", clienteService.searchAll());
@@ -133,20 +107,16 @@ public class MascotaController {
 
     @PostMapping("/nueva")
     public String guardarNuevaMascota(@ModelAttribute Mascota nuevaMascota,
-                                       @RequestParam Long clienteId,   // viene del <select> del form
-                                       RedirectAttributes redirectAttributes) {
-        Cliente cliente = clienteService.searchById(clienteId);
-        if (cliente == null) {
-            redirectAttributes.addFlashAttribute("error", "El cliente seleccionado no existe.");
+
+        @RequestParam Long clienteId,
+            RedirectAttributes redirectAttributes) {
+        try {
+            mascotaService.createMascota(nuevaMascota, clienteId);
+            redirectAttributes.addFlashAttribute("mensaje", "Mascota registrada correctamente.");
+            return "redirect:/mascotas";
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/mascotas/nueva";
         }
-        nuevaMascota.setCliente(cliente);   // asigna la relación JPA
-        nuevaMascota.setFoto("default.jpg");
-        if (nuevaMascota.getEstado() == null || nuevaMascota.getEstado().isBlank()) {
-            nuevaMascota.setEstado("activa");
         }
-        mascotaService.save(nuevaMascota);
-        redirectAttributes.addFlashAttribute("mensaje", "Mascota registrada correctamente.");
-        return "redirect:/mascotas";
-    }
 }

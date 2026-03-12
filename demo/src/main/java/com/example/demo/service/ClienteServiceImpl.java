@@ -1,17 +1,23 @@
 package com.example.demo.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Cliente;
+import com.example.demo.entities.Mascota;
 import com.example.demo.repository.ClienteRepository;
+import com.example.demo.service.MascotaService;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
     @Autowired  
     private ClienteRepository repository;
+
+    @Autowired
+    private MascotaService mascotaService;
 
     @Override
     public Cliente searchById(Long id) {
@@ -20,6 +26,19 @@ public class ClienteServiceImpl implements ClienteService {
 
     public Collection<Cliente> searchAll() {
         return repository.findAll();
+    }
+
+
+    @Override
+    public Collection<Cliente> searchAllWithMascotas() {
+        Collection<Cliente> clientes = repository.findAll();
+        clientes.forEach(cliente -> cliente.setMascotas(mascotaService.searchByClienteId(cliente.getId())));
+        return clientes;
+    }
+
+    @Override
+    public List<Mascota> getMascotasByCliente(Long clienteId) {
+        return mascotaService.searchByClienteId(clienteId);
     }
 
     @Override
@@ -46,23 +65,5 @@ public class ClienteServiceImpl implements ClienteService {
 
        repository.save(cliente);
         
-    }
-
-
-    @Override
-    public void delete(Long id) {
-        repository.deleteById(id);        
-    }
-
-    @Override
-    public Cliente login(String correo, String contrasenia) {
-        // Validar formato de correo en la capa de servicio
-        if (correo == null || !correo.contains("@")) {
-            throw new IllegalArgumentException("El correo debe contener '@'.");
-        }
-
-        return repository.findByCorreo(correo)
-                .filter(c -> c.getContrasenia().equals(contrasenia))
-                .orElse(null);
     }
 }
