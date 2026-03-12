@@ -119,6 +119,7 @@ public class ClienteController {
             redirectAttributes.addFlashAttribute("error", "No se encontró el cliente");
             return "redirect:/clientes";
         }
+        clienteService.delete(id);
          redirectAttributes.addFlashAttribute("mensaje", "Cliente eliminado correctamente.");
         return "redirect:/clientes";
     }

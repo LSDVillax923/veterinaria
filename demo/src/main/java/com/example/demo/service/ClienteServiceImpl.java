@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
 import com.example.demo.repository.ClienteRepository;
-import com.example.demo.service.MascotaService;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
