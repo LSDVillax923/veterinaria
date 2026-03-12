@@ -24,6 +24,7 @@ public class ClienteServiceImpl implements ClienteService {
        return repository.findById(id).orElse(null);
     }
 
+     @Override
     public Collection<Cliente> searchAll() {
         return repository.findAll();
     }
@@ -65,5 +66,16 @@ public class ClienteServiceImpl implements ClienteService {
 
        repository.save(cliente);
         
+    }
+@Override
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Cliente login(String correo, String contrasenia) {
+        return repository.findByCorreo(correo)
+                .filter(cliente -> cliente.getContrasenia().equals(contrasenia))
+                .orElse(null);
     }
 }
