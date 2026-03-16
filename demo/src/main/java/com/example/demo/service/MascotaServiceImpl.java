@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Mascota;
+import com.example.demo.errors.MascotaNotFoundException;
 import com.example.demo.repository.MascotaRepository;
 
 @Service
@@ -16,7 +17,9 @@ public class MascotaServiceImpl implements MascotaService {
 
     @Override
     public Mascota searchById(Long id) {
-        return repository.findById(id).orElse(null);
+        return repository.findById(id).orElseThrow(
+            () -> new MascotaNotFoundException(id)
+        );
     }
 
     @Override

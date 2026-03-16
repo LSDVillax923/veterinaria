@@ -69,7 +69,7 @@ public class MascotaController {
         Mascota mascota = mascotaService.searchById(id);
         if (mascota == null) {
             model.addAttribute("errorMascota", "No se encontró la mascota con ID " + id);
-            return "detalleMascota";
+            return "error404";
         }
         model.addAttribute("mascota", mascota);
         // Accede al cliente a través de la relación JPA
