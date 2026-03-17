@@ -193,7 +193,7 @@ section {
     margin: clamp(14px, 2vw, 22px) 0 0;
     max-width: 40ch;
     color: var(--color-primario-claro);
-    font-size: 15px;
+    font-size: 20px;
     line-height: 1.5;
 }
 
@@ -487,6 +487,10 @@ section {
     transition: transform 0.3s ease, box-shadow 0.3s;
 }
 
+.servicio-card:hover{
+    transform: translateY(-6px);
+}
+
 .servicio-card__icono {
     width: clamp(56px, 4vw, 72px);
     height: clamp(56px, 4vw, 72px);
@@ -596,6 +600,10 @@ section {
     gap: 10px;
 }
 
+.stat-card:hover{
+    transform: translateY(-6px);
+}
+
 .stat-oscuro {
     background-color: #005f64;
     color: #ffffff;
@@ -692,7 +700,8 @@ section {
 }
 
 .tarjeta-medico img {
-    width: 100%;
+    max-width: 100%;
+    height: auto;
     aspect-ratio: 4/3;       /* más vertical, como en la imagen */
     object-fit: cover;
     object-position: top;    /* enfoca la cara */
@@ -917,7 +926,7 @@ textarea:focus {
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 40px;
+    gap: 140px;
 }
 
 .footer-col-logo img {
@@ -1061,7 +1070,7 @@ textarea:focus {
 }
 
 .resena-card {
-    background-color: #f0e9df;
+    background-color: var(--gris-claro);
     border-radius: 20px;
     padding: 28px 28px 24px;
     text-align: left;
@@ -1069,6 +1078,10 @@ textarea:focus {
     flex-direction: column;
     justify-content: space-between;
     gap: 20px;
+}
+
+.resena-card:hover{
+    transform: translateY(-6px);
 }
 
 .resena-card__header {

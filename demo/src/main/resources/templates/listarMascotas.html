@@ -59,7 +59,13 @@
             <td th:text="${mascota.raza}">Raza</td>
             <td th:text="${mascota.edad}">0</td>
             <td th:text="${mascota.peso} + ' kg'">0 kg</td>
-            <td><span class="badge" th:text="${mascota.estado}">activa</span></td>
+            <td>
+            <span class="badge"
+                  th:text="${mascota.estado}"
+                  th:classappend="${mascota.estado == 'activa'} ? ' badge-verde' :
+                                  (${mascota.estado == 'tratamiento'} ? ' badge-amarillo' : ' badge-rojo')">
+            </span>
+            </td>
 
             <!-- Propietario: accede a través de la relación JPA mascota.cliente -->
             <td>
