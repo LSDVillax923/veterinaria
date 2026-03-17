@@ -90,4 +90,11 @@ public class MascotaServiceImpl implements MascotaService {
 
         repository.save(nuevaMascota);
     }
+
+    @Override
+    public Collection<Mascota> buscarPorFiltros(String query, String estado) {
+        String q = (query  != null && query.isBlank())  ? null : query;
+        String e = (estado != null && estado.isBlank()) ? null : estado;
+        return repository.buscarPorFiltros(q, e);
+    }
 }

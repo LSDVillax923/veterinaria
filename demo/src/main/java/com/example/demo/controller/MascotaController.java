@@ -28,27 +28,45 @@ public class MascotaController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping({"", "/", "/listarMascotas", "/listarMascotas.html"})
-    public String listarMascotas(Model model) {
-        Collection<Mascota> mascotas = mascotaService.searchAll();
+      @GetMapping({"", "/", "/listarMascotas", "/listarMascotas.html"})
+    public String listarMascotas(
+            @RequestParam(required = false) String busqueda,
+            @RequestParam(required = false) String estado,
+            Model model) {
 
-         long saludables = mascotaService.countByEstado(mascotas, "activa");
-        long inactivas = mascotaService.countByEstado(mascotas, "inactiva");
+        Collection<Mascota> mascotas;
+
+        boolean hayFiltros = (busqueda != null && !busqueda.isBlank())
+                          || (estado   != null && !estado.isBlank());
+
+        if (hayFiltros) {
+            mascotas = mascotaService.buscarPorFiltros(busqueda, estado);
+        } else {
+            mascotas = mascotaService.searchAll();
+        }
+
+        long saludables  = mascotaService.countByEstado(mascotas, "activa");
+        long inactivas   = mascotaService.countByEstado(mascotas, "inactiva");
         long tratamiento = mascotaService.countByEstado(mascotas, "tratamiento");
 
-        model.addAttribute("mascotas", mascotas);
-        model.addAttribute("clientesMap", mascotaService.getClientesMap());
-        model.addAttribute("totalMascotas", mascotas.size());
-        model.addAttribute("saludables", saludables);
-        model.addAttribute("inactivas", inactivas);
-        model.addAttribute("tratamiento", tratamiento);
+        model.addAttribute("mascotas",           mascotas);
+        model.addAttribute("clientesMap",        mascotaService.getClientesMap());
+        model.addAttribute("totalMascotas",      mascotas.size());
+        model.addAttribute("saludables",         saludables);
+        model.addAttribute("inactivas",          inactivas);
+        model.addAttribute("tratamiento",        tratamiento);
+        model.addAttribute("busqueda",           busqueda);
+        model.addAttribute("estadoSeleccionado", estado);
         return "listarMascotas";
     }
-    @GetMapping({ "/detalle", "/detalleMascota.html" })
-    public String verMascotaPorParametro(@RequestParam(required = false) Long id, Model model) {
+
+     @GetMapping({"/detalle", "/detalleMascota.html"})
+    public String verMascotaPorParametro(
+            @RequestParam(required = false) Long id, Model model) {
         if (id == null) {
-            model.addAttribute("errorMascota", "Debes enviar un id, por ejemplo /mascotas/detalle?id=1");
-            return listarMascotas(model);
+            model.addAttribute("errorMascota",
+                "Debes enviar un id, por ejemplo /mascotas/detalle?id=1");
+            return listarMascotas(null, null, model);
         }
         return verMascota(id, model);
     }
