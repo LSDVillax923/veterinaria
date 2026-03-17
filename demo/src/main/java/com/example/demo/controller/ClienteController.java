@@ -25,13 +25,24 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @GetMapping({"", "/", "/listar", "/listar.html"})
-    public String listarClientes(Model model) {
+       @GetMapping({"", "/", "/listar", "/listar.html"})
+    public String listarClientes(
+            @RequestParam(required = false) String busqueda,
+            Model model) {
 
-        Collection<Cliente> clientes = clienteService.searchAllWithMascotas();
+        Collection<Cliente> clientes;
 
-        model.addAttribute("clientes", clientes);
+        boolean hayFiltro = busqueda != null && !busqueda.isBlank();
+
+        if (hayFiltro) {
+            clientes = clienteService.buscarPorFiltros(busqueda);
+        } else {
+            clientes = clienteService.searchAllWithMascotas();
+        }
+
+        model.addAttribute("clientes",      clientes);
         model.addAttribute("totalClientes", clientes.size());
+        model.addAttribute("busqueda",      busqueda);
         return "listarClientes";
     }
 
@@ -53,27 +64,28 @@ public class ClienteController {
         return "redirect:/clientes";
     }
 
-    @GetMapping({ "/detalle", "/detalle.html" })
-    public String verClientePorParametro(@RequestParam(required = false) Long id, Model model) {
+    @GetMapping({"/detalle", "/detalle.html"})
+    public String verClientePorParametro(
+            @RequestParam(required = false) Long id, Model model) {
         if (id == null) {
-            model.addAttribute("error", "Debes enviar un id, por ejemplo /clientes/detalle.html?id=1");
-            return listarClientes(model);
+            model.addAttribute("error",
+                "Debes enviar un id, por ejemplo /clientes/detalle?id=1");
+            return listarClientes(null, model);
         }
         return verCliente(id, model);
     }
 
-     @GetMapping({"/{id}", "/{id}.html"})
+         @GetMapping({"/{id}", "/{id}.html"})
     public String verCliente(@PathVariable Long id, Model model) {
         Cliente cliente = clienteService.searchById(id);
         if (cliente == null) {
-            model.addAttribute("error", "No se encontró un cliente con ID " + id + ".");
-            return listarClientes(model);
+            model.addAttribute("error", 
+                "No se encontró un cliente con ID " + id + ".");
+            return listarClientes(null, model);
         }
-
-         List<Mascota> mascotas = clienteService.getMascotasByCliente(id);
-
-        model.addAttribute("cliente", cliente);
-        model.addAttribute("mascotas", mascotas);
+        List<Mascota> mascotas = clienteService.getMascotasByCliente(id);
+        model.addAttribute("cliente",       cliente);
+        model.addAttribute("mascotas",      mascotas);
         model.addAttribute("totalMascotas", mascotas.size());
         return "detalleCliente";
     }

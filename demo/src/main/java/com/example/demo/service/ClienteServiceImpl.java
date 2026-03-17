@@ -80,4 +80,17 @@ public class ClienteServiceImpl implements ClienteService {
                 .filter(cliente -> cliente.getContrasenia().equals(contrasenia))
                 .orElse(null);
     }
+
+    @Override
+    public Collection<Cliente> buscarPorFiltros(String query) {
+        String q = (query != null && query.isBlank()) ? null : query;
+
+        Collection<Cliente> clientes = repository.buscarPorFiltros(q);
+
+        // Carga las mascotas de cada cliente encontrado
+        clientes.forEach(c ->
+            c.setMascotas(mascotaService.searchByClienteId(c.getId())));
+
+        return clientes;
+    }
 }
