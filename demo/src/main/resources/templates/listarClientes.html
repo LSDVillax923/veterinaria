@@ -14,27 +14,21 @@
         <img th:src="@{/img/Medicat.png}" alt="Medicat logo">
       </a>
       <nav class="nav">
-        <a th:href="@{/inicio}"        class="nav-link">Inicio</a>
-        <a th:href="@{/mascotas}"      class="nav-link">Mascotas</a>
+        <a th:href="@{/inicio}" class="nav-link">Inicio</a>
+        <a th:href="@{/mascotas}" class="nav-link">Mascotas</a>
         <a th:href="@{/clientes/nuevo}" class="btn-nueva">+ Nuevo Cliente</a>
       </nav>
     </div>
   </header>
 
   <main class="dashboard">
-
-    <!-- Encabezado -->
     <section class="dashboard-header">
       <h1 class="dashboard-title">Registro de Clientes</h1>
       <p class="dashboard-subtitle">Gestiona la información de propietarios y sus mascotas</p>
     </section>
-
-    <!-- Alertas -->
     <p th:if="${mensaje}" th:text="${mensaje}" class="alert alert-success"></p>
-    <p th:if="${error}"   th:text="${error}"   class="alert alert-error"></p>
-
-    <!-- Filtros -->
-    <section class="busqueda-card">
+    <p th:if="${error}" th:text="${error}" class="alert alert-error"></p>
+     <section class="busqueda-card">
       <form th:action="@{/clientes}" method="get" class="busqueda-form">
         <div class="input-grupo">
           <span class="icono">🔍</span>
@@ -44,8 +38,9 @@
             th:value="${busqueda}"
             placeholder="Buscar por nombre, apellido, correo o celular..."
           />
-        </div>
-        <button type="submit" class="btn-nueva"> Buscar</button>
+           </div>
+
+           <button type="submit" class="btn-nueva">Buscar</button>
         <a th:href="@{/clientes}" class="btn-nueva">✕ Limpiar</a>
       </form>
       <p th:if="${busqueda != null and !#strings.isEmpty(busqueda)}"
@@ -54,38 +49,21 @@
         — <span th:text="${totalClientes}">0</span> encontrado(s)
       </p>
     </section>
-
-    <!-- Total -->
     <p>Total de clientes: <strong th:text="${totalClientes}">0</strong></p>
 
-<!-- Tabla -->
-<section class="tabla-card">
-  <table class="tabla">
-    <thead>
-      <tr>
-        <th>Cliente</th>
-        <th>Correo</th>
-        <th>Celular</th>
-        <th>Mascotas</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-
-      <tr th:if="${#lists.isEmpty(clientes)}">
-        <td colspan="6">No hay clientes registrados.</td>
-      </tr>
-
-      <tr th:each="cliente : ${clientes}">
-        <td>
-          <div class="cliente-info">
-            <div class="avatar" th:text="${#strings.substring(cliente.nombre,0,1)}">A</div>
-            <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
-          </div>
-        </td>
-
-          <!-- Sin resultados -->
+     <section class="tabla-card">
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Correo</th>
+            <th>Celular</th>
+            <th>Mascotas</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
           <tr th:if="${#lists.isEmpty(clientes)}">
             <td colspan="6" style="text-align:center;">
               <span th:if="${busqueda != null and !#strings.isEmpty(busqueda)}">
@@ -96,13 +74,10 @@
               </span>
             </td>
           </tr>
-
-          <!-- Filas -->
-          <tr th:each="cliente : ${clientes}">
+           <tr th:each="cliente : ${clientes}">
             <td>
               <div class="cliente-info">
-                <div class="avatar"
-                     th:text="${#strings.substring(cliente.nombre, 0, 1)}">A</div>
+                <div class="avatar" th:text="${#strings.substring(cliente.nombre, 0, 1)}">A</div>
                 <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
               </div>
             </td>
@@ -112,10 +87,8 @@
             <td><span class="badge">Activo</span></td>
             <td>
               <div class="acciones">
-                <a th:href="@{/clientes/{id}(id=${cliente.id})}"
-                   class="btn-accion">Ver</a>
-                <a th:href="@{/clientes/{id}/editar(id=${cliente.id})}"
-                   class="btn-accion">Editar</a>
+                <a th:href="@{/clientes/{id}(id=${cliente.id})}" class="btn-accion">Ver</a>
+                <a th:href="@{/clientes/{id}/editar(id=${cliente.id})}" class="btn-accion">Editar</a>
                 <form th:action="@{/clientes/{id}/eliminar(id=${cliente.id})}"
                       method="post" class="inline-form"
                       onsubmit="return confirm('¿Eliminar este cliente?')">
