@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
 import com.example.demo.service.ClienteService;
-import com.example.demo.service.MascotaService;
 
 @Controller
 @RequestMapping("/clientes")
@@ -26,17 +25,10 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @Autowired
-    private MascotaService mascotaService;
-
     @GetMapping({"", "/", "/listar", "/listar.html"})
     public String listarClientes(Model model) {
-        Collection<Cliente> clientes = clienteService.searchAll();
 
-        clientes.forEach(cliente -> {
-            List<Mascota> mascotas = mascotaService.searchByClienteId(cliente.getId());
-            cliente.setMascotas(mascotas);
-        });
+        Collection<Cliente> clientes = clienteService.searchAllWithMascotas();
 
         model.addAttribute("clientes", clientes);
         model.addAttribute("totalClientes", clientes.size());
@@ -78,7 +70,7 @@ public class ClienteController {
             return listarClientes(model);
         }
 
-        List<Mascota> mascotas = mascotaService.searchByClienteId(id);
+         List<Mascota> mascotas = clienteService.getMascotasByCliente(id);
 
         model.addAttribute("cliente", cliente);
         model.addAttribute("mascotas", mascotas);
@@ -127,26 +119,21 @@ public class ClienteController {
             redirectAttributes.addFlashAttribute("error", "No se encontró el cliente");
             return "redirect:/clientes";
         }
-
-        // Desactivar mascotas asociadas en lugar de eliminarlas
-        mascotaService.searchByClienteId(id)
-                .forEach(m -> mascotaService.deactivate(m.getId()));
-
         clienteService.delete(id);
-        redirectAttributes.addFlashAttribute("mensaje",
-                "Cliente eliminado y sus mascotas marcadas como inactivas.");
+         redirectAttributes.addFlashAttribute("mensaje", "Cliente eliminado correctamente.");
         return "redirect:/clientes";
     }
 
     // Mis mascotas vista del cliente
     @GetMapping("/{id}/mismascotas")
-public String misMascotas(@PathVariable Long id, Model model) {
+
+    public String misMascotas(@PathVariable Long id, Model model) {
         Cliente cliente = clienteService.searchById(id);
         if (cliente == null) {
             return "redirect:/inicio/login";
         }
 
-        List<Mascota> mascotas = mascotaService.searchByClienteId(id);
+        List<Mascota> mascotas = clienteService.getMascotasByCliente(id);
 
         model.addAttribute("cliente", cliente);
         model.addAttribute("mascotas", mascotas);
