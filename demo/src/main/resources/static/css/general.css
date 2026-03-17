@@ -298,6 +298,7 @@ section {
 
 /* ===== Sección: Servicios ===== */
 #servicios {
+    background-color: #d4bea7;
     padding: 36px clamp(22px, 5vw, 90px) 50px;
     color: var(--color-primario);
     text-align: center;
@@ -1068,11 +1069,11 @@ textarea:focus {
 #resenas {
     padding: 50px clamp(20px, 5vw, 90px);
     text-align: center;
-    background-color: var(--color-fondo);
+    background-color: var(--color-primario);
 }
 
 #resenas h2 {
-    color: var(--color-primario);
+    color: var(--color-fondo);
     font-size: clamp(1.8rem, 3vw, 2.6rem);
     font-weight: 800;
     margin-bottom: 8px;
@@ -1165,4 +1166,10 @@ textarea:focus {
         grid-template-columns: 1fr;
         max-width: 500px;
     }
+}
+
+#padding {
+    background-color: var(--color-primario);
+    min-height: 70px;
+
 }

@@ -27,6 +27,22 @@
       <p class="dashboard-subtitle">Gestiona la información de las mascotas registradas</p>
     </section>
 
+    <div class="filtros">
+      <div class="input-grupo">
+        <span class="icono" aria-hidden="true">🔍</span>
+        <input type="text" placeholder="Buscar por nombre, dueño o raza...">
+      </div>
+      <div class="input-grupo">
+        <span class="icono" aria-hidden="true">⚲</span>
+        <select>
+          <option>Todos los estados</option>
+          <option>Saludable</option>
+          <option>En Tratamiento</option>
+          <option>Requiere Atención</option>
+        </select>
+      </div>
+       </div>
+
     <p th:if="${mensaje}" th:text="${mensaje}" class="alert alert-success"></p>
     <p th:if="${error}"   th:text="${error}"   class="alert alert-error"></p>
 
