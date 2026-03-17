@@ -299,3 +299,20 @@ body{
   font-size:15px;
   background:transparent;
 }
+
+.page-nuevo-cliente .dashboard{
+  max-width:1100px;
+  margin:50px auto;
+}
+
+.page-nuevo-cliente .dashboard-header{
+  text-align:center;
+}
+
+.page-nuevo-cliente .form-card{
+  margin:0 auto;
+}
+
+.page-nuevo-cliente .form-acciones{
+  justify-content:center;
+}
