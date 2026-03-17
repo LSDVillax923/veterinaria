@@ -58,20 +58,32 @@
     <!-- Total -->
     <p>Total de clientes: <strong th:text="${totalClientes}">0</strong></p>
 
-    <!-- Tabla -->
-    <section class="tabla-card">
-      <table class="tabla">
-        <thead>
-          <tr>
-            <th>Cliente</th>
-            <th>Correo</th>
-            <th>Celular</th>
-            <th>Mascotas</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
+<!-- Tabla -->
+<section class="tabla-card">
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Correo</th>
+        <th>Celular</th>
+        <th>Mascotas</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr th:if="${#lists.isEmpty(clientes)}">
+        <td colspan="6">No hay clientes registrados.</td>
+      </tr>
+
+      <tr th:each="cliente : ${clientes}">
+        <td>
+          <div class="cliente-info">
+            <div class="avatar" th:text="${#strings.substring(cliente.nombre,0,1)}">A</div>
+            <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
+          </div>
+        </td>
 
           <!-- Sin resultados -->
           <tr th:if="${#lists.isEmpty(clientes)}">
