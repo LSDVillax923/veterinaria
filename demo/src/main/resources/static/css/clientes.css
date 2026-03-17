@@ -328,3 +328,16 @@ body{
 .tabla-mascotas .acciones{
   justify-content:center;
 }
+
+.busqueda-form{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.busqueda-acciones{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-top:4px;
+}

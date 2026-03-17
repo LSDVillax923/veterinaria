@@ -40,8 +40,10 @@
           />
            </div>
 
-           <button type="submit" class="btn-nueva">Buscar</button>
-        <a th:href="@{/clientes}" class="btn-nueva">✕ Limpiar</a>
+           <div class="busqueda-acciones">
+          <button type="submit" class="btn-nueva">Buscar</button>
+          <a th:href="@{/clientes}" class="btn-nueva">✕ Limpiar</a>
+        </div>
       </form>
       <p th:if="${busqueda != null and !#strings.isEmpty(busqueda)}"
          class="busqueda-resultado">
@@ -97,11 +99,9 @@
               </div>
             </td>
           </tr>
-
         </tbody>
       </table>
     </section>
-
   </main>
 </body>
 </html>
