@@ -814,6 +814,21 @@ hr {
     margin: 30px 0;
 }
 
+.mapa-contacto {
+    margin: 10px 0 30px;
+}
+
+.mapa-contacto h4 {
+    margin-bottom: 12px;
+}
+
+.mapa-contacto iframe {
+    width: 100%;
+    min-height: 220px;
+    border: 0;
+    border-radius: 16px;
+}
+
 .whatsapp {
     background-color: #147a78;
     border: none;
@@ -893,6 +908,13 @@ textarea:focus {
 
 .submit-btn:hover {
     background-color: #0c5f5d;
+}
+.contact-family-photo {
+    width: 100%;
+    margin-top: 22px;
+    border-radius: 16px;
+    object-fit: cover;
+    box-shadow: 0 14px 30px rgba(15, 109, 109, 0.2);
 }
 
 /* RESPONSIVE */

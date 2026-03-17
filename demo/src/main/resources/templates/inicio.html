@@ -323,6 +323,17 @@
                     </div>
                 </div>
 
+                <div class="mapa-contacto">
+                    <h4>Encuéntranos en el mapa</h4>
+                    <iframe
+                        title="Ubicación de Medicat en Madrid"
+                        src="https://www.google.com/maps?q=Calle%20Veterinaria%20123%2C%20Madrid%2C%20Espa%C3%B1a&output=embed"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
                 <a class="whatsapp" href="https://wa.me/34912345678" target="_blank" rel="noopener noreferrer">
                     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                     Chatear por WhatsApp
@@ -359,6 +370,7 @@
 
                     <button type="submit" class="submit-btn">Enviar Mensaje</button>
                 </form>
+                <img th:src="@{/img/familaunida.jpeg}" alt="Familia feliz con su mascota" class="contact-family-photo">
 
                 <!-- Mensaje opcional de éxito/error -->
                 <p th:if="${mensajeExito}" th:text="${mensajeExito}"></p>

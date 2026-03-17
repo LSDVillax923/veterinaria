@@ -94,6 +94,6 @@ public class DataLoader implements CommandLineRunner {
                     "default.jpg", estado, enfermedad, observaciones, cliente));
         }
 
-        System.out.println(" DataLoader: 100 clientes y 100 mascotas generados correctamente.");
+        System.out.println(" DataLoader: 50 clientes y 100 mascotas generados correctamente.");
     }
 }
