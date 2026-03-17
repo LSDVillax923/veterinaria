@@ -316,3 +316,15 @@ body{
 .page-nuevo-cliente .form-acciones{
   justify-content:center;
 }
+
+
+/* Alineación específica para listado de mascotas */
+.tabla-mascotas th,
+.tabla-mascotas td{
+  text-align:center;
+  vertical-align:middle;
+}
+
+.tabla-mascotas .acciones{
+  justify-content:center;
+}
