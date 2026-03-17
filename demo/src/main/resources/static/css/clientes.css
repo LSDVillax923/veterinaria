@@ -341,3 +341,13 @@ body{
   gap:10px;
   margin-top:4px;
 }
+
+.tabla-mascotas th,
+.tabla-mascotas td{
+  text-align:center;
+  vertical-align:middle;
+}
+
+.tabla-mascotas .acciones{
+  justify-content:center;
+}
