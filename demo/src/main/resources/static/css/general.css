@@ -298,7 +298,7 @@ section {
 
 /* ===== Sección: Servicios ===== */
 #servicios {
-    background-color: #d4bea7;
+    background-color: #e3dbd2;
     padding: 36px clamp(22px, 5vw, 90px) 50px;
     color: var(--color-primario);
     text-align: center;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
@@ -67,20 +68,15 @@ public class IndexController {
     }
 
     @PostMapping("/registro")
-    public String procesarRegistro(@RequestParam String nombre,
-                                    @RequestParam String apellido,   // ← añadido
-                                    @RequestParam String email,
-                                    @RequestParam String telefono,
-                                    @RequestParam String password,
+    public String procesarRegistro(@ModelAttribute Cliente cliente,
                                     @RequestParam String confirmar,
                                     RedirectAttributes redirectAttributes) {
-        if (!password.equals(confirmar)) {
+        if (!cliente.getContrasenia().equals(confirmar)) {
             redirectAttributes.addFlashAttribute("error", "Las contraseñas no coinciden.");
             return "redirect:/inicio/registro";
         }
         try {
-            Cliente nuevo = new Cliente(nombre, apellido, email, telefono, password);
-            clienteService.save(nuevo);
+             clienteService.save(cliente);
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/inicio/registro";
