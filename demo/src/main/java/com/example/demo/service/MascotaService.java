@@ -26,4 +26,6 @@ public interface MascotaService {
     void updateMascota(Long id, Mascota mascotaActualizada);
 
     void createMascota(Mascota nuevaMascota, Long clienteId);
+
+    Collection<Mascota> buscarPorFiltros(String query, String estado);
 }

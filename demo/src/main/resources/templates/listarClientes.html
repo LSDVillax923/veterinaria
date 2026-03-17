@@ -5,84 +5,130 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registro de Clientes</title>
   <link rel="stylesheet" th:href="@{/css/clientes.css}">
- 
 </head>
 <body>
 
   <header class="header">
-  <div class="header-container">
-    <a th:href="@{/inicio}" class="logo">
-      <img th:src="@{/img/Medicat.png}" alt="Medicat logo">
-    </a>
-    <nav class="nav">
-      <a th:href="@{/inicio}" class="nav-link">Inicio</a>
-      <a th:href="@{/mascotas}" class="nav-link">Mascotas</a>
-      <a th:href="@{/clientes/nuevo}" class="btn-nueva">+ Nuevo Cliente</a>
-    </nav>
-  </div>
-</header>
+    <div class="header-container">
+      <a th:href="@{/inicio}" class="logo">
+        <img th:src="@{/img/Medicat.png}" alt="Medicat logo">
+      </a>
+      <nav class="nav">
+        <a th:href="@{/inicio}"        class="nav-link">Inicio</a>
+        <a th:href="@{/mascotas}"      class="nav-link">Mascotas</a>
+        <a th:href="@{/clientes/nuevo}" class="btn-nueva">+ Nuevo Cliente</a>
+      </nav>
+    </div>
+  </header>
 
+  <main class="dashboard">
 
+    <!-- Encabezado -->
+    <section class="dashboard-header">
+      <h1 class="dashboard-title">Registro de Clientes</h1>
+      <p class="dashboard-subtitle">Gestiona la información de propietarios y sus mascotas</p>
+    </section>
 
-<main class="dashboard">
-  <section class="dashboard-header">
-    <h1 class="dashboard-title">Registro de Clientes</h1>
-    <p class="dashboard-subtitle">Gestiona la información de propietarios y sus mascotas</p>
-  </section>
+    <!-- Alertas -->
+    <p th:if="${mensaje}" th:text="${mensaje}" class="alert alert-success"></p>
+    <p th:if="${error}"   th:text="${error}"   class="alert alert-error"></p>
 
-  <p th:if="${mensaje}" th:text="${mensaje}" class="alert alert-success"></p>
-  <p th:if="${error}" th:text="${error}" class="alert alert-error"></p>
-   
+    <!-- Filtros -->
+    <section class="busqueda-card">
+      <form th:action="@{/clientes}" method="get" class="busqueda-form">
+        <div class="input-grupo">
+          <span class="icono">🔍</span>
+          <input
+            type="text"
+            name="busqueda"
+            th:value="${busqueda}"
+            placeholder="Buscar por nombre, apellido, correo o celular..."
+          />
+        </div>
+        <button type="submit" class="btn-nueva"> Buscar</button>
+        <a th:href="@{/clientes}" class="btn-nueva">✕ Limpiar</a>
+      </form>
+      <p th:if="${busqueda != null and !#strings.isEmpty(busqueda)}"
+         class="busqueda-resultado">
+        Resultados para: <strong th:text="${busqueda}"></strong>
+        — <span th:text="${totalClientes}">0</span> encontrado(s)
+      </p>
+    </section>
+
+    <!-- Total -->
     <p>Total de clientes: <strong th:text="${totalClientes}">0</strong></p>
-    
-   </section>
 
-  <section class="tabla-card">
-    <table class="tabla">
-      <thead>
+<!-- Tabla -->
+<section class="tabla-card">
+  <table class="tabla">
+    <thead>
       <tr>
-       
-        <th>Nombre</th>
+        <th>Cliente</th>
         <th>Correo</th>
         <th>Celular</th>
         <th>Mascotas</th>
         <th>Estado</th>
         <th>Acciones</th>
       </tr>
-      </thead>
-      <tbody>
+    </thead>
+    <tbody>
+
       <tr th:if="${#lists.isEmpty(clientes)}">
         <td colspan="6">No hay clientes registrados.</td>
       </tr>
+
       <tr th:each="cliente : ${clientes}">
-        
-         <td>
+        <td>
           <div class="cliente-info">
             <div class="avatar" th:text="${#strings.substring(cliente.nombre,0,1)}">A</div>
             <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
           </div>
         </td>
 
+          <!-- Sin resultados -->
+          <tr th:if="${#lists.isEmpty(clientes)}">
+            <td colspan="6" style="text-align:center;">
+              <span th:if="${busqueda != null and !#strings.isEmpty(busqueda)}">
+                No se encontraron clientes con esa búsqueda.
+              </span>
+              <span th:unless="${busqueda != null and !#strings.isEmpty(busqueda)}">
+                No hay clientes registrados.
+              </span>
+            </td>
+          </tr>
 
-        <td th:text="${cliente.correo}">correo@dominio.com</td>
-        <td th:text="${cliente.celular}">0000000000</td>
-        <td th:text="${cliente.mascotas != null ? #lists.size(cliente.mascotas) : 0}">0</td>
-        <td><span class="badge">Activo</span></td>
-        <td>
-           <div class="acciones">
-             <a th:href="@{/clientes/{id}(id=${cliente.id})}" class="btn-accion" aria-label="Ver detalle">Ver</a>
-            <a th:href="@{/clientes/{id}/editar(id=${cliente.id})}" class="btn-accion" aria-label="Editar">Editar</a>
-            <form th:action="@{/clientes/{id}/eliminar(id=${cliente.id})}" method="post" class="inline-form"
+          <!-- Filas -->
+          <tr th:each="cliente : ${clientes}">
+            <td>
+              <div class="cliente-info">
+                <div class="avatar"
+                     th:text="${#strings.substring(cliente.nombre, 0, 1)}">A</div>
+                <span th:text="${cliente.nombre + ' ' + cliente.apellido}">Nombre</span>
+              </div>
+            </td>
+            <td th:text="${cliente.correo}">correo@dominio.com</td>
+            <td th:text="${cliente.celular}">0000000000</td>
+            <td th:text="${cliente.mascotas != null ? #lists.size(cliente.mascotas) : 0}">0</td>
+            <td><span class="badge">Activo</span></td>
+            <td>
+              <div class="acciones">
+                <a th:href="@{/clientes/{id}(id=${cliente.id})}"
+                   class="btn-accion">Ver</a>
+                <a th:href="@{/clientes/{id}/editar(id=${cliente.id})}"
+                   class="btn-accion">Editar</a>
+                <form th:action="@{/clientes/{id}/eliminar(id=${cliente.id})}"
+                      method="post" class="inline-form"
+                      onsubmit="return confirm('¿Eliminar este cliente?')">
+                  <button class="btn-eliminar" type="submit">Eliminar</button>
+                </form>
+              </div>
+            </td>
+          </tr>
 
-                  onsubmit="return confirm('¿Eliminar este cliente?')">
-              <button class="btn-eliminar" type="submit" aria-label="Eliminar">Eliminar</button>
-            </form>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </section>
-</main>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
 </body>
 </html>

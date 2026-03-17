@@ -21,4 +21,6 @@ public interface ClienteService {
     public void delete(Long id);
 
     Cliente login(String correo, String contrasenia);
+
+    Collection<Cliente> buscarPorFiltros(String query);
 }
