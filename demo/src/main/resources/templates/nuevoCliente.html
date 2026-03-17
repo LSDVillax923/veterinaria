@@ -25,6 +25,8 @@
     <h1 class="dashboard-title">Registrar Cliente</h1>
     <p class="dashboard-subtitle">Agrega un nuevo propietario al sistema</p>
   </section>
+  <p th:if="${mensaje}" th:text="${mensaje}" class="alert alert-success"></p>
+  <p th:if="${error}" th:text="${error}" class="alert alert-error"></p>
 
   <div class="form-card">
 
