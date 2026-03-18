@@ -87,11 +87,15 @@ public class DataLoader implements CommandLineRunner {
             String estado        = ESTADOS[rnd.nextInt(ESTADOS.length)];
             String enfermedad    = ENFERMEDADES[rnd.nextInt(ENFERMEDADES.length)];
             String observaciones = "Observación de mascota #" + i;
+            String tratamiento = "Control general y seguimiento";
+            String veterinarioAsignado = "Dra. Martínez";
             Cliente cliente = clientes.get(rnd.nextInt(clientes.size()));
+            
 
             mascotaRepository.save(new Mascota(
                     nombreMascota, especie, raza, edad, peso,
-                    "default.jpg", estado, enfermedad, observaciones, cliente));
+                    "default.jpg", estado, enfermedad, observaciones,
+                    tratamiento, veterinarioAsignado, cliente));
         }
 
         System.out.println(" DataLoader: 50 clientes y 100 mascotas generados correctamente.");

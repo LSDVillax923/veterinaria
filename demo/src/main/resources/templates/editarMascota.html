@@ -79,6 +79,18 @@
           <textarea id="observaciones" name="observaciones" th:text="${mascota.observaciones}"></textarea>
         </div>
 
+        <div class="form-group full-width">
+          <label for="tratamiento">Tratamiento</label>
+          <textarea id="tratamiento" name="tratamiento" th:text="${mascota.tratamiento}"></textarea>
+        </div>
+
+        <div class="form-group full-width">
+          <label for="veterinarioAsignado">Veterinario asignado</label>
+          <input type="text" id="veterinarioAsignado" name="veterinarioAsignado" th:value="${mascota.veterinarioAsignado}">
+        </div>
+
+
+
       </div>
 
       <div class="form-acciones">

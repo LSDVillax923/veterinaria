@@ -42,7 +42,9 @@ public class Mascota {
     private String foto;
     private String estado;
     private String enfermedad;
-    private String observaciones;  
+    private String observaciones;
+    private String tratamiento;
+    private String veterinarioAsignado;
     
     @NotNull(message = "La mascota debe tener un propietario")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,7 +52,8 @@ public class Mascota {
     private Cliente cliente;
 
     public Mascota(String nombre, String especie, String raza, int edad, double peso,
-                   String foto, String estado, String enfermedad, String observaciones, Cliente cliente) {
+                  String foto, String estado, String enfermedad, String observaciones,
+                   String tratamiento, String veterinarioAsignado, Cliente cliente) {
         this.nombre = nombre;
         this.especie = especie;
         this.raza = raza;
@@ -60,6 +63,8 @@ public class Mascota {
         this.estado = estado;
         this.enfermedad = enfermedad;
         this.observaciones = observaciones;
+        this.tratamiento = tratamiento;
+        this.veterinarioAsignado = veterinarioAsignado;
         this.cliente = cliente;
     }
 }

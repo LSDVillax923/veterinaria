@@ -55,6 +55,8 @@
       <p><strong>Estado:</strong> <span th:text="${mascota.estado}">Sano</span></p>
       <p><strong>Enfermedad:</strong> <span th:text="${mascota.enfermedad}">Sin enfermedad</span></p>
       <p><strong>Observaciones:</strong> <span th:text="${mascota.observaciones}">Muy juguetón</span></p>
+        <p><strong>Tratamiento:</strong> <span th:text="${mascota.tratamiento} ?: 'No registrado'">No registrado</span></p>
+      <p><strong>Veterinario asignado:</strong> <span th:text="${mascota.veterinarioAsignado} ?: 'No asignado'">No asignado</span></p>
     </article>
 
     <!-- Botón volver -->
