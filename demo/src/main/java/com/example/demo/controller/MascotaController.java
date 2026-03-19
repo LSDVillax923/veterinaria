@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entities.Mascota;
+import com.example.demo.entities.Tratamiento;
 import com.example.demo.service.ClienteService;
 import com.example.demo.service.MascotaService;
+import com.example.demo.service.TratamientoService;
+import com.example.demo.service.VeterinarioService;
 
 @Controller
 @RequestMapping("/mascotas")
@@ -27,6 +32,12 @@ public class MascotaController {
 
     @Autowired
     private ClienteService clienteService;
+    @Autowired
+    private VeterinarioService veterinarioService;
+
+    @Autowired
+    private TratamientoService tratamientoService;
+
 
       @GetMapping({"", "/", "/listarMascotas", "/listarMascotas.html"})
     public String listarMascotas(
@@ -91,6 +102,7 @@ public class MascotaController {
         if (mascota == null) {
             return "redirect:/mascotas";
         }
+        cargarOpcionesFormulario(model);
         model.addAttribute("mascota", mascota);
         return "editarMascota";
     }
@@ -120,7 +132,7 @@ public class MascotaController {
     }
     @GetMapping("/nueva")
     public String nuevaMascota(Model model) {
-        model.addAttribute("clientes", clienteService.searchAll());
+        cargarOpcionesFormulario(model);
         return "nuevaMascota";
     }
 
@@ -138,4 +150,19 @@ public class MascotaController {
             return "redirect:/mascotas/nueva";
         }
         }
+
+         private void cargarOpcionesFormulario(Model model) {
+        List<String> tratamientosDisponibles = tratamientoService.listarTodos().stream()
+                .map(Tratamiento::getDescripcion)
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(descripcion -> !descripcion.isEmpty())
+                .distinct()
+                .toList();
+
+        model.addAttribute("clientes", clienteService.searchAll());
+        model.addAttribute("veterinariosDisponibles", veterinarioService.searchActivos().stream()
+                .toList());
+        model.addAttribute("tratamientosDisponibles", tratamientosDisponibles);
+    }
 }

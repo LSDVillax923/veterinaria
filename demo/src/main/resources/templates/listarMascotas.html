@@ -16,7 +16,7 @@
       <nav class="nav">
         <a th:href="@{/inicio}"         class="nav-link">Inicio</a>
         <a th:href="@{/clientes}"       class="nav-link">Clientes</a>
-        <a th:href="@{/tratamientos}"  class="nav-link">Tratamientos</a>
+        <a th:href="@{/tratamientos}"   class="nav-link">Tratamientos</a>
         <a th:href="@{/mascotas/nueva}" class="btn-nueva">+ Nueva Mascota</a>
       </nav>
     </div>
@@ -58,7 +58,7 @@
         </select>
       </div>
 
-      <button type="submit" class="btn-nueva"> Buscar</button>
+      <button type="submit" class="btn-nueva">Buscar</button>
       <a th:href="@{/mascotas}" class="btn-nueva">✕ Limpiar</a>
     </form>
 
@@ -114,11 +114,11 @@
             <td th:text="${mascota.edad}">0</td>
             <td th:text="${mascota.peso} + ' kg'">0 kg</td>
             <td>
-              <span class="badge"
-                    th:text="${mascota.estado}"
-                    th:classappend="${mascota.estado == 'activa'}      ? ' badge-verde'    :
-                                    (${mascota.estado == 'tratamiento'} ? ' badge-amarillo' :
-                                                                          ' badge-rojo')">
+              <!-- CORRECCIÓN: th:class reemplaza la clase completa según el estado -->
+              <span th:text="${mascota.estado}"
+                    th:class="${mascota.estado == 'activa'}      ? 'badge badge-verde'    :
+                               (mascota.estado == 'tratamiento'  ? 'badge badge-amarillo' :
+                                                                   'badge badge-rojo')">
               </span>
             </td>
             <td>

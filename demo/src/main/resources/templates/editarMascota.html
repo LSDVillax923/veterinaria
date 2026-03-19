@@ -79,14 +79,29 @@
           <textarea id="observaciones" name="observaciones" th:text="${mascota.observaciones}"></textarea>
         </div>
 
-        <div class="form-group full-width">
-          <label for="tratamiento">Tratamiento</label>
+        <div class="form-group">
+          <label for="tratamiento">Tratamiento asignado</label>
+          <select id="tratamiento" name="tratamiento">
+            <option value="" th:selected="${mascota.tratamiento == null || mascota.tratamiento.isBlank()}">Sin tratamiento asignado</option>
+            <option th:each="tratamiento : ${tratamientosDisponibles}"
+                    th:value="${tratamiento}"
+                    th:text="${tratamiento}"
+                    th:selected="${tratamiento == mascota.tratamiento}">
+            </option>
+          </select>
           <textarea id="tratamiento" name="tratamiento" th:text="${mascota.tratamiento}"></textarea>
         </div>
 
-        <div class="form-group full-width">
+        <div class="form-group">
           <label for="veterinarioAsignado">Veterinario asignado</label>
-          <input type="text" id="veterinarioAsignado" name="veterinarioAsignado" th:value="${mascota.veterinarioAsignado}">
+          <select id="veterinarioAsignado" name="veterinarioAsignado">
+            <option value="" th:selected="${mascota.veterinarioAsignado == null || mascota.veterinarioAsignado.isBlank()}">Sin veterinario asignado</option>
+            <option th:each="veterinario : ${veterinariosDisponibles}"
+                    th:value="${veterinario.nombre}"
+                    th:text="${veterinario.nombre + ' - ' + veterinario.especialidad}"
+                    th:selected="${veterinario.nombre == mascota.veterinarioAsignado}">
+            </option>
+          </select>
         </div>
 
 
