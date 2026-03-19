@@ -1,5 +1,9 @@
 package com.example.demo.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -51,20 +56,22 @@ public class Mascota {
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
+    @OneToMany(mappedBy = "mascota", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Tratamiento> tratamientos = new ArrayList<>();
+
     public Mascota(String nombre, String especie, String raza, int edad, double peso,
-                  String foto, String estado, String enfermedad, String observaciones,
-                   String tratamiento, String veterinarioAsignado, Cliente cliente) {
-        this.nombre = nombre;
-        this.especie = especie;
-        this.raza = raza;
-        this.edad = edad;
-        this.peso = peso;
-        this.foto = foto;
-        this.estado = estado;
-        this.enfermedad = enfermedad;
+                   String foto, String estado, String enfermedad, String observaciones,
+                   Cliente cliente) {
+        this.nombre        = nombre;
+        this.especie       = especie;
+        this.raza          = raza;
+        this.edad          = edad;
+        this.peso          = peso;
+        this.foto          = foto;
+        this.estado        = estado;
+        this.enfermedad    = enfermedad;
         this.observaciones = observaciones;
-        this.tratamiento = tratamiento;
-        this.veterinarioAsignado = veterinarioAsignado;
-        this.cliente = cliente;
+        this.cliente       = cliente;
+        this.tratamientos  = new ArrayList<>();
     }
 }

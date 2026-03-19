@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
-import com.example.demo.errors.MascotaNotFoundException;
+import com.example.demo.errors.MascotaException;
 import com.example.demo.repository.ClienteRepository;
 import com.example.demo.repository.MascotaRepository;
 
@@ -27,7 +27,7 @@ public class MascotaServiceImpl implements MascotaService {
     @Override
     public Mascota searchById(Long id) {
         return repository.findById(id).orElseThrow(
-            () -> new MascotaNotFoundException(id)
+            () -> new MascotaException(id)
         );
     }
 

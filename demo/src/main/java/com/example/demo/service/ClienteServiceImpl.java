@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.Cliente;
-import com.example.demo.errors.ClienteNotFoundException;
+import com.example.demo.errors.ClienteException;
 import com.example.demo.entities.Mascota;
 import com.example.demo.repository.ClienteRepository;
 
@@ -22,7 +22,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente searchById(Long id) {
        return repository.findById(id).orElseThrow(
-            () -> new ClienteNotFoundException(id)
+            () -> new ClienteException(id)
        );
     }
 
