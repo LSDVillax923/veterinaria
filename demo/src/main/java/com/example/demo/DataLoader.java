@@ -133,11 +133,15 @@ public class DataLoader implements CommandLineRunner {
             "Cirugía programada", "Tratamiento de infección", "Consulta general"
         };
 
-        for (String descripcion : descripciones) {
-            Mascota     mascota = mascotas.get(rnd.nextInt(mascotas.size()));
-            Veterinario vet     = veterinarios.get(rnd.nextInt(veterinarios.size()));
-            // Fecha aleatoria dentro de 2024
-            LocalDate fecha = LocalDate.of(2024, rnd.nextInt(12) + 1, rnd.nextInt(28) + 1);
+        LocalDate hoy = LocalDate.now();
+
+        for (int i = 0; i < descripciones.length; i++) {
+            String descripcion = descripciones[i];
+            Mascota mascota = mascotas.get(rnd.nextInt(mascotas.size()));
+            Veterinario vet = veterinarios.get(rnd.nextInt(veterinarios.size()));
+            LocalDate fecha = (i < 3)
+                ? hoy.minusDays(rnd.nextInt(45) + 1L)
+                : hoy.plusDays(rnd.nextInt(45) + 1L);
             tratamientoRepository.save(new Tratamiento(descripcion, fecha, mascota, vet));
         }
         System.out.println("DataLoader: 6 tratamientos generados.");

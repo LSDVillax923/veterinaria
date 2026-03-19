@@ -519,3 +519,7 @@ Database is already closed (to disable automatic closing at VM shutdown, add ";D
 	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
 	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:116)
 	at java.base/java.lang.Thread.run(Thread.java:840)
+2026-03-19 14:26:55.412131-05:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT *  [*]TRATAMIENTO_DROGA"
+Syntax error in SQL statement "SELECT *  [*]TRATAMIENTO_DROGA"; SQL statement:
+SELECT *  TRATAMIENTO_DROGA [42000-232]
