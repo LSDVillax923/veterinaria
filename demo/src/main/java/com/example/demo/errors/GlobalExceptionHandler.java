@@ -24,7 +24,9 @@ public class GlobalExceptionHandler {
         MascotaNotFoundException ex , 
         Model model
         ) {
-        model.addAttribute("error404", ex.getMessage());
+        model.addAttribute("errorTitle", "Error 404");
+        model.addAttribute("errorSubtitle", "La mascota no está registrada");
+        model.addAttribute("errorMessage", ex.getMessage());
         return "error404"; // Ruta a la plantilla de error personalizada
     }
 }

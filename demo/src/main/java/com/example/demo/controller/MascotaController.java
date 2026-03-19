@@ -75,7 +75,9 @@ public class MascotaController {
     public String verMascota(@PathVariable Long id, Model model) {
         Mascota mascota = mascotaService.searchById(id);
         if (mascota == null) {
-            model.addAttribute("errorMascota", "No se encontró la mascota con ID " + id);
+            model.addAttribute("errorTitle", "Error 404");
+            model.addAttribute("errorSubtitle", "La mascota no está registrada");
+            model.addAttribute("errorMessage", "No se encontró la mascota con ID " + id + ".");
             return "error404";
         }
         model.addAttribute("mascota", mascota);
