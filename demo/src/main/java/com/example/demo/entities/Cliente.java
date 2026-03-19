@@ -46,7 +46,7 @@ public class Cliente {
     @Size(min = 10, message = "El celular debe tener al menos 10 caracteres")
     private String celular;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)    
     private List<Mascota> mascotas = new ArrayList<>();
 
     // Constructor 

@@ -8,20 +8,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ClienteNotFoundException.class)
+    @ExceptionHandler(ClienteException.class)
 
     public String handleNotFoundException(
-        ClienteNotFoundException ex , 
+        ClienteException ex , 
         Model model
         ) {
         model.addAttribute("error505", ex.getMessage());
         return "error505"; // Ruta a la plantilla de error personalizada
     }
     
-    @ExceptionHandler(MascotaNotFoundException.class)
+    @ExceptionHandler(MascotaException.class)
 
     public String handleMascotaNotFoundException(
-        MascotaNotFoundException ex , 
+        MascotaException ex , 
         Model model
         ) {
         model.addAttribute("errorTitle", "Error 404");
