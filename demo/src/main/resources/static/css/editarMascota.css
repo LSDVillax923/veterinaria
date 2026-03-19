@@ -88,3 +88,25 @@
 
     .btn-guardar:hover { background: #0a5250; }
     .btn-cancelar:hover { background: #f0fafa; }
+
+.page-form-mascota .dashboard {
+  max-width: 1100px;
+  margin: 50px auto;
+}
+
+.page-form-mascota .dashboard-header {
+  text-align: center;
+}
+
+.page-form-mascota .btn-volver {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.page-form-mascota .form-card {
+  margin: 0 auto;
+}
+
+.page-form-mascota .form-acciones {
+  justify-content: center;
+}

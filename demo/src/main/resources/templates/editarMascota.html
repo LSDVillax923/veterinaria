@@ -7,7 +7,7 @@
   <link rel="stylesheet" th:href="@{/css/mascotas.css}">
   <link rel="stylesheet" th:href="@{/css/editarMascota.css}">
 </head>
-<body>
+<body class="page-form-mascota">
 
 <!-- HEADER -->
 <header class="header">
@@ -25,7 +25,7 @@
 <main class="dashboard">
 
   <section class="dashboard-header">
-    <a th:href="@{/mascotas}" class="btn-volver">← Volver al listado</a>
+   
     <h1 class="dashboard-title">Editar Mascota</h1>
     <p class="dashboard-subtitle">Modifica la información de <span th:text="${mascota.nombre}">la mascota</span></p>
   </section>

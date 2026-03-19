@@ -276,3 +276,7 @@ body{
   padding:20px;
   text-align:center;
 }
+
+.dashboard-header--centered{
+  text-align:center;
+}
