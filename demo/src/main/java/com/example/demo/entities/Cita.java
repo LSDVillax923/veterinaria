@@ -3,7 +3,6 @@ package com.example.demo.entities;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -21,11 +20,9 @@ public class Cita {
     private Long id;
 
     @NotNull(message = "La fecha de inicio es obligatoria")
-    @Future(message = "La fecha de inicio debe ser futura")
     private LocalDateTime fechaInicio;
 
     @NotNull(message = "La fecha de fin es obligatoria")
-    @Future(message = "La fecha de fin debe ser futura")
     private LocalDateTime fechaFin;
 
     @NotBlank(message = "El motivo no puede estar vacío")

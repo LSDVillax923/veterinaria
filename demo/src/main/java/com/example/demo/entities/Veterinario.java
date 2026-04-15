@@ -48,7 +48,7 @@ public class Veterinario {
     private String contrasenia;
     private String imageUrl;
     private String estado;
-    private int num_Atenciones;
+    private int numAtenciones;
 
     @JsonIgnore
     @OneToMany(mappedBy = "veterinario")

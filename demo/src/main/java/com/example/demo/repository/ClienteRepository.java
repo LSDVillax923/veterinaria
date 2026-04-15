@@ -16,6 +16,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     List<Cliente> findByNombreContainingIgnoreCase(String nombre);
 
+
        List<Cliente> findByNombreContainingIgnoreCaseOrApellidoContainingIgnoreCase(
         String nombre, String apellido);
 
@@ -25,4 +26,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
            "LOWER(c.correo)   LIKE LOWER(CONCAT('%', :query, '%')) OR " +
            "LOWER(c.celular)  LIKE LOWER(CONCAT('%', :query, '%')))")
     List<Cliente> buscarPorFiltros(@Param("query") String query);
+
+    boolean existsByCorreo(String correo);
 }

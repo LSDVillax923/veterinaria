@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Random;
 
@@ -17,16 +19,18 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class DataLoader implements CommandLineRunner {
 
-    @Autowired private AdminRepository            adminRepository;
-    @Autowired private ClienteRepository          clienteRepository;
-    @Autowired private DrogaRepository            drogaRepository;
-    @Autowired private MascotaRepository          mascotaRepository;
-    @Autowired private TratamientoRepository      tratamientoRepository;
+    @Autowired private AdminRepository adminRepository;
+    @Autowired private ClienteRepository clienteRepository;
+    @Autowired private DrogaRepository drogaRepository;
+    @Autowired private MascotaRepository mascotaRepository;
+    @Autowired private TratamientoRepository tratamientoRepository;
     @Autowired private TratamientoDrogaRepository tratamientoDrogaRepository;
-    @Autowired private VeterinarioRepository      veterinarioRepository;
+    @Autowired private VeterinarioRepository veterinarioRepository;
+    @Autowired private CitaRepository citaRepository;
 
-    // ── Datos de prueba ────────────────────────────────────────────────────────
-
+    // ─────────────────────────────────────────────────────────────────────────
+    // Datos de prueba
+    // ─────────────────────────────────────────────────────────────────────────
     private static final String[] NOMBRES = {
         "Andrés", "Camila", "Luis", "Valentina", "Carlos", "Sofía",
         "Juan", "Isabella", "Sergio", "Daniela", "Miguel", "Laura",
@@ -48,122 +52,180 @@ public class DataLoader implements CommandLineRunner {
         "Rosie", "Cooper", "Zoe", "Oliver", "Stella", "Tucker", "Gracie"
     };
 
-    private static final String[] ESPECIES     = {"Perro", "Gato"};
-    private static final String[] RAZAS_PERRO  = {"Labrador", "Bulldog", "Poodle", "Beagle", "Chihuahua"};
-    private static final String[] RAZAS_GATO   = {"Persa", "Siamés", "Maine Coon", "Ragdoll", "Bengalí"};
-    private static final String[] ESTADOS      = {"activo", "activo", "activo", "inactivo"};
-    private static final String[] ENFERMEDADES = {"vacío", "Otitis", "Dermatitis", "Obesidad", "Anemia"};
+    private static final String[] ESPECIES = {"Perro", "Gato"};
+    private static final String[] RAZAS_PERRO = {"Labrador", "Bulldog", "Poodle", "Beagle", "Chihuahua", "Golden Retriever"};
+    private static final String[] RAZAS_GATO = {"Persa", "Siamés", "Maine Coon", "Ragdoll", "Bengalí", "Esfinge"};
+    private static final String[] SEXOS = {"Macho", "Hembra"};
 
-    // ── Runner ─────────────────────────────────────────────────────────────────
+    private static final String[] DIAGNOSTICOS = {
+        "Vacunación anual", "Control de peso", "Infección de oído", "Problema dental",
+        "Revisión general", "Problema de piel", "Cojea de pata trasera", "Vómitos frecuentes"
+    };
 
+    private static final String[] OBSERVACIONES_TRAT = {
+        "Evolución favorable", "Requiere seguimiento en 15 días", "Cambiar dieta",
+        "Aplicar pomada cada 12h", "Reposo absoluto", "Volver en una semana"
+    };
+
+    private static final String[] MOTIVOS_CITA = {
+        "Consulta general", "Vacunación", "Peluquería", "Cirugía programada",
+        "Revisión post-tratamiento", "Urgencia", "Desparasitación"
+    };
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Runner
+    // ─────────────────────────────────────────────────────────────────────────
     @Override
     public void run(String... args) throws Exception {
-
-        // Idempotencia: si ya hay datos no vuelve a cargar
+        // Idempotencia: si ya hay clientes, no carga datos nuevamente
         if (clienteRepository.count() > 0) {
+            System.out.println("DataLoader: Datos ya existen. No se cargan datos de prueba.");
             return;
         }
 
         Random rnd = new Random(42);
 
-        // ── 1. Admins ──────────────────────────────────────────────────────────
-        adminRepository.save(new Admin(null, "Carlos",     "admin1@vet.com", "admin123"));
-        adminRepository.save(new Admin(null, "Fernanda", "admin2@vet.com", "admin123"));
-        adminRepository.save(new Admin(null, "Ricardo",   "admin3@vet.com", "admin123"));
-        adminRepository.save(new Admin(null, "Paola",   "admin4@vet.com", "admin123"));
-        adminRepository.save(new Admin(null, "Mauricio",  "admin5@vet.com", "admin123"));
-        System.out.println("DataLoader: 5 admins generados.");
+        // ─── 1. Admins ──────────────────────────────────────────────────────────
+        adminRepository.save(new Admin(null, "Carlos Admin", "admin1@vet.com", "admin123"));
+        adminRepository.save(new Admin(null, "Fernanda Admin", "admin2@vet.com", "admin123"));
+        adminRepository.save(new Admin(null, "Ricardo Admin", "admin3@vet.com", "admin123"));
+        System.out.println("DataLoader: 3 admins generados.");
 
-        // ── 2. Veterinarios ────────────────────────────────────────────────────
-        veterinarioRepository.save(new Veterinario("Elena Martínez",  "10000001", "3101000001", "elena@vet.com",   "Cirugía Veterinaria",      "pass123", "default.jpg", "activo"));
-        veterinarioRepository.save(new Veterinario("Ricardo Sánchez", "10000002", "3101000002", "ricardo@vet.com", "Medicina Interna",         "pass123", "default.jpg", "activo"));
-        veterinarioRepository.save(new Veterinario("Carla Gómez",     "10000003", "3101000003", "carla@vet.com",   "Dermatología Veterinaria", "pass123", "default.jpg", "activo"));
-        veterinarioRepository.save(new Veterinario("Julián Ospina",   "10000004", "3101000004", "julian@vet.com",  "Oftalmología Veterinaria", "pass123", "default.jpg", "activo"));
-        veterinarioRepository.save(new Veterinario("Marcela Rueda",   "10000005", "3101000005", "marcela@vet.com", "Odontología Veterinaria",  "pass123", "default.jpg", "inactivo"));
+        // ─── 2. Veterinarios ────────────────────────────────────────────────────
+        veterinarioRepository.save(new Veterinario("Elena Martínez", "10000001", "3101000001", "elena@vet.com",
+                "Medicina General", "pass123", "default.jpg", "activo"));
+        veterinarioRepository.save(new Veterinario("Ricardo Sánchez", "10000002", "3101000002", "ricardo@vet.com",
+                "Cirugía", "pass123", "default.jpg", "activo"));
+        veterinarioRepository.save(new Veterinario("Carla Gómez", "10000003", "3101000003", "carla@vet.com",
+                "Dermatología", "pass123", "default.jpg", "activo"));
+        veterinarioRepository.save(new Veterinario("Julián Ospina", "10000004", "3101000004", "julian@vet.com",
+                "Oftalmología", "pass123", "default.jpg", "activo"));
+        veterinarioRepository.save(new Veterinario("Marcela Rueda", "10000005", "3101000005", "marcela@vet.com",
+                "Odontología", "pass123", "default.jpg", "inactivo"));
         System.out.println("DataLoader: 5 veterinarios generados.");
 
-        // ── 3. Drogas ──────────────────────────────────────────────────────────
-        drogaRepository.save(new Droga(null, "Amoxicilina",   8500f,  15000f, 100, 0));
-        drogaRepository.save(new Droga(null, "Ivermectina",   4200f,   8000f,  80, 0));
-        drogaRepository.save(new Droga(null, "Meloxicam",    12000f,  22000f,  60, 0));
-        drogaRepository.save(new Droga(null, "Metronidazol",  5500f,  10500f,  90, 0));
-        drogaRepository.save(new Droga(null, "Furosemida",    3800f,   7500f,  70, 0));
-        System.out.println("DataLoader: 5 drogas generadas.");
+        // ─── 3. Drogas ──────────────────────────────────────────────────────────
+        drogaRepository.save(new Droga(null, "Amoxicilina", 8500f, 15000f, 100, 0));
+        drogaRepository.save(new Droga(null, "Ivermectina", 4200f, 8000f, 80, 0));
+        drogaRepository.save(new Droga(null, "Meloxicam", 12000f, 22000f, 60, 0));
+        drogaRepository.save(new Droga(null, "Metronidazol", 5500f, 10500f, 90, 0));
+        drogaRepository.save(new Droga(null, "Furosemida", 3800f, 7500f, 70, 0));
+        drogaRepository.save(new Droga(null, "Prednisolona", 6000f, 11000f, 50, 0));
+        System.out.println("DataLoader: 6 drogas generadas.");
 
-        // ── 4. Clientes ────────────────────────────────────────────────────────
-        for (int i = 1; i <= 50; i++) {
-            String nombre   = NOMBRES[rnd.nextInt(NOMBRES.length)];
+        // ─── 4. Clientes ────────────────────────────────────────────────────────
+        for (int i = 1; i <= 30; i++) {
+            String nombre = NOMBRES[rnd.nextInt(NOMBRES.length)];
             String apellido = APELLIDOS[rnd.nextInt(APELLIDOS.length)];
-            String correo   = nombre.toLowerCase() + i + "@email.com";
-            String celular  = "31" + String.format("%08d", i);
+            String correo = nombre.toLowerCase() + i + "@email.com";
+            String celular = "31" + String.format("%08d", rnd.nextInt(100000000));
             clienteRepository.save(new Cliente(nombre, apellido, correo, "pass" + i, celular));
         }
-        System.out.println("DataLoader: 50 clientes generados.");
+        System.out.println("DataLoader: 30 clientes generados.");
 
-        // ── 5. Mascotas ────────────────────────────────────────────────────────
         List<Cliente> clientes = clienteRepository.findAll();
 
-        for (int i = 1; i <= 100; i++) {
+        // ─── 5. Mascotas ────────────────────────────────────────────────────────
+        for (int i = 1; i <= 60; i++) {
             String especie = ESPECIES[rnd.nextInt(ESPECIES.length)];
-            String raza    = "Perro".equals(especie)
-                             ? RAZAS_PERRO[rnd.nextInt(RAZAS_PERRO.length)]
-                             : RAZAS_GATO[rnd.nextInt(RAZAS_GATO.length)];
+            String raza = especie.equals("Perro")
+                    ? RAZAS_PERRO[rnd.nextInt(RAZAS_PERRO.length)]
+                    : RAZAS_GATO[rnd.nextInt(RAZAS_GATO.length)];
+            String nombre = NOMBRES_MASCOTAS[rnd.nextInt(NOMBRES_MASCOTAS.length)] + i;
+            String sexo = SEXOS[rnd.nextInt(SEXOS.length)];
+            LocalDate fechaNacimiento = LocalDate.now().minusYears(rnd.nextInt(10) + 1).minusMonths(rnd.nextInt(12));
+            int edad = LocalDate.now().getYear() - fechaNacimiento.getYear();
+            double peso = Math.round((rnd.nextDouble() * 29 + 1) * 10.0) / 10.0;
+            Mascota.EstadoMascota estado = Mascota.EstadoMascota.values()[rnd.nextInt(Mascota.EstadoMascota.values().length)];
+            String enfermedad = rnd.nextBoolean() ? "Ninguna" : DIAGNOSTICOS[rnd.nextInt(DIAGNOSTICOS.length)];
+
+            Cliente cliente = clientes.get(rnd.nextInt(clientes.size()));
 
             mascotaRepository.save(new Mascota(
-                NOMBRES_MASCOTAS[rnd.nextInt(NOMBRES_MASCOTAS.length)] + i,
-                especie,
-                raza,
-                rnd.nextInt(15) + 1,
-                Math.round((rnd.nextDouble() * 29 + 1) * 10.0) / 10.0,
-                "default.jpg",
-                ESTADOS[rnd.nextInt(ESTADOS.length)],
-                ENFERMEDADES[rnd.nextInt(ENFERMEDADES.length)],
-                "Observación de mascota #" + i,
-                clientes.get(rnd.nextInt(clientes.size()))
-            ));
+                    nombre, especie, raza, sexo, fechaNacimiento,
+                    edad, peso, "default.jpg", estado,
+                    enfermedad, "Observación de mascota #" + i, cliente));
         }
-        System.out.println("DataLoader: 100 mascotas generadas.");
+        System.out.println("DataLoader: 60 mascotas generadas.");
 
-        // ── 6. Tratamientos ────────────────────────────────────────────────────
-        List<Mascota>     mascotas     = mascotaRepository.findAll();
+        List<Mascota> mascotas = mascotaRepository.findAll();
         List<Veterinario> veterinarios = veterinarioRepository.findAll();
 
-        String[] descripciones = {
-            "Vacunación anual", "Desparasitación", "Control de peso",
-            "Cirugía programada", "Tratamiento de infección", "Consulta general"
-        };
-
-        LocalDate hoy = LocalDate.now();
-
-        for (int i = 0; i < descripciones.length; i++) {
-            String descripcion = descripciones[i];
+        // ─── 6. Tratamientos ────────────────────────────────────────────────────
+        for (int i = 1; i <= 40; i++) {
             Mascota mascota = mascotas.get(rnd.nextInt(mascotas.size()));
-            Veterinario vet = veterinarios.get(rnd.nextInt(veterinarios.size()));
-            LocalDate fecha = (i < 3)
-                ? hoy.minusDays(rnd.nextInt(45) + 1L)
-                : hoy.plusDays(rnd.nextInt(45) + 1L);
-            tratamientoRepository.save(new Tratamiento(descripcion, fecha, mascota, vet));
+            Veterinario veterinario = veterinarios.stream()
+                    .filter(v -> "activo".equalsIgnoreCase(v.getEstado()))
+                    .findAny()
+                    .orElse(veterinarios.get(0));
+
+            String diagnostico = DIAGNOSTICOS[rnd.nextInt(DIAGNOSTICOS.length)];
+            String observaciones = OBSERVACIONES_TRAT[rnd.nextInt(OBSERVACIONES_TRAT.length)];
+            LocalDate fecha = LocalDate.now().minusDays(rnd.nextInt(60)).plusDays(rnd.nextInt(30));
+            Tratamiento.EstadoTratamiento estado = Tratamiento.EstadoTratamiento.values()
+                    [rnd.nextInt(Tratamiento.EstadoTratamiento.values().length)];
+
+            tratamientoRepository.save(new Tratamiento(diagnostico, observaciones, fecha, estado, mascota, veterinario));
         }
-        System.out.println("DataLoader: 6 tratamientos generados.");
+        System.out.println("DataLoader: 40 tratamientos generados.");
 
-        // ── 7. TratamientoDroga (tabla intermedia — 5 registros al azar) ───────
         List<Tratamiento> tratamientos = tratamientoRepository.findAll();
-        List<Droga>       drogas       = drogaRepository.findAll();
+        List<Droga> drogas = drogaRepository.findAll();
 
-        for (int i = 0; i < 5; i++) {
+        // ─── 7. TratamientoDroga ────────────────────────────────────────────────
+        for (int i = 0; i < 25; i++) {
             Tratamiento tratamiento = tratamientos.get(rnd.nextInt(tratamientos.size()));
-            Droga       droga       = drogas.get(rnd.nextInt(drogas.size()));
-            int         cantidad    = rnd.nextInt(3) + 1;  // entre 1 y 3 unidades
+            Droga droga = drogas.get(rnd.nextInt(drogas.size()));
+            int cantidad = rnd.nextInt(3) + 1;
 
             tratamientoDrogaRepository.save(new TratamientoDroga(tratamiento, droga, cantidad));
 
-            // Actualizar inventario de la droga al registrar el uso
+            // Actualizar inventario
             droga.setUnidadesVendidas(droga.getUnidadesVendidas() + cantidad);
             droga.setUnidadesDisponibles(Math.max(0, droga.getUnidadesDisponibles() - cantidad));
             drogaRepository.save(droga);
         }
-        System.out.println("DataLoader: 5 registros en TratamientoDroga generados.");
+        System.out.println("DataLoader: 25 registros en TratamientoDroga generados.");
 
-        System.out.println("DataLoader: OK");
+        // ─── 8. Citas ───────────────────────────────────────────────────────────
+        for (int i = 1; i <= 30; i++) {
+            Cliente cliente = clientes.get(rnd.nextInt(clientes.size()));
+            // Buscar una mascota que pertenezca a ese cliente
+            List<Mascota> mascotasDelCliente = mascotaRepository.findByCliente_Id(cliente.getId());
+            if (mascotasDelCliente.isEmpty()) continue;
+
+            Mascota mascota = mascotasDelCliente.get(rnd.nextInt(mascotasDelCliente.size()));
+            Veterinario veterinario = veterinarios.stream()
+                    .filter(v -> "activo".equalsIgnoreCase(v.getEstado()))
+                    .findAny()
+                    .orElse(veterinarios.get(0));
+
+            // Fecha futura o pasada según el estado
+            boolean esFutura = rnd.nextBoolean();
+            LocalDate fechaBase = esFutura ? LocalDate.now().plusDays(rnd.nextInt(30) + 1)
+                                           : LocalDate.now().minusDays(rnd.nextInt(30) + 1);
+            LocalTime horaInicio = LocalTime.of(8 + rnd.nextInt(9), rnd.nextInt(4) * 15); // 8:00 a 17:00, intervalos de 15 min
+            LocalDateTime fechaInicio = LocalDateTime.of(fechaBase, horaInicio);
+            LocalDateTime fechaFin = fechaInicio.plusMinutes(30 + rnd.nextInt(3) * 30); // 30, 60 o 90 min
+
+            String motivo = MOTIVOS_CITA[rnd.nextInt(MOTIVOS_CITA.length)];
+            Cita.EstadoCita estado;
+            if (!esFutura) {
+                estado = rnd.nextBoolean() ? Cita.EstadoCita.REALIZADA : Cita.EstadoCita.CANCELADA;
+            } else {
+                estado = Cita.EstadoCita.PENDIENTE;
+            }
+
+            // Verificar solapamiento simple para no saturar el DataLoader
+            List<Cita> solapadas = citaRepository.findCitasSolapadas(veterinario.getId(), fechaInicio, fechaFin);
+            if (!solapadas.isEmpty()) {
+                continue; // Saltamos esta cita para evitar conflictos
+            }
+
+            citaRepository.save(new Cita(fechaInicio, fechaFin, motivo, estado, cliente, mascota, veterinario));
+        }
+        System.out.println("DataLoader: Citas generadas (aproximadamente 20-30).");
+
+        System.out.println("DataLoader: Carga de datos de prueba completada exitosamente.");
     }
 }

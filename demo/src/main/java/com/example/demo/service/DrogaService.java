@@ -1,22 +1,14 @@
 package com.example.demo.service;
 
-import java.util.Collection;
-
+import java.util.List;
 import com.example.demo.entities.Droga;
 
 public interface DrogaService {
-
-    Droga searchById(Long id);
-
-    Collection<Droga> searchAll();
-
-    Collection<Droga> searchDisponibles();
-
-    void save(Droga droga);
-
-    void update(Long id, Droga datos);
-
+    Droga findById(Long id);
+    List<Droga> findAll();
+    List<Droga> findDisponibles();
+    Droga save(Droga droga);
+    Droga update(Long id, Droga drogaDetails);
     void delete(Long id);
-
     void descontarUnidades(Long id, int cantidad);
 }

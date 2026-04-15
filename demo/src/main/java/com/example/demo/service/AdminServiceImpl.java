@@ -1,71 +1,65 @@
 package com.example.demo.service;
 
-import java.util.Collection;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.entities.Admin;
 import com.example.demo.errors.AdminException;
 import com.example.demo.repository.AdminRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
 public class AdminServiceImpl implements AdminService {
 
     @Autowired
-    private AdminRepository repository;
+    private AdminRepository adminRepository;
 
     @Override
-    public Admin searchById(Long id) {
-        return repository.findById(id)
-            .orElseThrow(() -> new AdminException(id));
+    public Admin findById(Long id) {
+        return adminRepository.findById(id)
+                .orElseThrow(() -> new AdminException("Admin no encontrado con ID: " + id));
     }
 
     @Override
-    public Collection<Admin> searchAll() {
-        return repository.findAll();
+    public List<Admin> findAll() {
+        return adminRepository.findAll();
     }
 
     @Override
-    public void save(Admin admin) {
+    public Admin save(Admin admin) {
+        // Validaciones de negocio
         if (admin.getNombre() == null || admin.getNombre().isBlank()) {
-            throw new IllegalArgumentException("El nombre del admin no puede estar vacío.");
+            throw new IllegalArgumentException("El nombre del administrador es obligatorio");
         }
         if (admin.getCorreo() == null || !admin.getCorreo().contains("@")) {
-            throw new IllegalArgumentException("El correo debe contener '@'.");
+            throw new IllegalArgumentException("El correo debe ser válido");
         }
-        // Unicidad de correo solo en creación
-        if (admin.getId() == null) {
-            repository.findByCorreo(admin.getCorreo()).ifPresent(existing -> {
-                throw new IllegalArgumentException("Ya existe un admin con ese correo.");
-            });
+        if (admin.getId() == null && adminRepository.existsByCorreo(admin.getCorreo())) {
+            throw new IllegalArgumentException("Ya existe un admin con ese correo");
         }
-        repository.save(admin);
+        return adminRepository.save(admin);
     }
 
     @Override
-    public void update(Long id, Admin datos) {
-        Admin admin = searchById(id);
-        admin.setNombre(datos.getNombre());
-        admin.setApellido(datos.getApellido());
-        admin.setCorreo(datos.getCorreo());
-        admin.setContrasenia(datos.getContrasenia());
-        repository.save(admin);
+    public Admin update(Long id, Admin adminDetails) {
+        Admin existing = findById(id);
+        existing.setNombre(adminDetails.getNombre());
+        existing.setCorreo(adminDetails.getCorreo());
+        existing.setContrasenia(adminDetails.getContrasenia());
+        return adminRepository.save(existing);
     }
 
     @Override
     public void delete(Long id) {
-        searchById(id);
-        repository.deleteById(id);
+        Admin admin = findById(id);
+        adminRepository.delete(admin);
     }
 
     @Override
     public Admin login(String correo, String contrasenia) {
-        return repository.findByCorreo(correo)
-            .filter(a -> a.getContrasenia().equals(contrasenia))
-            .orElse(null);
+        return adminRepository.findByCorreo(correo)
+                .filter(a -> a.getContrasenia().equals(contrasenia))
+                .orElse(null);
     }
 }

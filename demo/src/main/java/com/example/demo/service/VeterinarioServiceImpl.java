@@ -1,101 +1,103 @@
 package com.example.demo.service;
 
-import java.util.Collection;
-
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.entities.Veterinario;
 import com.example.demo.errors.VeterinarioException;
 import com.example.demo.repository.VeterinarioRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
 public class VeterinarioServiceImpl implements VeterinarioService {
 
     @Autowired
-    private VeterinarioRepository repository;
+    private VeterinarioRepository veterinarioRepository;
 
     @Override
-    public Veterinario searchById(Long id) {
-        return repository.findById(id)
-            .orElseThrow(() -> new VeterinarioException(id));
+    public Veterinario findById(Long id) {
+        return veterinarioRepository.findById(id)
+                .orElseThrow(() -> new VeterinarioException("Veterinario no encontrado con ID: " + id));
     }
 
     @Override
-    public Collection<Veterinario> searchAll() {
-        return repository.findAll();
+    public List<Veterinario> findAll() {
+        return veterinarioRepository.findAll();
     }
 
     @Override
-    public Collection<Veterinario> searchActivos() {
-        return repository.findByEstado("activo");
+    public List<Veterinario> findActivos() {
+        return veterinarioRepository.findByEstado("activo");
     }
 
     @Override
-    public Collection<Veterinario> searchInactivos() {
-        return repository.findByEstado("inactivo");
-    }
-
-    @Override
-    public void save(Veterinario veterinario) {
-        if (veterinario.getNombre() == null || veterinario.getNombre().isBlank()) {
-            throw new IllegalArgumentException("El nombre del veterinario no puede estar vacío.");
-        }
-        if (veterinario.getCorreo() == null || !veterinario.getCorreo().contains("@")) {
-            throw new IllegalArgumentException("El correo debe contener '@'.");
-        }
-        // Unicidad solo en creación
+    public Veterinario save(Veterinario veterinario) {
+        validarVeterinario(veterinario);
         if (veterinario.getId() == null) {
-            repository.findByCorreo(veterinario.getCorreo()).ifPresent(e -> {
-                throw new IllegalArgumentException("Ya existe un veterinario con ese correo.");
-            });
-            repository.findByCedula(veterinario.getCedula()).ifPresent(e -> {
-                throw new IllegalArgumentException("Ya existe un veterinario con esa cédula.");
-            });
+            if (veterinarioRepository.existsByCorreo(veterinario.getCorreo())) {
+                throw new IllegalArgumentException("Correo ya registrado");
+            }
+            if (veterinario.getCedula() != null && veterinarioRepository.existsByCedula(veterinario.getCedula())) {
+                throw new IllegalArgumentException("Cédula ya registrada");
+            }
         }
-        repository.save(veterinario);
+        if (veterinario.getEstado() == null) {
+            veterinario.setEstado("activo");
+        }
+        return veterinarioRepository.save(veterinario);
     }
 
     @Override
-    public void update(Long id, Veterinario datos) {
-        Veterinario vet = searchById(id);
-        vet.setNombre(datos.getNombre());
-        vet.setCedula(datos.getCedula());
-        vet.setCelular(datos.getCelular());
-        vet.setCorreo(datos.getCorreo());
-        vet.setEspecialidad(datos.getEspecialidad());
-        vet.setContrasenia(datos.getContrasenia());
-        vet.setImageUrl(datos.getImageUrl());
-        repository.save(vet);
+    public Veterinario update(Long id, Veterinario veterinarioDetails) {
+        Veterinario existing = findById(id);
+        existing.setNombre(veterinarioDetails.getNombre());
+        existing.setCedula(veterinarioDetails.getCedula());
+        existing.setCelular(veterinarioDetails.getCelular());
+        existing.setCorreo(veterinarioDetails.getCorreo());
+        existing.setEspecialidad(veterinarioDetails.getEspecialidad());
+        existing.setContrasenia(veterinarioDetails.getContrasenia());
+        existing.setImageUrl(veterinarioDetails.getImageUrl());
+        // estado y numAtenciones se actualizan con métodos específicos
+        return veterinarioRepository.save(existing);
     }
 
     @Override
-    public void cambiarEstado(Long id, String estado) {
-        Veterinario vet = searchById(id);
-        vet.setEstado(estado);
-        repository.save(vet);
+    public void cambiarEstado(Long id, String nuevoEstado) {
+        Veterinario vet = findById(id);
+        vet.setEstado(nuevoEstado);
+        veterinarioRepository.save(vet);
     }
 
     @Override
     public void delete(Long id) {
-        searchById(id);
-        repository.deleteById(id);
+        Veterinario vet = findById(id);
+        veterinarioRepository.delete(vet);
     }
 
     @Override
     public Veterinario login(String correo, String contrasenia) {
-        return repository.findByCorreo(correo)
-            .filter(v -> v.getContrasenia().equals(contrasenia))
-            .orElse(null);
+        return veterinarioRepository.findByCorreo(correo)
+                .filter(v -> v.getContrasenia().equals(contrasenia))
+                .orElse(null);
     }
 
     @Override
     public void incrementarAtenciones(Long id) {
-        Veterinario vet = searchById(id);
-        vet.setNum_Atenciones(vet.getNum_Atenciones() + 1);
-        repository.save(vet);
+        Veterinario vet = findById(id);
+        vet.setNumAtenciones(vet.getNumAtenciones() + 1);
+        veterinarioRepository.save(vet);
+    }
+
+    private void validarVeterinario(Veterinario v) {
+        if (v.getNombre() == null || v.getNombre().isBlank()) {
+            throw new IllegalArgumentException("El nombre es obligatorio");
+        }
+        if (v.getCorreo() == null || !v.getCorreo().contains("@")) {
+            throw new IllegalArgumentException("Correo inválido");
+        }
+        if (v.getContrasenia() == null || v.getContrasenia().isBlank()) {
+            throw new IllegalArgumentException("La contraseña es obligatoria");
+        }
     }
 }

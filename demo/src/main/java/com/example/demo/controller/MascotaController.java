@@ -1,119 +1,64 @@
 package com.example.demo.controller;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entities.Mascota;
-import com.example.demo.errors.MascotaException;
-import com.example.demo.service.ClienteService;
 import com.example.demo.service.MascotaService;
 
-@Controller
-@RequestMapping("/mascotas")
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/api/mascotas")
 public class MascotaController {
 
     @Autowired
     private MascotaService mascotaService;
 
-    @Autowired
-    private ClienteService clienteService;
-
-    @GetMapping({"", "/", "/listarMascotas", "/listarMascotas.html"})
-    public String listarMascotas(
-            @RequestParam(required = false) String busqueda,
-            @RequestParam(required = false) String estado,
-            Model model) {
-
-        Collection<Mascota> mascotas = ((busqueda != null && !busqueda.isBlank())
-                                     || (estado   != null && !estado.isBlank()))
-            ? mascotaService.buscarPorFiltros(busqueda, estado)
-            : mascotaService.searchAll();
-
-        model.addAttribute("mascotas",           mascotas);
-        model.addAttribute("clientesMap",        mascotaService.getClientesMap());
-        model.addAttribute("totalMascotas",      mascotas.size());
-        model.addAttribute("saludables",         mascotaService.countByEstado(mascotas, "activa"));
-        model.addAttribute("inactivas",          mascotaService.countByEstado(mascotas, "inactiva"));
-        model.addAttribute("tratamiento",        mascotaService.countByEstado(mascotas, "tratamiento"));
-        model.addAttribute("busqueda",           busqueda);
-        model.addAttribute("estadoSeleccionado", estado);
-        return "listarMascotas";
-    }
-
-    @GetMapping({"/detalle", "/detalleMascota.html"})
-    public String verMascotaPorParametro(@RequestParam(required = false) Long id, Model model) {
-        if (id == null) {
-            model.addAttribute("errorMascota", "Debes enviar un id, por ejemplo /mascotas/detalle?id=1");
-            return listarMascotas(null, null, model);
+    @GetMapping
+    public ResponseEntity<List<Mascota>> findAll(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) String estado) {
+        if ((query != null && !query.isBlank()) || (estado != null && !estado.isBlank())) {
+            return ResponseEntity.ok(mascotaService.buscarPorFiltros(query, estado));
         }
-        return verMascota(id, model);
+        return ResponseEntity.ok(mascotaService.findAll());
     }
 
     @GetMapping("/{id}")
-    public String verMascota(@PathVariable Long id, Model model) {
-        // Lanza MascotaException si no existe → GlobalExceptionHandler → error404
-        Mascota mascota = mascotaService.searchById(id);
-        model.addAttribute("mascota",   mascota);
-        model.addAttribute("clienteId", mascota.getCliente() != null ? mascota.getCliente().getId() : null);
-        return "detalleMascota";
+    public ResponseEntity<Mascota> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(mascotaService.findById(id));
     }
 
-    @GetMapping("/{id}/editar")
-    public String editarMascota(@PathVariable Long id, Model model) {
-        // Lanza MascotaException si no existe → GlobalExceptionHandler
-        model.addAttribute("mascota", mascotaService.searchById(id));
-        return "editarMascota";
+    @PostMapping
+    public ResponseEntity<Mascota> create(@Valid @RequestBody Mascota mascota,
+                                          @RequestParam Long clienteId) {
+        return new ResponseEntity<>(mascotaService.save(mascota, clienteId), HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}/editar")
-    public String guardarEdicion(@PathVariable Long id,
-                                 @ModelAttribute Mascota mascotaActualizada,
-                                 RedirectAttributes redirectAttributes) {
-        try {
-            mascotaService.updateMascota(id, mascotaActualizada);
-            redirectAttributes.addFlashAttribute("mensaje", "Mascota actualizada correctamente.");
-        } catch (MascotaException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/mascotas/" + id + "/editar";
-        }
-        return "redirect:/mascotas";
+    @PutMapping("/{id}")
+    public ResponseEntity<Mascota> update(@PathVariable Long id, @Valid @RequestBody Mascota mascota) {
+        return ResponseEntity.ok(mascotaService.update(id, mascota));
     }
 
-    @PostMapping("/{id}/eliminar")
-    public String desactivarMascota(@PathVariable Long id, RedirectAttributes redirectAttributes) {
-        // Lanza MascotaException si no existe → GlobalExceptionHandler
+    @PatchMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
         mascotaService.deactivate(id);
-        redirectAttributes.addFlashAttribute("mensaje", "Mascota marcada como inactiva correctamente.");
-        return "redirect:/mascotas";
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/nueva")
-    public String nuevaMascota(Model model) {
-        model.addAttribute("clientes", clienteService.searchAll());
-        return "nuevaMascota";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        mascotaService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/nueva")
-    public String guardarNuevaMascota(@ModelAttribute Mascota nuevaMascota,
-                                      @RequestParam Long clienteId,
-                                      RedirectAttributes redirectAttributes) {
-        try {
-            mascotaService.createMascota(nuevaMascota, clienteId);
-            redirectAttributes.addFlashAttribute("mensaje", "Mascota registrada correctamente.");
-        } catch (MascotaException e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/mascotas/nueva";
-        }
-        return "redirect:/mascotas";
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<List<Mascota>> findByClienteId(@PathVariable Long clienteId) {
+        return ResponseEntity.ok(mascotaService.findByClienteId(clienteId));
     }
 }
