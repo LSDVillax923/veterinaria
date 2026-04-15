@@ -68,7 +68,7 @@ public class VeterinarioServiceImpl implements VeterinarioService {
         vet.setCorreo(datos.getCorreo());
         vet.setEspecialidad(datos.getEspecialidad());
         vet.setContrasenia(datos.getContrasenia());
-        vet.setImageURL(datos.getImageURL());
+        vet.setImageUrl(datos.getImageUrl());
         repository.save(vet);
     }
 

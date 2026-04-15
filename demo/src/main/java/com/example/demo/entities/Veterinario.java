@@ -1,9 +1,13 @@
 package com.example.demo.entities;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,21 +46,29 @@ public class Veterinario {
 
     @NotBlank(message = "La contraseña no puede estar vacía")
     private String contrasenia;
-    private String imageURL;
+    private String imageUrl;
     private String estado;
     private int num_Atenciones;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "veterinario")
     private List<Tratamiento> tratamientos;
 
-    public Veterinario(String nombre, String cedula, String celular, String correo, String especialidad, String contrasenia, String imageURL, String estado) {
+    @JsonIgnore
+    @OneToMany(mappedBy = "veterinario", fetch = FetchType.LAZY)
+    private List<Cita> citas = new ArrayList<>();    
+
+    public Veterinario(String nombre, String cedula, String celular, String correo,
+                       String especialidad, String contrasenia, String imageUrl, String estado) {
         this.nombre = nombre;
         this.cedula = cedula;
         this.celular = celular;
         this.correo = correo;
         this.especialidad = especialidad;
         this.contrasenia = contrasenia;
-        this.imageURL = imageURL;
+        this.imageUrl = imageUrl;
         this.estado = estado;
+        this.tratamientos = new ArrayList<>();
+        this.citas = new ArrayList<>();
     }
 }

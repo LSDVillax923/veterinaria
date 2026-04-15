@@ -24,9 +24,6 @@ public class Admin {
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
 
-    @NotBlank(message = "El apellido no puede estar vacío")
-    private String apellido;
-
     @NotBlank(message = "El correo no puede estar vacío")
     @Email(message = "El correo debe contener '@' y un dominio válido")
     @Column(unique = true, nullable = false)

@@ -67,11 +67,11 @@ public class DataLoader implements CommandLineRunner {
         Random rnd = new Random(42);
 
         // ── 1. Admins ──────────────────────────────────────────────────────────
-        adminRepository.save(new Admin(null, "Carlos",   "Ruiz",    "admin1@vet.com", "admin123"));
-        adminRepository.save(new Admin(null, "Fernanda", "Torres",  "admin2@vet.com", "admin123"));
-        adminRepository.save(new Admin(null, "Ricardo",  "Molina",  "admin3@vet.com", "admin123"));
-        adminRepository.save(new Admin(null, "Paola",    "Vargas",  "admin4@vet.com", "admin123"));
-        adminRepository.save(new Admin(null, "Mauricio", "Herrera", "admin5@vet.com", "admin123"));
+        adminRepository.save(new Admin(null, "Carlos",     "admin1@vet.com", "admin123"));
+        adminRepository.save(new Admin(null, "Fernanda", "admin2@vet.com", "admin123"));
+        adminRepository.save(new Admin(null, "Ricardo",   "admin3@vet.com", "admin123"));
+        adminRepository.save(new Admin(null, "Paola",   "admin4@vet.com", "admin123"));
+        adminRepository.save(new Admin(null, "Mauricio",  "admin5@vet.com", "admin123"));
         System.out.println("DataLoader: 5 admins generados.");
 
         // ── 2. Veterinarios ────────────────────────────────────────────────────

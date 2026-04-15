@@ -3,6 +3,8 @@ package com.example.demo.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,17 +48,22 @@ public class Cliente {
     @Size(min = 10, message = "El celular debe tener al menos 10 caracteres")
     private String celular;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)    
     private List<Mascota> mascotas = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Cita> citas = new ArrayList<>();
+    
     // Constructor 
-    public Cliente(String nombre, String apellido,
-                   String correo, String contrasenia, String celular) {
-        this.nombre      = nombre;
-        this.apellido    = apellido;
-        this.correo      = correo;
+    public Cliente(String nombre, String apellido, String correo, String contrasenia, String celular) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
         this.contrasenia = contrasenia;
-        this.celular     = celular;
-        this.mascotas    = new ArrayList<>();
+        this.celular = celular;
+        this.mascotas = new ArrayList<>();
+        this.citas = new ArrayList<>();
     }
 }
