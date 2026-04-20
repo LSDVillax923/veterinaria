@@ -1,14 +1,17 @@
 package com.example.demo.service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Mascota;
 import com.example.demo.errors.MascotaException;
 import com.example.demo.repository.ClienteRepository;
 import com.example.demo.repository.MascotaRepository;
+import com.example.demo.util.FechaUtils;
 
 @Service
 @Transactional
@@ -40,13 +43,26 @@ public class MascotaServiceImpl implements MascotaService {
     public Mascota save(Mascota mascota, Long clienteId) {
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + clienteId));
+        
         mascota.setCliente(cliente);
+        
+        // ✅ BACKEND calcula la edad automáticamente
+        if (mascota.getFechaNacimiento() != null) {
+            if (!FechaUtils.esFechaNacimientoValida(mascota.getFechaNacimiento())) {
+                throw new IllegalArgumentException("La fecha de nacimiento no puede ser futura");
+            }
+            mascota.setEdad(FechaUtils.calcularEdad(mascota.getFechaNacimiento()));
+        } else {
+            mascota.setEdad(0);
+        }
+        
         if (mascota.getEstado() == null) {
             mascota.setEstado(Mascota.EstadoMascota.ACTIVA);
         }
         if (mascota.getFoto() == null || mascota.getFoto().isBlank()) {
             mascota.setFoto("default.jpg");
         }
+        
         validarMascota(mascota);
         return mascotaRepository.save(mascota);
     }
@@ -54,20 +70,34 @@ public class MascotaServiceImpl implements MascotaService {
     @Override
     public Mascota update(Long id, Mascota mascotaDetails) {
         Mascota existing = findById(id);
+        
         existing.setNombre(mascotaDetails.getNombre());
         existing.setEspecie(mascotaDetails.getEspecie());
         existing.setRaza(mascotaDetails.getRaza());
         existing.setSexo(mascotaDetails.getSexo());
         existing.setFechaNacimiento(mascotaDetails.getFechaNacimiento());
-        existing.setEdad(mascotaDetails.getEdad());
+        
+        // ✅ BACKEND recalcula la edad automáticamente
+        if (mascotaDetails.getFechaNacimiento() != null) {
+            if (!FechaUtils.esFechaNacimientoValida(mascotaDetails.getFechaNacimiento())) {
+                throw new IllegalArgumentException("La fecha de nacimiento no puede ser futura");
+            }
+            existing.setEdad(FechaUtils.calcularEdad(mascotaDetails.getFechaNacimiento()));
+        } else {
+            existing.setEdad(0);
+        }
+        
         existing.setPeso(mascotaDetails.getPeso());
         existing.setEnfermedad(mascotaDetails.getEnfermedad());
         existing.setObservaciones(mascotaDetails.getObservaciones());
         existing.setVeterinarioAsignado(mascotaDetails.getVeterinarioAsignado());
+        
         if (mascotaDetails.getEstado() != null) {
             existing.setEstado(mascotaDetails.getEstado());
         }
-        // La foto no se actualiza por este método (o se podría agregar)
+        
+        // La foto no se actualiza por este método (se podría agregar un endpoint específico)
+        
         return mascotaRepository.save(existing);
     }
 
@@ -109,7 +139,8 @@ public class MascotaServiceImpl implements MascotaService {
         if (m.getFechaNacimiento() == null) {
             throw new IllegalArgumentException("La fecha de nacimiento es obligatoria");
         }
-        if (m.getEdad() <= 0) throw new IllegalArgumentException("Edad debe ser positiva");
-        if (m.getPeso() <= 0) throw new IllegalArgumentException("Peso debe ser positivo");
+        if (m.getPeso() <= 0) {
+            throw new IllegalArgumentException("Peso debe ser positivo");
+        }
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.entities.*;
 import com.example.demo.repository.*;
+import com.example.demo.util.FechaUtils;
 
 import jakarta.transaction.Transactional;
 
@@ -126,27 +127,38 @@ public class DataLoader implements CommandLineRunner {
         List<Cliente> clientes = clienteRepository.findAll();
 
         // ─── 5. Mascotas ────────────────────────────────────────────────────────
-        for (int i = 1; i <= 60; i++) {
-            String especie = ESPECIES[rnd.nextInt(ESPECIES.length)];
-            String raza = especie.equals("Perro")
-                    ? RAZAS_PERRO[rnd.nextInt(RAZAS_PERRO.length)]
-                    : RAZAS_GATO[rnd.nextInt(RAZAS_GATO.length)];
-            String nombre = NOMBRES_MASCOTAS[rnd.nextInt(NOMBRES_MASCOTAS.length)] + i;
-            String sexo = SEXOS[rnd.nextInt(SEXOS.length)];
-            LocalDate fechaNacimiento = LocalDate.now().minusYears(rnd.nextInt(10) + 1).minusMonths(rnd.nextInt(12));
-            int edad = LocalDate.now().getYear() - fechaNacimiento.getYear();
-            double peso = Math.round((rnd.nextDouble() * 29 + 1) * 10.0) / 10.0;
-            Mascota.EstadoMascota estado = Mascota.EstadoMascota.values()[rnd.nextInt(Mascota.EstadoMascota.values().length)];
-            String enfermedad = rnd.nextBoolean() ? "Ninguna" : DIAGNOSTICOS[rnd.nextInt(DIAGNOSTICOS.length)];
+    for (int i = 1; i <= 60; i++) {
+    String especie = ESPECIES[rnd.nextInt(ESPECIES.length)];
+    String raza = especie.equals("Perro")
+            ? RAZAS_PERRO[rnd.nextInt(RAZAS_PERRO.length)]
+            : RAZAS_GATO[rnd.nextInt(RAZAS_GATO.length)];
+    String nombre = NOMBRES_MASCOTAS[rnd.nextInt(NOMBRES_MASCOTAS.length)] + i;
+    String sexo = SEXOS[rnd.nextInt(SEXOS.length)];
+    
+    // Generar fecha de nacimiento aleatoria (entre 1 y 15 años atrás)
+    LocalDate fechaNacimiento = LocalDate.now()
+            .minusYears(rnd.nextInt(15) + 1)
+            .minusMonths(rnd.nextInt(12))
+            .minusDays(rnd.nextInt(28));
+    
+    // ✅ Calcular edad usando la utilidad
+    int edad = FechaUtils.calcularEdad(fechaNacimiento);
+    
+    double peso = Math.round((rnd.nextDouble() * 29 + 1) * 10.0) / 10.0;
+    Mascota.EstadoMascota estado = Mascota.EstadoMascota.values()
+            [rnd.nextInt(Mascota.EstadoMascota.values().length)];
+    String enfermedad = rnd.nextBoolean() ? "Ninguna" : DIAGNOSTICOS[rnd.nextInt(DIAGNOSTICOS.length)];
 
-            Cliente cliente = clientes.get(rnd.nextInt(clientes.size()));
+    Cliente cliente = clientes.get(rnd.nextInt(clientes.size()));
 
-            mascotaRepository.save(new Mascota(
-                    nombre, especie, raza, sexo, fechaNacimiento,
-                    edad, peso, "default.jpg", estado,
-                    enfermedad, "Observación de mascota #" + i, cliente));
-        }
-        System.out.println("DataLoader: 60 mascotas generadas.");
+    Mascota mascota = new Mascota(
+            nombre, especie, raza, sexo, fechaNacimiento,
+            edad, peso, "default.jpg", estado,
+            enfermedad, "Observación de mascota #" + i, cliente);
+    
+    mascotaRepository.save(mascota);
+}
+System.out.println("DataLoader: 60 mascotas generadas.");
 
         List<Mascota> mascotas = mascotaRepository.findAll();
         List<Veterinario> veterinarios = veterinarioRepository.findAll();
