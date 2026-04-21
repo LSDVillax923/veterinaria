@@ -8,15 +8,31 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.entities.*;
-import com.example.demo.repository.*;
+import com.example.demo.entities.Admin;
+import com.example.demo.entities.Cita;
+import com.example.demo.entities.Cliente;
+import com.example.demo.entities.Droga;
+import com.example.demo.entities.Mascota;
+import com.example.demo.entities.Tratamiento;
+import com.example.demo.entities.TratamientoDroga;
+import com.example.demo.entities.Veterinario;
+import com.example.demo.repository.AdminRepository;
+import com.example.demo.repository.CitaRepository;
+import com.example.demo.repository.ClienteRepository;
+import com.example.demo.repository.DrogaRepository;
+import com.example.demo.repository.MascotaRepository;
+import com.example.demo.repository.TratamientoDrogaRepository;
+import com.example.demo.repository.TratamientoRepository;
+import com.example.demo.repository.VeterinarioRepository;
 import com.example.demo.util.FechaUtils;
 
 import jakarta.transaction.Transactional;
 
 @Component
+@Order(2)
 @Transactional
 public class DataLoader implements CommandLineRunner {
 
@@ -106,13 +122,7 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("DataLoader: 5 veterinarios generados.");
 
         // ─── 3. Drogas ──────────────────────────────────────────────────────────
-        drogaRepository.save(new Droga(null, "Amoxicilina", 8500f, 15000f, 100, 0));
-        drogaRepository.save(new Droga(null, "Ivermectina", 4200f, 8000f, 80, 0));
-        drogaRepository.save(new Droga(null, "Meloxicam", 12000f, 22000f, 60, 0));
-        drogaRepository.save(new Droga(null, "Metronidazol", 5500f, 10500f, 90, 0));
-        drogaRepository.save(new Droga(null, "Furosemida", 3800f, 7500f, 70, 0));
-        drogaRepository.save(new Droga(null, "Prednisolona", 6000f, 11000f, 50, 0));
-        System.out.println("DataLoader: 6 drogas generadas.");
+        System.out.println("DataLoader: Drogas ya cargadas por Seed desde Excel.");
 
         // ─── 4. Clientes ────────────────────────────────────────────────────────
         for (int i = 1; i <= 30; i++) {
@@ -182,23 +192,25 @@ System.out.println("DataLoader: 60 mascotas generadas.");
         System.out.println("DataLoader: 40 tratamientos generados.");
 
         List<Tratamiento> tratamientos = tratamientoRepository.findAll();
-        List<Droga> drogas = drogaRepository.findAll();
+// ─── 7. TratamientoDroga ────────────────────────────────────────────────
+List<Droga> drogas = drogaRepository.findAll();
 
-        // ─── 7. TratamientoDroga ────────────────────────────────────────────────
-        for (int i = 0; i < 25; i++) {
-            Tratamiento tratamiento = tratamientos.get(rnd.nextInt(tratamientos.size()));
-            Droga droga = drogas.get(rnd.nextInt(drogas.size()));
-            int cantidad = rnd.nextInt(3) + 1;
+if (drogas.isEmpty()) {
+    System.out.println("DataLoader: Sin drogas, se omite TratamientoDroga.");
+} else {
+    for (int i = 0; i < 25; i++) {
+        Tratamiento tratamiento = tratamientos.get(rnd.nextInt(tratamientos.size()));
+        Droga droga = drogas.get(rnd.nextInt(drogas.size()));
+        int cantidad = rnd.nextInt(3) + 1;
 
-            tratamientoDrogaRepository.save(new TratamientoDroga(tratamiento, droga, cantidad));
+        tratamientoDrogaRepository.save(new TratamientoDroga(tratamiento, droga, cantidad));
 
-            // Actualizar inventario
-            droga.setUnidadesVendidas(droga.getUnidadesVendidas() + cantidad);
-            droga.setUnidadesDisponibles(Math.max(0, droga.getUnidadesDisponibles() - cantidad));
-            drogaRepository.save(droga);
-        }
-        System.out.println("DataLoader: 25 registros en TratamientoDroga generados.");
-
+        droga.setUnidadesVendidas(droga.getUnidadesVendidas() + cantidad);
+        droga.setUnidadesDisponibles(Math.max(0, droga.getUnidadesDisponibles() - cantidad));
+        drogaRepository.save(droga);
+    }
+    System.out.println("DataLoader: 25 registros en TratamientoDroga generados.");
+}
         // ─── 8. Citas ───────────────────────────────────────────────────────────
         for (int i = 1; i <= 30; i++) {
             Cliente cliente = clientes.get(rnd.nextInt(clientes.size()));
